@@ -359,6 +359,13 @@ a { color: var(--navy); }
 .bubble.is-pending { opacity: .55; }
 .bubble__add { display: inline-block; margin-top: 9px; background: var(--pine); color: #fff; font-weight: 700; font-size: 13px; padding: 7px 12px; border-radius: 10px; }
 .bubble__add:active { transform: scale(.97); }
+.pick { margin-top: 9px; padding: 9px 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; }
+.pick__head { font-size: 14px; }
+.pick__city { color: var(--muted); font-weight: 600; }
+.pick__rate { color: var(--lobster); font-weight: 700; }
+.pick__why { font-size: 13px; color: var(--ink); opacity: .85; margin-top: 3px; line-height: 1.4; }
+.pick__add { display: inline-block; margin-top: 8px; background: var(--pine); color: #fff; font-weight: 700; font-size: 12.5px; padding: 6px 11px; border-radius: 9px; }
+.pick__add:active { transform: scale(.97); }
 .askinput { display: flex; gap: 8px; margin-top: 4px; }
 .askinput__ta {
   flex: 1; padding: 10px 12px; font-size: 15px; border: 1px solid var(--line);
