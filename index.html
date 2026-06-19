@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7efe2" />
+  <meta name="description" content="Sup'Maine — your silly little pocket guide to a very specific Maine trip." />
+  <title>Sup'Maine 🦞 — your pocket guide to Maine</title>
+
+  <!-- iOS web-app niceties so it feels like a real app from the home screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Sup'Maine" />
+
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icon.svg" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- ============ HEADER ============ -->
+    <header class="topbar" id="topbar">
+      <div class="topbar__inner">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">🦞</span>
+          <div class="brand__text">
+            <h1 class="brand__name">Sup'Maine</h1>
+            <p class="brand__tag" id="trip-tagline">your pocket guide to Maine</p>
+          </div>
+        </div>
+        <button class="trip-chip" id="trip-chip" type="button" aria-label="Trip details">
+          <span id="trip-chip-dates">—</span>
+        </button>
+      </div>
+
+      <!-- search -->
+      <div class="searchwrap">
+        <span class="searchwrap__icon" aria-hidden="true">🔎</span>
+        <input id="search" class="searchwrap__input" type="search"
+               placeholder="Search spots, eats, towns…" autocomplete="off" />
+      </div>
+
+      <!-- filter chips -->
+      <nav class="chips" id="chips" aria-label="Filter by category"></nav>
+    </header>
+
+    <!-- ============ MAIN VIEWS ============ -->
+    <main class="main">
+      <!-- Itinerary -->
+      <section class="view" id="view-itinerary" data-view="itinerary"></section>
+
+      <!-- Profile -->
+      <section class="view is-hidden" id="view-profile" data-view="profile"></section>
+
+      <!-- Plan a trip (BYO-AI bridge) -->
+      <section class="view is-hidden" id="view-plan" data-view="plan"></section>
+    </main>
+
+    <!-- ============ BOTTOM NAV (thumb-friendly) ============ -->
+    <nav class="tabbar" id="tabbar" aria-label="Sections">
+      <button class="tabbar__btn is-active" data-go="itinerary" type="button">
+        <span class="tabbar__ico">🗺️</span><span class="tabbar__lbl">Trip</span>
+      </button>
+      <button class="tabbar__btn" data-go="profile" type="button">
+        <span class="tabbar__ico">🧭</span><span class="tabbar__lbl">Profile</span>
+      </button>
+      <button class="tabbar__btn" data-go="plan" type="button">
+        <span class="tabbar__ico">✨</span><span class="tabbar__lbl">Plan</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/prompts.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
