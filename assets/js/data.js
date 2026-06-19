@@ -45,16 +45,16 @@ window.SUP_MAINE_TRIP = {
   },
 
   days: [
-    { id: "d1",  date: "Fri Jun 19", label: "NYC → Portland",        subtitle: "The long drive north, Portsmouth pit-stop, settle into the Old Port" },
-    { id: "d2",  date: "Sat Jun 20", label: "Southern Maine coast",  subtitle: "Cape Elizabeth lighthouses, Kennebunkport, Ogunquit" },
-    { id: "d3",  date: "Sun Jun 21", label: "Portland flex day",     subtitle: "Peaks Island, a sail, or a brewery crawl — your call" },
-    { id: "d4",  date: "Mon Jun 22", label: "Portland → Acadia",     subtitle: "Camden lunch on the way, Cadillac sunset to land it" },
-    { id: "d5",  date: "Tue Jun 23", label: "Full Acadia day",       subtitle: "Ocean Path, Jordan Pond popovers, the Beehive if you're brave" },
-    { id: "d6",  date: "Wed Jun 24", label: "Acadia → Montréal",     subtitle: "Bangor coffee, Burlington lunch, cross into Québec" },
-    { id: "d7",  date: "Thu Jun 25", label: "Mile End & the Plateau",subtitle: "Bagels, Jean-Talon Market, cafés and bookstores" },
-    { id: "d8",  date: "Fri Jun 26", label: "Mount Royal & Old MTL", subtitle: "The mountain, the old city, Atwater Market, cocktails" },
-    { id: "d9",  date: "Sat Jun 27", label: "Montréal → Hudson Valley", subtitle: "Drive south, Hudson antiques on Warren St, dinner at Serre" },
-    { id: "d10", date: "Sun Jun 28", label: "Hudson Valley → NYC",   subtitle: "Coffee, a slow morning, roll home" }
+    { id: "d1",  date: "Fri Jun 19", iso: "2026-06-19", lat: 43.6591, lon: -70.2568, label: "NYC → Portland",        subtitle: "The long drive north, Portsmouth pit-stop, settle into the Old Port" },
+    { id: "d2",  date: "Sat Jun 20", iso: "2026-06-20", lat: 43.6591, lon: -70.2568, label: "Southern Maine coast",  subtitle: "Cape Elizabeth lighthouses, Kennebunkport, Ogunquit" },
+    { id: "d3",  date: "Sun Jun 21", iso: "2026-06-21", lat: 43.6591, lon: -70.2568, label: "Portland flex day",     subtitle: "Peaks Island, a sail, or a brewery crawl — your call" },
+    { id: "d4",  date: "Mon Jun 22", iso: "2026-06-22", lat: 44.3876, lon: -68.2039, label: "Portland → Acadia",     subtitle: "Camden lunch on the way, Cadillac sunset to land it" },
+    { id: "d5",  date: "Tue Jun 23", iso: "2026-06-23", lat: 44.3876, lon: -68.2039, label: "Full Acadia day",       subtitle: "Ocean Path, Jordan Pond popovers, the Beehive if you're brave" },
+    { id: "d6",  date: "Wed Jun 24", iso: "2026-06-24", lat: 45.5019, lon: -73.5674, label: "Acadia → Montréal",     subtitle: "Bangor coffee, Burlington lunch, cross into Québec" },
+    { id: "d7",  date: "Thu Jun 25", iso: "2026-06-25", lat: 45.5019, lon: -73.5674, label: "Mile End & the Plateau",subtitle: "Bagels, Jean-Talon Market, cafés and bookstores" },
+    { id: "d8",  date: "Fri Jun 26", iso: "2026-06-26", lat: 45.5019, lon: -73.5674, label: "Mount Royal & Old MTL", subtitle: "The mountain, the old city, Atwater Market, cocktails" },
+    { id: "d9",  date: "Sat Jun 27", iso: "2026-06-27", lat: 42.2528, lon: -73.7907, label: "Montréal → Hudson Valley", subtitle: "Drive south, Hudson antiques on Warren St, dinner at Serre" },
+    { id: "d10", date: "Sun Jun 28", iso: "2026-06-28", lat: 42.2528, lon: -73.7907, label: "Hudson Valley → NYC",   subtitle: "Coffee, a slow morning, roll home" }
   ],
 
   places: [
@@ -79,7 +79,7 @@ window.SUP_MAINE_TRIP = {
     },
     {
       id: "p103", day: "d1", time: "3:00p", name: "✅ Stay — Morrill Mansion (Portland)", emoji: "🛏️",
-      category: "stay", rating: "", ratingSource: "", price: "",
+      category: "stay", checkIn: "2026-06-19", checkOut: "2026-06-22", rating: "", ratingSource: "", price: "",
       address: "249 Vaughan St, Portland, ME 04102", mapsQuery: "249 Vaughan St Portland ME",
       why: "Your <b>base for 3 nights</b> (Jun 19–22) in the West End, walk to the Old Port.",
       todo: "Self check-in at 3 PM, drop bags, park, then head out for dinner at Ladyfish.",
@@ -229,7 +229,7 @@ window.SUP_MAINE_TRIP = {
     },
     {
       id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
-      category: "stay", rating: "", ratingSource: "", price: "",
+      category: "stay", checkIn: "2026-06-22", checkOut: "2026-06-24", rating: "", ratingSource: "", price: "",
       address: "12 Roberts Ave, Bar Harbor, ME 04609",
       why: "The <b>Look Nook Room</b> — your Acadia base for 2 nights (Jun 22–24), walk to the waterfront.",
       todo: "Check in, drop bags, then head up Cadillac for sunset.",
@@ -341,7 +341,7 @@ window.SUP_MAINE_TRIP = {
     },
     {
       id: "p606", day: "d6", time: "5:00p", name: "✅ Stay — Elegant 1BR (Montréal)", emoji: "🛏️",
-      category: "stay", rating: "", ratingSource: "", price: "",
+      category: "stay", checkIn: "2026-06-24", checkOut: "2026-06-27", rating: "", ratingSource: "", price: "",
       address: "366 Rue Mayor, Montréal, QC H3A 1N8", mapsQuery: "366 Rue Mayor Montreal",
       why: "Your <b>base for 3 nights</b> (Jun 24–27), downtown and walkable to restaurants.",
       todo: "Check in at 5 PM, then head to Verdun for the Beba reservation.",
@@ -455,7 +455,7 @@ window.SUP_MAINE_TRIP = {
     },
     {
       id: "p903", day: "d9", time: "5:00p", name: "✅ Stay — Schodack Landing Homestead", emoji: "🛏️",
-      category: "stay", rating: "", ratingSource: "", price: "",
+      category: "stay", checkIn: "2026-06-27", checkOut: "2026-06-28", rating: "", ratingSource: "", price: "",
       address: "612 River Rd, Schodack Landing, NY 12156",
       why: "Your <b>final night</b> (Jun 27–28) — a historic homestead on the river, ~25 min north of Hudson.",
       todo: "Check in at 5 PM, then drive down to Hudson for dinner at Serre.",

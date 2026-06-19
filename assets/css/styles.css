@@ -249,6 +249,59 @@ a { color: var(--navy); }
 }
 .toast.is-show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ---------------- Housing banner ---------------- */
+.banner {
+  border-radius: 14px; padding: 12px 14px; margin-bottom: 16px; font-size: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.banner--warn { background: #fdeede; border: 1px solid #f2c98f; color: #7a4a12; }
+.banner__sub { display: block; margin-top: 3px; font-size: 12.5px; opacity: .85; }
+
+/* ---------------- Day weather + today focus ---------------- */
+.day__head { flex-wrap: wrap; }
+.day__wx {
+  font-size: 12.5px; font-weight: 700; color: var(--navy);
+  background: #e9eef5; border-radius: 999px; padding: 3px 9px; align-self: center;
+}
+.day__now {
+  font-family: var(--font); font-size: 10.5px; font-weight: 800; letter-spacing: .6px;
+  background: var(--lobster); color: #fff; padding: 3px 9px; border-radius: 999px; align-self: center;
+}
+.day--today > .day__head .day__title { color: var(--lobster-d); }
+.day--today { scroll-margin-top: 12px; }
+
+.day--past.is-collapsed { opacity: .55; margin-bottom: 12px; }
+.day--past.is-collapsed .day__body,
+.day--past.is-collapsed .day__sub { display: none; }
+.day--past.is-collapsed .day__head::after {
+  content: "▾"; margin-left: auto; color: var(--ink-soft); font-size: 13px; align-self: center;
+}
+.day--past .day__pill { background: var(--ink-soft); }
+
+/* ---------------- Check-off + done state ---------------- */
+.card__check {
+  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid var(--line); background: var(--card); color: #fff;
+  font-size: 14px; font-weight: 800; line-height: 1; display: grid; place-items: center;
+  margin-left: 4px; transition: transform .08s ease;
+}
+.card__check:active { transform: scale(.9); }
+.card__check.is-checked { background: var(--pine); border-color: var(--pine); }
+.card.is-done { opacity: .62; }
+.card.is-done .card__name { text-decoration: line-through; text-decoration-color: var(--ink-soft); }
+
+/* ---------------- Per-card note ---------------- */
+.card__notebtn {
+  display: block; width: 100%; text-align: left;
+  padding: 0 14px 12px; font-size: 12.5px; font-weight: 700; color: var(--ink-soft);
+}
+.card__note { padding: 0 14px 14px; }
+.card__note-input {
+  width: 100%; padding: 10px 12px; font-size: 14px; resize: vertical;
+  border: 1px solid var(--line); border-radius: 11px; background: #fffef9; outline: none;
+}
+.card__note-input:focus { border-color: var(--pine); }
+
 @media (min-width: 560px) {
   .brand__name { font-size: 29px; }
 }
