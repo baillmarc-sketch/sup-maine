@@ -102,6 +102,26 @@
     var d = new Date(iso + "T00:00:00");
     return d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
   }
+  // map a card's time string to minutes-since-midnight for chronological sorting
+  function timeRank(t) {
+    if (!t) return 9000;
+    var s = String(t).toLowerCase().trim();
+    var m = s.match(/^(\d{1,2})(?::(\d{2}))?\s*([ap])/);
+    if (m) {
+      var h = parseInt(m[1], 10) % 12, min = m[2] ? parseInt(m[2], 10) : 0;
+      if (m[3] === "p") h += 12;
+      return h * 60 + min;
+    }
+    var words = { morning: 480, breakfast: 480, lunch: 720, midday: 720, noon: 720,
+      afternoon: 840, sunset: 1170, evening: 1140, dinner: 1140, night: 1200, tonight: 1200 };
+    for (var k in words) { if (s.indexOf(k) > -1) return words[k]; }
+    return 9000; // unknown ("Option", etc.) — sinks low but stays stable
+  }
+  function byTime(places) {
+    return places.map(function (p, i) { return { p: p, i: i }; })
+      .sort(function (a, b) { return (timeRank(a.p.time) - timeRank(b.p.time)) || (a.i - b.i); })
+      .map(function (x) { return x.p; });
+  }
   // each night from start (inclusive) up to end (exclusive)
   function nightsBetween(startIso, endIso) {
     var out = [];
@@ -185,6 +205,90 @@
     applyWx(); // paint whatever's already cached
   }
 
+  // ---- progress (done / total) ----
+  function updateProgress() {
+    var pill = document.getElementById("trip-progress");
+    if (!pill) return;
+    var total = (TRIP.places || []).length;
+    var done = (TRIP.places || []).filter(function (p) { return checks[p.id]; }).length;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var fill = pill.querySelector(".progress-pill__fill");
+    var txt = pill.querySelector(".progress-pill__txt");
+    if (fill) fill.style.width = pct + "%";
+    if (txt) txt.textContent = "✓ " + done + "/" + total;
+  }
+
+  // ---- save / export: backup bundle + travel diary ----
+  function buildBundle() {
+    return { app: "supmaine", version: 1, savedAt: new Date().toISOString(),
+             trip: TRIP, checks: checks, notes: notes };
+  }
+  function downloadFile(name, text, mime) {
+    try {
+      var blob = new Blob([text], { type: mime || "text/plain" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    } catch (e) { toast("Download not supported — use Copy"); }
+  }
+  function diaryDays() {
+    return (TRIP.days || []).map(function (day) {
+      var ps = byTime((TRIP.places || []).filter(function (p) { return p.day === day.id; }));
+      return { day: day, places: ps };
+    }).filter(function (g) { return g.places.length; });
+  }
+  function buildDiaryMarkdown() {
+    var t = TRIP.trip || {}, out = [];
+    out.push("# " + (t.title || "My trip") + " — travel diary");
+    if (t.dates || t.base) out.push("_" + [t.dates, t.base].filter(Boolean).join(" · ") + "_");
+    out.push("");
+    diaryDays().forEach(function (g) {
+      out.push("## " + g.day.date + " — " + g.day.label);
+      if (g.day.subtitle) out.push("_" + g.day.subtitle + "_");
+      g.places.forEach(function (p) {
+        out.push("- [" + (checks[p.id] ? "x" : " ") + "] **" + p.name + "**" + (p.time ? " (" + p.time + ")" : ""));
+        if (p.address) out.push("    - 📍 " + p.address);
+        if (notes[p.id]) out.push("    - 📝 " + notes[p.id]);
+      });
+      out.push("");
+    });
+    return out.join("\n");
+  }
+  function buildDiaryHTML() {
+    var t = TRIP.trip || {}, body = "";
+    diaryDays().forEach(function (g) {
+      body += "<h2>" + esc(g.day.date) + " — " + esc(g.day.label) + "</h2>";
+      if (g.day.subtitle) body += '<p class="sub">' + esc(g.day.subtitle) + "</p>";
+      body += "<ul>";
+      g.places.forEach(function (p) {
+        body += "<li>" + (checks[p.id] ? "✅ " : "⬜ ") + "<b>" + esc(p.name) + "</b>" +
+          (p.time ? ' <span class="t">' + esc(p.time) + "</span>" : "");
+        if (p.address) body += '<div class="addr">📍 ' + esc(p.address) + "</div>";
+        if (notes[p.id]) body += '<div class="note">📝 ' + esc(notes[p.id]) + "</div>";
+        body += "</li>";
+      });
+      body += "</ul>";
+    });
+    return '<!doctype html><html><head><meta charset="utf-8">' +
+      "<title>" + esc(t.title || "Trip") + " — diary</title>" +
+      "<style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#2c2622;max-width:720px;margin:24px auto;padding:0 18px}" +
+      "h1{font-size:24px;margin:0 0 2px}h2{font-size:17px;margin:22px 0 4px;border-bottom:1px solid #e7dcc6;padding-bottom:4px}" +
+      ".meta{color:#6f655b;margin:0 0 10px}.sub{color:#6f655b;font-style:italic;margin:0 0 8px}" +
+      "ul{list-style:none;padding:0}li{margin:0 0 10px}.t{color:#b8412b;font-size:12px;font-weight:700}" +
+      ".addr{color:#444;font-size:13px;margin:2px 0 0 22px}.note{background:#fff7e6;border:1px solid #f0e0bb;border-radius:8px;padding:6px 9px;margin:4px 0 0 22px;font-size:13px}</style>" +
+      "</head><body><h1>" + esc(t.title || "My trip") + "</h1>" +
+      '<p class="meta">' + esc([t.dates, t.base].filter(Boolean).join(" · ")) +
+      " · exported " + new Date().toLocaleDateString() + "</p>" + body + "</body></html>";
+  }
+  function openPrintableDiary() {
+    var w = window.open("", "_blank");
+    if (!w) { copyText(buildDiaryMarkdown(), "Popup blocked — diary copied instead"); return; }
+    w.document.open(); w.document.write(buildDiaryHTML()); w.document.close();
+    setTimeout(function () { try { w.focus(); w.print(); } catch (e) {} }, 350);
+  }
+
   // =====================================================
   //  ITINERARY VIEW
   // =====================================================
@@ -223,6 +327,7 @@
       checkBtn.classList.toggle("is-checked", on);
       checkBtn.textContent = on ? "✓" : "";
       card.classList.toggle("is-done", on);
+      updateProgress();
     });
     top.appendChild(checkBtn);
     main.appendChild(top);
@@ -343,8 +448,8 @@
 
     var anyShown = false, todaySec = null;
     (TRIP.days || []).forEach(function (day) {
-      var dayPlaces = (TRIP.places || [])
-        .filter(function (p) { return p.day === day.id && matchesFilter(p); });
+      var dayPlaces = byTime((TRIP.places || [])
+        .filter(function (p) { return p.day === day.id && matchesFilter(p); }));
       if (!dayPlaces.length) return;
       anyShown = true;
 
@@ -377,6 +482,7 @@
 
     // weather chips (async) + auto-focus today on first load
     fetchWeather();
+    updateProgress();
     if (focusMode && todaySec && !didFocusScroll) {
       didFocusScroll = true;
       setTimeout(function () { todaySec.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
@@ -512,6 +618,34 @@
     back.appendChild(resetBtn);
     root.appendChild(back);
 
+    // ---- save & export ----
+    var saver = el("section", "panel");
+    saver.appendChild(el("h2", null, "💾 Save & export"));
+    saver.appendChild(el("p", "muted",
+      "Back up your whole trip — including your check-offs and notes — or export a " +
+      "travel diary. The JSON backup pastes right back into “Load my trip” above to restore everything."));
+
+    var b1 = el("button", "btn-primary", "📋 Copy trip + notes (JSON backup)");
+    b1.addEventListener("click", function () {
+      copyText(JSON.stringify(buildBundle(), null, 2), "Backup copied — paste somewhere safe");
+    });
+    var b2 = el("button", "btn-ghost", "⬇️ Download backup (.json)");
+    b2.addEventListener("click", function () {
+      downloadFile("supmaine-backup.json", JSON.stringify(buildBundle(), null, 2), "application/json");
+    });
+    var b3 = el("button", "btn-ghost", "📖 Copy travel diary (text)");
+    b3.addEventListener("click", function () {
+      copyText(buildDiaryMarkdown(), "Diary copied!");
+    });
+    var b4 = el("button", "btn-ghost", "🖨️ Printable diary → Save as PDF");
+    b4.addEventListener("click", openPrintableDiary);
+
+    saver.appendChild(b1);
+    saver.appendChild(b3);
+    saver.appendChild(b4);
+    saver.appendChild(b2);
+    root.appendChild(saver);
+
     buildBtn.addEventListener("click", function () {
       var prompt = buildTripPrompt({
         start: $("#pf-start").value, end: $("#pf-end").value,
@@ -530,13 +664,17 @@
       raw = raw.replace(/^```(json)?/i, "").replace(/```$/, "").trim();
       try {
         var obj = JSON.parse(raw);
-        if (!obj.places || !obj.days) throw new Error("missing days/places");
-        localStorage.setItem(SAVED_KEY, JSON.stringify(obj));
-        TRIP = obj; TRIP.isSample = false;
+        // accept either a raw trip {days,places} or a backup bundle {trip,checks,notes}
+        var tripObj = (obj && obj.trip && obj.trip.days) ? obj.trip : obj;
+        if (!tripObj.places || !tripObj.days) throw new Error("missing days/places");
+        localStorage.setItem(SAVED_KEY, JSON.stringify(tripObj));
+        TRIP = tripObj; TRIP.isSample = false;
+        if (obj && obj.checks) { checks = obj.checks; saveMap(CHECK_KEY, checks); }
+        if (obj && obj.notes) { notes = obj.notes; saveMap(NOTE_KEY, notes); }
         applyTripMeta();
         renderAll();
         go("itinerary");
-        toast("Trip loaded! 🦞");
+        toast(obj.app === "supmaine" ? "Trip + notes restored! 🦞" : "Trip loaded! 🦞");
       } catch (e) {
         toast("Hmm, that JSON didn't parse");
       }
@@ -581,6 +719,13 @@
     toast((t.title || "Maine trip") + " · " + (t.dates || "dates TBD"));
   });
 
+  var progBtn = document.getElementById("trip-progress");
+  if (progBtn) progBtn.addEventListener("click", function () {
+    var td = document.querySelector(".day--today");
+    if (td) td.scrollIntoView({ behavior: "smooth", block: "start" });
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
   function go(view) {
     state.view = view;
     ["itinerary", "profile", "plan"].forEach(function (v) {
@@ -589,9 +734,11 @@
     Array.prototype.forEach.call(document.querySelectorAll(".tabbar__btn"), function (b) {
       b.classList.toggle("is-active", b.getAttribute("data-go") === view);
     });
-    // search + chips only make sense on itinerary
+    // search + chips + progress only make sense on itinerary
     $("#chips").style.display = view === "itinerary" ? "" : "none";
     $(".searchwrap").style.display = view === "itinerary" ? "" : "none";
+    var prog = document.getElementById("trip-progress");
+    if (prog) prog.style.display = view === "itinerary" ? "" : "none";
     window.scrollTo({ top: 0 });
   }
 
