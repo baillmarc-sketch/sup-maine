@@ -937,6 +937,7 @@
   //  ASK SUP'MAINE (live AI concierge)
   // =====================================================
   var API_URL_KEY = "supmaine.api.v1", API_TOKEN_KEY = "supmaine.token.v1";
+  var DEFAULT_API = "https://sup-maine.vercel.app/api/ask"; // built-in proxy — override in ⚙️ Connection
   function loadStr(k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } }
   function saveStr(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   var askLog = [];
@@ -992,7 +993,7 @@
     askLog.push({ role: "you", text: q });
     askLog.push({ role: "sup", text: "…", pending: true });
     renderAskLog();
-    var endpoint = loadStr(API_URL_KEY) || "/api/ask";
+    var endpoint = loadStr(API_URL_KEY) || DEFAULT_API;
     var token = loadStr(API_TOKEN_KEY);
     var headers = { "Content-Type": "application/json" };
     if (token) headers["x-supmaine-token"] = token;
@@ -1066,10 +1067,10 @@
 
     var setp = el("section", "panel");
     setp.appendChild(el("h3", null, "⚙️ Connection"));
-    setp.appendChild(el("p", "muted", "Point this at your deployed Claude proxy (README → Live AI). Leave blank if the app itself is hosted on Vercel (uses /api/ask)."));
+    setp.appendChild(el("p", "muted", "Leave blank to use the built-in proxy (sup-maine.vercel.app/api/ask). Override only if you move it."));
     var f1 = el("div", "field");
     f1.appendChild(el("label", null, "API endpoint URL"));
-    var i1 = el("input"); i1.type = "text"; i1.placeholder = "https://your-app.vercel.app/api/ask";
+    var i1 = el("input"); i1.type = "text"; i1.placeholder = DEFAULT_API;
     i1.value = loadStr(API_URL_KEY);
     i1.addEventListener("change", function () { saveStr(API_URL_KEY, i1.value.trim()); toast("Saved"); });
     f1.appendChild(i1); setp.appendChild(f1);
