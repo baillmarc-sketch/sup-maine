@@ -36,6 +36,7 @@ function buildTripPrompt(input) {
   var dates = [input.start, input.end].filter(Boolean).join(" – ") || "(tell me your dates)";
   var base = input.base || "(home base / region)";
   var notes = input.notes || "(no extra notes)";
+  var booked = input.booked || "(nothing booked yet — plan freely)";
   var profile = input.profile || "(paste your traveler profile)";
 
   return (
@@ -45,9 +46,18 @@ function buildTripPrompt(input) {
 "Dates: " + dates + "\n" +
 "Home base / region: " + base + "\n" +
 "Notes / must-dos: " + notes + "\n\n" +
+"=== ALREADY BOOKED + HOW I'M GETTING AROUND ===\n" +
+booked + "\n\n" +
 "=== MY PROFILE ===\n" +
 profile + "\n\n" +
 "=== RULES ===\n" +
+"- Treat everything under ALREADY BOOKED as FIXED. Build the plan around those\n" +
+"  dates, cities, times and reservations — never move or replace them, and DON'T\n" +
+"  suggest alternative lodging when a stay is already booked.\n" +
+"- Respect how I'm getting around (driving, train, etc.): keep routing and drive\n" +
+"  times sensible, and add 'drive' cards between far-apart stops.\n" +
+"- Fill the GAPS: open days, activities, coffee, shopping, and dinners on nights\n" +
+"  with no reservation. Flag anything that still needs booking.\n" +
 "- Plan day by day. Each day gets a short evocative label + subtitle.\n" +
 "- For every place give a REAL street address (for one-tap copy into Waze/Maps).\n" +
 "- 'why' = one punchy line on why it's worth it (you may use <b>bold</b> on the hook).\n" +
