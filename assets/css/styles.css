@@ -46,7 +46,7 @@ button, input { font: inherit; color: inherit; }
 button { cursor: pointer; border: none; background: none; }
 a { color: var(--navy); }
 
-.app { max-width: var(--maxw); margin: 0 auto; padding-bottom: calc(82px + var(--safe-b)); }
+.app { max-width: var(--maxw); margin: 0 auto; padding-bottom: calc(70px + var(--safe-b)); }
 .is-hidden { display: none !important; }
 
 /* ---------------- Top bar ---------------- */
@@ -177,7 +177,7 @@ a { color: var(--navy); }
   flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
   padding: 9px 8px; border-radius: 11px; font-size: 13px; font-weight: 700;
   white-space: nowrap; border: 1px solid var(--line); background: var(--card); color: var(--ink);
-  transition: transform .08s ease;
+  text-decoration: none; transition: transform .08s ease;
 }
 .act:active { transform: scale(.96); }
 /* Copy is the primary action but kept muted (soft clay, no glow) */
@@ -250,11 +250,11 @@ a { color: var(--navy); }
   background: color-mix(in srgb, var(--card) 92%, transparent);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--line);
-  padding: 8px 8px calc(8px + var(--safe-b));
+  padding: 4px 8px calc(4px + var(--safe-b));
 }
-.tabbar__btn { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 18px; border-radius: 12px; color: var(--ink-soft); }
-.tabbar__ico { font-size: 20px; filter: grayscale(.4); opacity: .7; }
-.tabbar__lbl { font-size: 11px; font-weight: 700; }
+.tabbar__btn { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 3px 16px; border-radius: 12px; color: var(--ink-soft); }
+.tabbar__ico { font-size: 18px; filter: grayscale(.4); opacity: .7; }
+.tabbar__lbl { font-size: 10.5px; font-weight: 700; }
 .tabbar__btn.is-active { color: var(--lobster); }
 .tabbar__btn.is-active .tabbar__ico { filter: none; opacity: 1; }
 

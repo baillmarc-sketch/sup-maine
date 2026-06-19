@@ -165,6 +165,17 @@ window.SUP_MAINE_TRIP = {
       tip: "Grab extra biscuits for the ferry or the boat."
     },
     {
+      id: "p309", day: "d3", time: "8:30a", name: "☕ Coffee roasters — Portland", emoji: "☕",
+      category: "coffee", slot: true, searchQuery: "coffee roaster Portland Maine",
+      why: "Portland is a <b>serious coffee-roasting town</b> — go beyond Tandem for beans + a cup.",
+      facts: ["Punches way above its weight for specialty coffee.", "Most roasters open ~7–8 AM; some close mid-afternoon."],
+      tip: "Anna hasn't done Speckled Ax — worth a wood-roasted cup even if it's not your favorite.",
+      options: [
+        { name: "Speckled Ax (wood-roasted)", address: "567 Congress St, Portland, ME 04101", rating: 4.6, price: "$", note: "Rare wood-fired roaster — Anna hasn't been" },
+        { name: "Coffee By Design (roastery)", address: "1 Diamond St, Portland, ME 04101", rating: 4.5, price: "$", note: "OG Portland roaster — East Bayside HQ & cupping room (India St location closed)" }
+      ]
+    },
+    {
       id: "p302", day: "d3", time: "10:30a", name: "Peaks Island ferry (Casco Bay Lines)", emoji: "⛴️",
       category: "activity", rating: 4.7, ratingSource: "Google ~", price: "$",
       address: "56 Commercial St, Portland, ME 04101", mapsQuery: "Casco Bay Lines ferry terminal Portland",
@@ -250,6 +261,15 @@ window.SUP_MAINE_TRIP = {
         { name: "Peter Ott's on the Water", address: "16 Bay View St, Camden, ME 04843", rating: 4.5, price: "$$", note: "Lobster rolls, harbor views" },
         { name: "Camden Deli", address: "37 Main St, Camden, ME 04843", rating: 4.4, price: "$", note: "Casual sandwiches over the harbor" }
       ]
+    },
+    {
+      id: "p405", day: "d4", time: "Detour", alt: true, name: "Nervous Nellie's Jams & Jellies (Deer Isle)", emoji: "🫙",
+      category: "shop", rating: 4.7, ratingSource: "Google ~", price: "$",
+      address: "598 Sunshine Rd, Deer Isle, ME 04627",
+      why: "<b>Whimsical jam farm + folk-art sculpture village</b> — gloriously weird Maine.",
+      todo: "Taste & buy small-batch jams/jellies, then wander Peter Beerits's free sculpture village + gallery in the woods.",
+      facts: ["Jam studio + sculpture village + gallery on Deer Isle.", "Seasonal: mid-May–Oct, Tue–Sat 11–5 (closed Sun & Mon).", "Down the Blue Hill / Deer Isle peninsula — a real detour off Route 1."],
+      tip: "⚠️ Closed Mondays — your Portland→Acadia drive is Mon Jun 22, so you'd need to reshuffle (e.g. a Tue/Wed run from Bar Harbor) to catch it. Confirm it's open in 2026."
     },
     {
       id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
@@ -432,7 +452,8 @@ window.SUP_MAINE_TRIP = {
       facts: ["Historic Jewish & artist quarter; Leonard Cohen's old turf.", "Dense with cafés, record stores, boutiques & murals.", "A 'no plan' block — follow your nose."],
       tip: "Run the venue prompt to add more Mile End cafés here.",
       options: [
-        { name: "Café Olimpico", address: "124 Rue Saint-Viateur O, Montréal, QC H2T 2L4", rating: 4.5, price: "$", note: "Landmark Italian espresso bar (since 1970)" }
+        { name: "Café Olimpico", address: "124 Rue Saint-Viateur O, Montréal, QC H2T 2L4", rating: 4.5, price: "$", note: "Landmark Italian espresso bar (since 1970)" },
+        { name: "Dispatch Coffee (roaster)", address: "4021 Boul. Saint-Laurent, Montréal, QC H2W 1Y5", rating: 4.5, price: "$", note: "Mile End roastery — single-origin, roasts on-site" }
       ]
     },
     {
@@ -535,13 +556,14 @@ window.SUP_MAINE_TRIP = {
 
     /* ---------------- DAY 10 — Hudson Valley → NYC ---------------- */
     {
-      id: "p1001", day: "d10", time: "9:30a", name: "Slow morning + coffee", emoji: "☕",
-      category: "coffee", rating: 4.6, ratingSource: "Google ~", price: "$$",
-      address: "Warren St, Hudson, NY 12534", mapsQuery: "best coffee Warren Street Hudson NY",
-      why: "<b>Ease into the last day</b> — good coffee, no rush.",
-      todo: "Lazy breakfast, one more wander down Warren St, then point the car south.",
-      facts: ["Warren St has several good cafés & bakeries.", "Sunday mornings are quiet and pretty.", "Stock up on a last antique find."],
-      tip: "Beat Sunday-evening NYC return traffic by leaving by early afternoon."
+      id: "p1001", day: "d10", time: "9:30a", name: "☕ Slow morning + coffee (Hudson)", emoji: "☕",
+      category: "coffee", slot: true, searchQuery: "coffee roaster Hudson NY Warren Street",
+      why: "<b>Ease into the last day</b> — good coffee on Warren St, no rush.",
+      facts: ["Warren St has the cafés & bakeries.", "Sunday mornings are quiet and pretty.", "~25 min from your Schodack Landing stay."],
+      tip: "Beat Sunday-evening NYC return traffic by leaving by early afternoon.",
+      options: [
+        { name: "Supernatural Coffee + Bakery", address: "527 Warren St, Hudson, NY 12534", rating: 4.6, price: "$", note: "Curated small-batch roasts + great pastries" }
+      ]
     },
     {
       id: "p1002", day: "d10", time: "1:00p", name: "Drive: Hudson Valley → NYC", emoji: "🏙️",
