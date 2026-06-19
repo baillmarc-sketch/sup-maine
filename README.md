@@ -44,11 +44,32 @@ copies). Photos are plain image URLs — swap in your own / Google Maps photo
 links anytime. **Stays** show the city only; paste your real Airbnb addresses
 into those cards so Copy → Waze works.
 
+## Live AI ("Ask Sup'Maine") 🤖
+
+The **Ask** tab is a live concierge that knows your itinerary, uses **web search**
+for real current places, and can drop new stops straight into your trip. It calls
+a tiny serverless proxy (`api/ask.js`) that holds your Claude API key — the key
+**never** lives in the browser.
+
+**Deploy the proxy (Vercel, ~3 min):**
+1. Import this repo at [vercel.com/new](https://vercel.com/new).
+2. Add an env var **`ANTHROPIC_API_KEY`** (from console.anthropic.com).
+   Optional: `SUPMAINE_MODEL` (default `claude-opus-4-8`; use `claude-sonnet-4-6`
+   for cheaper production), `SUPMAINE_WEB_SEARCH=off` to disable live search,
+   `SUPMAINE_TOKEN` to require a shared access token.
+3. Deploy. Your endpoint is `https://<your-app>.vercel.app/api/ask`.
+
+**Point the app at it:** open **Ask → ⚙️ Connection** and paste that URL
+(and the token if you set one). If you host the *whole app* on Vercel instead of
+GitHub Pages, leave the URL blank — it uses the same-origin `/api/ask`.
+
+The proxy adds CORS headers, so the GitHub Pages site can call your Vercel
+function cross-origin. Heads-up: an open endpoint can be hit by anyone who learns
+the URL — set `SUPMAINE_TOKEN` (and the matching token in the app) for personal use.
+
 ## Roadmap
 
-1. **Live Claude API** — replace the copy/paste Plan flow with one button. The
-   prompt in `prompts.js` already targets this exact schema. (Author with
-   **Opus**; **Sonnet** for cheaper production runs.)
+1. ~~**Live Claude API**~~ ✅ shipped — the **Ask** tab + `api/ask.js` proxy.
 2. **Google Places** — real photos, live ratings, and hours.
 3. **Saved trips / sharing**, map view, and per-day driving directions.
 
