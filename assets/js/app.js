@@ -522,7 +522,7 @@
       mapsBtn.href = mapsUrl(p); mapsBtn.target = "_blank"; mapsBtn.rel = "noopener";
       mapsBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
 
-      var wazeBtn = el("a", "act act--waze", '<span class="act__ico">🚦</span><span>Waze</span>');
+      var wazeBtn = el("a", "act act--waze", "<span>Open Waze</span>");
       wazeBtn.href = wazeUrl(p); wazeBtn.target = "_blank"; wazeBtn.rel = "noopener";
       wazeBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
 
