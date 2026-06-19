@@ -41,7 +41,7 @@ window.SUP_MAINE_TRIP = {
     pace: "One or two anchor activities a day, room to wander",
     diet: "No known restrictions — update me",
     budget: "Mid-range, happy to splurge on a great meal",
-    notes: "iPhone users, drive with Waze. Several dinners + Airbnbs are booked in Google Calendar (not connected here yet)."
+    notes: "iPhone users, drive with Waze. Lodging + most dinners are booked (pulled from Google Calendar). Two dinner nights are still open: Jun 23 (Acadia) and Jun 26 (Montréal)."
   },
 
   days: [
@@ -53,7 +53,7 @@ window.SUP_MAINE_TRIP = {
     { id: "d6",  date: "Wed Jun 24", label: "Acadia → Montréal",     subtitle: "Bangor coffee, Burlington lunch, cross into Québec" },
     { id: "d7",  date: "Thu Jun 25", label: "Mile End & the Plateau",subtitle: "Bagels, Jean-Talon Market, cafés and bookstores" },
     { id: "d8",  date: "Fri Jun 26", label: "Mount Royal & Old MTL", subtitle: "The mountain, the old city, Atwater Market, cocktails" },
-    { id: "d9",  date: "Sat Jun 27", label: "Montréal → Hudson Valley", subtitle: "Drop into Catskill — antiques, shops, slow town energy" },
+    { id: "d9",  date: "Sat Jun 27", label: "Montréal → Hudson Valley", subtitle: "Drive south, Hudson antiques on Warren St, dinner at Serre" },
     { id: "d10", date: "Sun Jun 28", label: "Hudson Valley → NYC",   subtitle: "Coffee, a slow morning, roll home" }
   ],
 
@@ -78,22 +78,22 @@ window.SUP_MAINE_TRIP = {
       tip: "Plenty of metered street parking around Market Square; bring a few quarters."
     },
     {
-      id: "p103", day: "d1", time: "Afternoon", name: "Check in — Portland Airbnb", emoji: "🛏️",
+      id: "p103", day: "d1", time: "3:00p", name: "✅ Stay — Morrill Mansion (Portland)", emoji: "🛏️",
       category: "stay", rating: "", ratingSource: "", price: "",
-      address: "Portland, ME  (paste your Airbnb address here)", mapsQuery: "Portland Maine",
-      why: "Home base for <b>3 nights</b> (Jun 19–22) in Maine's food-and-harbor capital.",
-      todo: "Drop bags, regroup, head out for dinner in the Old Port.",
-      facts: ["3 nights: Jun 19–22.", "Old Port is the walkable heart for food & drinks."],
-      tip: "Your exact address is in Google Calendar — paste it into this card's 'address' so Copy works."
+      address: "249 Vaughan St, Portland, ME 04102", mapsQuery: "249 Vaughan St Portland ME",
+      why: "Your <b>base for 3 nights</b> (Jun 19–22) in the West End, walk to the Old Port.",
+      todo: "Self check-in at 3 PM, drop bags, park, then head out for dinner at Ladyfish.",
+      facts: ["Confirmation HMPN9HPQ2M.", "Check-in Jun 19, 3 PM · Checkout Jun 22, 10 AM.", "Self check-in, on-site parking.", "Host phone +1 978-270-2354."],
+      tip: "Tap Copy address to drop it straight into Waze."
     },
     {
-      id: "p104", day: "d1", time: "8:00p", name: "Dinner — Portland (TBD / reservation?)", emoji: "🍽️",
-      category: "eat", rating: "", ratingSource: "", price: "$$$",
-      address: "Portland, ME", mapsQuery: "Portland Maine Old Port restaurants",
-      why: "First night — <b>ease in with a great Old Port meal</b>.",
-      todo: "If you booked one in Calendar, drop the name/address here. Otherwise see Eventide / Scales / Twelve below.",
-      facts: ["Old Port is dense with top tables — walkable from most Airbnbs.", "Friday night = reserve ahead."],
-      tip: "Check Calendar for a held reservation; if none, Scales takes bookings and is right on the water."
+      id: "p104", day: "d1", time: "7:00p", name: "✅ Dinner — Ladyfish", emoji: "🐟",
+      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$$",
+      address: "425 Fore St, Portland, ME 04101",
+      why: "<b>Joyful, unfussy Maine seafood</b> from the Mr. Tuna team — a perfect first night.",
+      todo: "Go for the scallops-in-a-blanket, tuna carpaccio, steamed buns with uni butter, and lobster frites.",
+      facts: ["Summer pop-up (May–Oct) in the old Bar Futo space.", "Chef Christine Lau, ex–Kimika (NYC, Beard semifinalist).", "Playful seafood with Chinese, Italian & Latin touches.", "Small plates — portions run dainty, prices are not."],
+      tip: "⚠️ Reservation is marked TENTATIVE (7 PM) — confirm it. Ends ~8:30 PM."
     },
 
     /* ---------------- DAY 2 — Southern Maine coast ---------------- */
@@ -143,13 +143,13 @@ window.SUP_MAINE_TRIP = {
       tip: "Start at the Perkins Cove end if you want easier parking."
     },
     {
-      id: "p206", day: "d2", time: "8:00p", name: "Dinner — Eventide Oyster Co.", emoji: "🦪",
-      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$$",
-      address: "86 Middle St, Portland, ME 04101",
-      why: "The <b>brown-butter lobster roll</b> that put modern Portland on the map.",
-      todo: "Lobster roll on a steamed bun + a half-dozen from the oyster ice cone.",
-      facts: ["James Beard Award-winning team.", "No reservations — go early or wait.", "Tiny, buzzy; bar seats are the move for two."],
-      tip: "Long line? Their oysters-to-go move fast. Swap with Scales/Twelve if you'd rather book."
+      id: "p206", day: "d2", time: "7:15p", name: "✅ Dinner — Twelve", emoji: "🍽️",
+      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$$$",
+      address: "115 Thames St, Portland, ME 04101",
+      why: "Portland's <b>fine-dining showpiece</b> — pedigree kitchen, restored maritime room.",
+      todo: "Settle in for the tasting menu (or à la carte). Trust the kitchen and the pairings.",
+      facts: ["Chefs Colin Wyatt (ex–Eleven Madison Park) & Daniel Gorlas (ex–Per Se).", "Housed in a historic brick maritime building, rebuilt brick by brick.", "Tasting menus ~$80 (3-course) / ~$100 (5-course) + à la carte.", "The splurge night of the trip."],
+      tip: "Reservation booked for 7:15 PM (ends ~9 PM). Alt if plans change: Eventide Oyster Co. (no-res, 86 Middle St)."
     },
 
     /* ---------------- DAY 3 — Portland flex day ---------------- */
@@ -199,13 +199,13 @@ window.SUP_MAINE_TRIP = {
       tip: "Good plan B for a rainy flex day too."
     },
     {
-      id: "p306", day: "d3", time: "8:00p", name: "Dinner — Scales or Twelve", emoji: "🍽️",
-      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$$$",
-      address: "68 Commercial St, Portland, ME 04101", mapsQuery: "Scales Restaurant Portland Maine",
-      why: "Two heavy-hitters: <b>Scales</b> (waterfront seafood) or <b>Twelve</b> (tasting-menu splurge).",
-      todo: "Scales = lively seafood on the wharf, takes reservations. Twelve = modern fine dining at 12 Thames St.",
-      facts: ["Scales: 68 Commercial St, on Maine Wharf.", "Twelve: 12 Thames St — book well ahead.", "Both Friday/Saturday nights need reservations."],
-      tip: "Want a special last night? Twelve. Want lively + flexible? Scales."
+      id: "p306", day: "d3", time: "7:00p", name: "✅ Dinner — Wayside Tavern", emoji: "🍷",
+      category: "eat", rating: 4.5, ratingSource: "Google ~", price: "$$$",
+      address: "747 Congress St, Portland, ME 04102",
+      why: "<b>Cozy European-inspired tavern</b> in the West End — comfort done right.",
+      todo: "Lean into the pastas, beer-battered cod cheeks, and the eggplant terrine with housemade mozzarella.",
+      facts: ["Mostly Italian & French; deep greens, gold and Victorian wood.", "Portland Press Herald called it 'a winner, with something for everyone.'", "Neighborhood feel, attentive service.", "A block from the Longfellow Hotel bar — good pre-dinner cocktail."],
+      tip: "⚠️ Reservation marked TENTATIVE (Sun 7 PM) — confirm it (hours vary by day). Alt: Scales, 68 Commercial St, on the water."
     },
 
     /* ---------------- DAY 4 — Portland → Acadia ---------------- */
@@ -228,13 +228,13 @@ window.SUP_MAINE_TRIP = {
       tip: "Short on time? Mt. Battie's auto road gives the big view in 20 minutes."
     },
     {
-      id: "p403", day: "d4", time: "Afternoon", name: "Check in — Bar Harbor Airbnb", emoji: "🛏️",
+      id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
       category: "stay", rating: "", ratingSource: "", price: "",
-      address: "Bar Harbor, ME 04609  (paste your Airbnb address here)", mapsQuery: "Bar Harbor Maine",
-      why: "Base for <b>2 nights</b> (Jun 22–24) at the doorstep of Acadia.",
-      todo: "Check in, regroup, then head up Cadillac for sunset.",
-      facts: ["2 nights: Jun 22–24.", "Bar Harbor town is walkable for dinner & ice cream."],
-      tip: "Paste the exact Airbnb address from Calendar so Copy → Waze works."
+      address: "12 Roberts Ave, Bar Harbor, ME 04609",
+      why: "The <b>Look Nook Room</b> — your Acadia base for 2 nights (Jun 22–24), walk to the waterfront.",
+      todo: "Check in, drop bags, then head up Cadillac for sunset.",
+      facts: ["Confirmation HM3RM32X8D.", "Stay: Jun 22–24 · Checkout Jun 24, 10 AM.", "Host phone +1 207-266-8310.", "A few blocks from Agamont Park & the town pier."],
+      tip: "Tap Copy address to drop it into Waze."
     },
     {
       id: "p404", day: "d4", time: "Sunset", name: "Cadillac Mountain sunset", emoji: "🌄",
@@ -284,13 +284,13 @@ window.SUP_MAINE_TRIP = {
       tip: "Time the Bar Island sandbar with low tide — it vanishes as the tide comes in."
     },
     {
-      id: "p505", day: "d5", time: "7:30p", name: "Lobster dinner — Bar Harbor", emoji: "🦞",
+      id: "p505", day: "d5", time: "7:30p", name: "🍽️ Dinner — Bar Harbor (open night)", emoji: "🦞",
       category: "eat", rating: 4.5, ratingSource: "Google ~", price: "$$$",
-      address: "Bar Harbor, ME 04609", mapsQuery: "lobster pound Bar Harbor Maine",
-      why: "Last Maine night — <b>go full lobster</b>.",
-      todo: "Whole steamed lobster + corn + a local ale. Side Street Cafe (lobster mac) is a reliable local pick.",
-      facts: ["Side Street Cafe: 49 Rodick St — generous, casual, off the main drag.", "Lobster pounds nearby for the messy-bib version.", "Dinner gets busy — put your name in early."],
-      tip: "Want the bib-and-bucket experience? Ask a local for the nearest no-frills lobster pound."
+      address: "49 Rodick St, Bar Harbor, ME 04609", mapsQuery: "Side Street Cafe Bar Harbor Maine",
+      why: "Last Maine night and <b>no reservation yet</b> — go full lobster.",
+      todo: "Whole steamed lobster + corn + a local ale. Side Street Cafe (lobster mac) is a reliable walk-in pick.",
+      facts: ["Side Street Cafe: 49 Rodick St — generous, casual, off the main drag.", "Lobster pounds nearby for the messy-bib version.", "No booking on the calendar — put your name in early."],
+      tip: "One of two open dinner nights — want me to lock a pick once you've run the recs prompt?"
     },
 
     /* ---------------- DAY 6 — Acadia → Montréal ---------------- */
@@ -340,13 +340,22 @@ window.SUP_MAINE_TRIP = {
       tip: "Whoever's driving stays dry — Canada's limits are strict and the border is next."
     },
     {
-      id: "p606", day: "d6", time: "Evening", name: "Check in — Montréal Airbnb", emoji: "🛏️",
+      id: "p606", day: "d6", time: "5:00p", name: "✅ Stay — Elegant 1BR (Montréal)", emoji: "🛏️",
       category: "stay", rating: "", ratingSource: "", price: "",
-      address: "Montréal, QC  (paste your Airbnb address here)", mapsQuery: "Montreal Quebec",
-      why: "Base for <b>3 nights</b> (Jun 24–27) in the best food city of the trip.",
-      todo: "Check in, then a low-key first-night dinner nearby.",
-      facts: ["3 nights: Jun 24–27.", "Mile End / Plateau are the dreamy walkable neighborhoods."],
-      tip: "Paste the exact Airbnb address from Calendar; street parking rules in MTL are strict — check signs."
+      address: "366 Rue Mayor, Montréal, QC H3A 1N8", mapsQuery: "366 Rue Mayor Montreal",
+      why: "Your <b>base for 3 nights</b> (Jun 24–27), downtown and walkable to restaurants.",
+      todo: "Check in at 5 PM, then head to Verdun for the Beba reservation.",
+      facts: ["Confirmation HM3RH8M3MS.", "Check-in Jun 24, 5 PM · Checkout Jun 27, 11 AM.", "Walk to restaurants; central near McGill / Quartier des Spectacles.", "Host phone +1 514-600-2644."],
+      tip: "Montréal street-parking signs are strict (and bilingual) — read them twice."
+    },
+    {
+      id: "p607", day: "d6", time: "8:00p", name: "✅ Dinner — Beba", emoji: "🇦🇷",
+      category: "eat", rating: 4.7, ratingSource: "Michelin ~", price: "$$$",
+      address: "3900 Rue Éthel, Verdun, QC H4G 1S4",
+      why: "Intimate <b>Argentine-Jewish</b> cooking in Verdun — a true Montréal favorite.",
+      todo: "Share across the menu and DON'T skip the signature flan. Lean on the wine list.",
+      facts: ["By brothers Ari & Pablo Schor (Argentine-Jewish heritage).", "Michelin Guide 'good cooking' nod.", "Tiny 28-seat room with an open kitchen.", "Seasonal, shareable plates — inventive without pretension."],
+      tip: "⚠️ Reservation marked TENTATIVE (8 PM, ends ~9:30) — confirm it. ~15 min from your Airbnb."
     },
 
     /* ---------------- DAY 7 — Mile End & Plateau ---------------- */
@@ -378,13 +387,13 @@ window.SUP_MAINE_TRIP = {
       tip: "Come hungry and graze rather than sit-down — it's a tasting crawl."
     },
     {
-      id: "p704", day: "d7", time: "8:00p", name: "Dinner — Vin Mon Lapin", emoji: "🐰",
-      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$$ + 🔖",
-      address: "150 Rue Saint-Zotique E, Montréal, QC H2S 1K7",
-      why: "From the Joe Beef family — <b>inventive small plates + natural wine</b>, a MTL darling.",
-      todo: "Sit at the counter, order across the menu, trust the wine list.",
-      facts: ["🔖 Reservations essential — books out far ahead.", "Small plates, natural-wine focus.", "Consistently named among Canada's best."],
-      tip: "No table? Beba (Verdun) and Damas (Syrian, Outremont) are excellent backups — book them too."
+      id: "p704", day: "d7", time: "7:30p", name: "✅ Dinner — Limbo", emoji: "🍷",
+      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$$",
+      address: "45 Av. Mozart O, Montréal, QC H2S 1C1",
+      why: "Little Italy's <b>buzzy new natural-wine room</b> — French-Italian-British, veg-forward.",
+      todo: "Consider the chef's tasting (~CAD$95); let the natural-wine list lead. Organic veg are the stars.",
+      facts: ["Chef Harrison Shewchuk (with alums of Pichai & Pumpui).", "Wildly good 'zero-zero' natural wine list (curated by Henri of Pichai).", "Reviewers compare it to Michelin-starred rooms.", "Seasonal slushies (rosé-rhubarb) if it's warm."],
+      tip: "Reservation booked 7:30 PM (ends ~9). Alt nearby: Vin Mon Lapin (150 Saint-Zotique E)."
     },
 
     /* ---------------- DAY 8 — Mount Royal & Old Montréal ---------------- */
@@ -416,42 +425,51 @@ window.SUP_MAINE_TRIP = {
       tip: "Book Notre-Dame tickets online to skip the line; evening light on the cobbles is magic."
     },
     {
-      id: "p804", day: "d8", time: "9:00p", name: "Cocktail bars — last MTL night", emoji: "🍸",
+      id: "p804", day: "d8", time: "8:00p", name: "🍽️ Dinner + cocktails — last MTL night (open)", emoji: "🍸",
       category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$$",
-      address: "Le Plateau-Mont-Royal, Montréal, QC", mapsQuery: "best cocktail bars Plateau Montreal",
-      why: "Montréal has a <b>deep cocktail scene</b> — go out for the last night in Québec.",
-      todo: "Dinner (Joe Beef on Notre-Dame O. if you snagged it 🔖), then cocktails around the Plateau/Mile End.",
-      facts: ["Joe Beef: 2491 Rue Notre-Dame O — legendary, books weeks ahead.", "Plateau & Mile End are dense with bars.", "Last call is later than the US — pace yourselves."],
-      tip: "Joe Beef is a reservation war — if you want it, set an alarm for the day bookings open."
+      address: "2491 Rue Notre-Dame O, Montréal, QC H3J 1N6", mapsQuery: "Joe Beef Montreal",
+      why: "Your <b>second open dinner night</b> — make the last Québec night count.",
+      todo: "Big swing: Joe Beef (legendary, 2491 Notre-Dame O). Then cocktails around the Plateau/Mile End.",
+      facts: ["No reservation on the calendar yet for tonight.", "Joe Beef books weeks ahead — set an alarm when bookings open.", "Plateau & Mile End are dense with bars; last call runs late."],
+      tip: "Other open-night ideas: Vin Mon Lapin, Mon Lapin, or Damas (Syrian). Want me to lock one in?"
     },
 
     /* ---------------- DAY 9 — Montréal → Hudson Valley ---------------- */
     {
-      id: "p901", day: "d9", time: "Morning", name: "Drive: Montréal → Catskill", emoji: "🚗",
+      id: "p901", day: "d9", time: "Morning", name: "Drive: Montréal → Hudson Valley", emoji: "🚗",
       category: "drive", rating: "", ratingSource: "", price: "",
-      address: "Catskill, NY 12414", mapsQuery: "Catskill NY",
+      address: "612 River Rd, Schodack Landing, NY 12156", mapsQuery: "Schodack Landing NY",
       why: "<b>Back into the US</b> and down to the Hudson Valley — ~5–5.5 hrs.",
-      todo: "Cross the border (passports again!), drive south, arrive Catskill by afternoon.",
-      facts: ["~5–5.5 hrs.", "🛂 Border crossing back into the US.", "I-87 (the Northway/Thruway) most of the way — tolls."],
+      todo: "Cross the border (passports again!), drive south to your Schodack Landing homestead.",
+      facts: ["~5–5.5 hrs.", "🛂 Border crossing back into the US.", "I-87 (the Northway/Thruway) most of the way — tolls.", "Schodack Landing is ~25 min north of Hudson."],
       tip: "Declare any cheese/wine/maple you're bringing back; have passports ready up top."
     },
     {
-      id: "p902", day: "d9", time: "Afternoon", name: "Explore Catskill + antiques", emoji: "🪑",
-      category: "shop", rating: 4.5, ratingSource: "Google ~", price: "$$",
-      address: "Main St, Catskill, NY 12414", mapsQuery: "Main Street Catskill NY antiques",
-      why: "Sleepy <b>Hudson-River town</b> reviving with antiques, makers and galleries.",
-      todo: "Browse Main St antiques and shops; if you've energy, Hudson (across the river) has the famous Warren St scene.",
-      facts: ["Thomas Cole's home (Hudson River School painter) is here.", "Hudson, NY (15 min) = Warren St antiques mecca.", "Kingston & Millerton are nearby day-trip options."],
-      tip: "Hudson's Warren Street is the antiquing big-leagues if Catskill feels quiet."
+      id: "p902", day: "d9", time: "Afternoon", name: "Hudson — Warren St antiques", emoji: "🪑",
+      category: "shop", rating: 4.6, ratingSource: "Google ~", price: "$$",
+      address: "Warren St, Hudson, NY 12534", mapsQuery: "Warren Street Hudson NY antiques",
+      why: "The Hudson Valley's <b>antiquing big-leagues</b> — a mile of shops, galleries and makers.",
+      todo: "Stroll Warren St's antiques and design shops before dinner at Serre (also on Warren).",
+      facts: ["Warren St runs the length of downtown Hudson.", "Catskill (across the river) is a quieter alt.", "~25 min south of your Schodack Landing stay."],
+      tip: "Park once on Warren St and do it on foot — dinner's right here too."
     },
     {
-      id: "p903", day: "d9", time: "Evening", name: "Check in — Hudson Valley (Rivertown Lodge?)", emoji: "🛏️",
-      category: "stay", rating: 4.6, ratingSource: "Google ~", price: "$$$",
-      address: "101 Warren St, Hudson, NY 12534", mapsQuery: "Rivertown Lodge Hudson NY",
-      why: "<b>1 night</b> (Jun 27–28). Rivertown Lodge & The Maker are the stylish Hudson picks. 🔖 confirm.",
-      todo: "Check in, dinner in town, slow last evening of the trip.",
-      facts: ["Rivertown Lodge: 101 Warren St, Hudson.", "The Maker Hotel: 302 Warren St, Hudson — gorgeous bar.", "🔖 'Hudson Valley hotel' was on your to-book list."],
-      tip: "The Maker's bar is worth a drink even if you stay elsewhere; paste your actual booking address here."
+      id: "p903", day: "d9", time: "5:00p", name: "✅ Stay — Schodack Landing Homestead", emoji: "🛏️",
+      category: "stay", rating: "", ratingSource: "", price: "",
+      address: "612 River Rd, Schodack Landing, NY 12156",
+      why: "Your <b>final night</b> (Jun 27–28) — a historic homestead on the river, ~25 min north of Hudson.",
+      todo: "Check in at 5 PM, then drive down to Hudson for dinner at Serre.",
+      facts: ["Confirmation HMBAAYYX3J.", "Check-in Jun 27, 5 PM · Checkout Jun 28, 11 AM.", "~25 min from Hudson / Warren St.", "Host phone +1 234-241-2179."],
+      tip: "Tap Copy address for Waze; it's a rural road, so download offline maps just in case."
+    },
+    {
+      id: "p904", day: "d9", time: "7:00p", name: "✅ Dinner — Serre (at The Maker)", emoji: "🪴",
+      category: "eat", rating: 4.5, ratingSource: "Google ~", price: "$$$$",
+      address: "306 Warren St, Hudson, NY 12534",
+      why: "<b>French cuisine through a modern lens</b> in The Maker Hotel's glass-roofed greenhouse room.",
+      todo: "Dinner in the conservatory; look for the lamb crepinette and raw red prawns. A grand last-night meal.",
+      facts: ["'Serre' = greenhouse in French — the glass-roofed former Conservatory at The Maker.", "Executive chef Jonas Offenbach; rebranded as Serre in spring 2026.", "Inside The Maker Hotel — gorgeous bar for a nightcap.", "~25 min south of your Schodack Landing stay."],
+      tip: "Reservation booked 7:00 PM (ends ~8:30). Have a drink at The Maker's bar after."
     },
 
     /* ---------------- DAY 10 — Hudson Valley → NYC ---------------- */
@@ -465,12 +483,12 @@ window.SUP_MAINE_TRIP = {
       tip: "Beat Sunday-evening NYC return traffic by leaving by early afternoon."
     },
     {
-      id: "p1002", day: "d10", time: "1:00p", name: "Drive: Catskill → NYC", emoji: "🏙️",
+      id: "p1002", day: "d10", time: "1:00p", name: "Drive: Hudson Valley → NYC", emoji: "🏙️",
       category: "drive", rating: "", ratingSource: "", price: "",
       address: "New York, NY", mapsQuery: "New York City",
-      why: "The <b>final stretch</b> home — ~2.5–3 hrs down the Thruway.",
+      why: "The <b>final stretch</b> home — ~2.5–3 hrs down the Thruway from Schodack Landing.",
       todo: "Roll back to the city. Trip complete. 🦞",
-      facts: ["~2.5–3 hrs.", "Sunday-evening backups near the city — leave earlier if you can.", "Return the rental with a full tank if applicable."],
+      facts: ["~2.5–3 hrs from Schodack Landing.", "Sunday-evening backups near the city — leave earlier if you can.", "Return the rental with a full tank if applicable."],
       tip: "That's a wrap — Sup'Maine signing off. Add anything you loved for next time."
     }
   ]
