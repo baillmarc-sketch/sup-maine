@@ -138,7 +138,7 @@
   function saveMap(k, m) { try { localStorage.setItem(k, JSON.stringify(m)); } catch (e) {} }
   function loadList(k) { try { return JSON.parse(localStorage.getItem(k)) || []; } catch (e) { return []; } }
   function saveList(k, a) { try { localStorage.setItem(k, JSON.stringify(a)); } catch (e) {} }
-  var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v1", PACK_KEY = "supmaine.packing.v1";
+  var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v2", PACK_KEY = "supmaine.packing.v1";
   var checks = loadMap(CHECK_KEY), notes = loadMap(NOTE_KEY), wxCache = loadMap(WX_KEY), packing = loadList(PACK_KEY);
 
   // ---- housing coverage: which trip nights have no stay ----
@@ -177,7 +177,11 @@
       var c = wxCache[wxKey(d.lat, d.lon)];
       var w = c && c.days && c.days[d.iso];
       var span = document.querySelector('.day[data-day="' + d.id + '"] .day__wx');
-      if (span && w) { span.textContent = wxEmoji(w.code) + " " + w.max + "°/" + w.min + "°"; span.style.display = ""; }
+      if (span && w) {
+        span.textContent = wxEmoji(w.code) + " " + w.max + "°/" + w.min + "°" +
+          (w.pop != null ? " · 💧" + w.pop + "%" : "");
+        span.style.display = "";
+      }
     });
   }
   function fetchWeather() {
@@ -193,13 +197,18 @@
       if (cached && (Date.now() - cached.at < 6 * 3600 * 1000)) return; // fresh enough
       var g = groups[k], dates = g.dates.sort();
       var url = "https://api.open-meteo.com/v1/forecast?latitude=" + g.lat + "&longitude=" + g.lon +
-        "&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit" +
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit" +
         "&timezone=auto&start_date=" + dates[0] + "&end_date=" + dates[dates.length - 1];
       fetch(url).then(function (r) { return r.json(); }).then(function (j) {
         if (!j || !j.daily || !j.daily.time) return;
-        var days = {};
+        var days = {}, pp = j.daily.precipitation_probability_max;
         j.daily.time.forEach(function (t, i) {
-          days[t] = { code: j.daily.weather_code[i], max: Math.round(j.daily.temperature_2m_max[i]), min: Math.round(j.daily.temperature_2m_min[i]) };
+          days[t] = {
+            code: j.daily.weather_code[i],
+            max: Math.round(j.daily.temperature_2m_max[i]),
+            min: Math.round(j.daily.temperature_2m_min[i]),
+            pop: pp ? pp[i] : null
+          };
         });
         wxCache[k] = { at: Date.now(), days: days };
         saveMap(WX_KEY, wxCache);
