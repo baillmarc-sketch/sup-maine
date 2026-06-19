@@ -1,6 +1,8 @@
 /* Sup'Maine service worker — offline pocket guide.
-   Cache-first for the app shell so it works without signal on the road. */
-var CACHE = "supmaine-v1";
+   Strategy: NETWORK-FIRST for our own app files (so updates show up as soon as
+   you're online), falling back to cache when there's no signal (on the road).
+   Cross-origin assets (photos) are cache-first to save data. */
+var CACHE = "supmaine-v3";
 var SHELL = [
   "./",
   "./index.html",
@@ -13,29 +15,52 @@ var SHELL = [
 ];
 
 self.addEventListener("install", function (e) {
-  e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); }));
+  e.waitUntil(
+    caches.open(CACHE).then(function (c) { return c.addAll(SHELL); })
+      .then(function () { return self.skipWaiting(); })
+  );
 });
 
 self.addEventListener("activate", function (e) {
   e.waitUntil(
     caches.keys().then(function (keys) {
-      return Promise.all(keys.filter(function (k) { return k !== CACHE; }).map(function (k) { return caches.delete(k); }));
+      return Promise.all(keys.filter(function (k) { return k !== CACHE; })
+        .map(function (k) { return caches.delete(k); }));
     }).then(function () { return self.clients.claim(); })
   );
 });
 
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
-  e.respondWith(
-    caches.match(e.request).then(function (hit) {
-      return hit || fetch(e.request).then(function (res) {
-        // cache same-origin app files as we go
-        if (res && res.status === 200 && e.request.url.indexOf(self.location.origin) === 0) {
+  var sameOrigin = e.request.url.indexOf(self.location.origin) === 0;
+
+  if (sameOrigin) {
+    // network-first: always try fresh, fall back to cache offline
+    e.respondWith(
+      fetch(e.request).then(function (res) {
+        if (res && res.status === 200) {
           var copy = res.clone();
           caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
         }
         return res;
-      }).catch(function () { return caches.match("./index.html"); });
-    })
-  );
+      }).catch(function () {
+        return caches.match(e.request).then(function (hit) {
+          return hit || caches.match("./index.html");
+        });
+      })
+    );
+  } else {
+    // cross-origin (photos etc.): cache-first to save data
+    e.respondWith(
+      caches.match(e.request).then(function (hit) {
+        return hit || fetch(e.request).then(function (res) {
+          if (res && res.status === 200) {
+            var copy = res.clone();
+            caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
+          }
+          return res;
+        }).catch(function () { return hit; });
+      })
+    );
+  }
 });
