@@ -88,7 +88,7 @@ window.SUP_MAINE_TRIP = {
     },
     {
       id: "p104", day: "d1", time: "7:00p", name: "✅ Dinner — Ladyfish", emoji: "🐟",
-      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$$",
+      category: "eat", needsConfirm: true, rating: 4.6, ratingSource: "Google ~", price: "$$$",
       address: "425 Fore St, Portland, ME 04101",
       why: "<b>Joyful, unfussy Maine seafood</b> from the Mr. Tuna team — a perfect first night.",
       todo: "Go for the scallops-in-a-blanket, tuna carpaccio, steamed buns with uni butter, and lobster frites.",
@@ -182,7 +182,7 @@ window.SUP_MAINE_TRIP = {
       photo: "https://images.unsplash.com/photo-1502209524164-acea936639a2?auto=format&fit=crop&w=1200&q=60"
     },
     {
-      id: "p307", day: "d3", time: "1:00p", name: "Lucky Catch — Lobster Boat Cruise", emoji: "🦞",
+      id: "p307", day: "d3", time: "1:00p", alt: true, name: "Lucky Catch — Lobster Boat Cruise", emoji: "🦞",
       category: "activity", rating: 4.6, ratingSource: "Yelp ~261", price: "$60/adult",
       address: "Long Wharf, 170 Commercial St, Portland, ME 04101", mapsQuery: "Lucky Catch Cruises Long Wharf Portland",
       why: "<b>Hands-on working lobster boat</b> — haul the traps, then eat your catch.",
@@ -191,7 +191,7 @@ window.SUP_MAINE_TRIP = {
       tip: "Sit near the guide — engine noise can drown the narration."
     },
     {
-      id: "p308", day: "d3", time: "Evening", name: "Casco Bay Lines — Sunset Run", emoji: "⛴️",
+      id: "p308", day: "d3", time: "Evening", alt: true, name: "Casco Bay Lines — Sunset Run", emoji: "⛴️",
       category: "activity", rating: 4.5, ratingSource: "Google ~", price: "~$25–30",
       address: "Maine State Pier, 56 Commercial St, Portland, ME 04101", mapsQuery: "Casco Bay Lines Maine State Pier Portland",
       why: "The <b>cheapest, longest, most relaxed</b> time on the water — low-key twilight ferry.",
@@ -219,7 +219,7 @@ window.SUP_MAINE_TRIP = {
     },
     {
       id: "p306", day: "d3", time: "7:00p", name: "✅ Dinner — Wayside Tavern", emoji: "🍷",
-      category: "eat", rating: 4.5, ratingSource: "Google ~", price: "$$$",
+      category: "eat", needsConfirm: true, rating: 4.5, ratingSource: "Google ~", price: "$$$",
       address: "747 Congress St, Portland, ME 04102",
       why: "<b>Cozy European-inspired tavern</b> in the West End — comfort done right.",
       todo: "Lean into the pastas, beer-battered cod cheeks, and the eggplant terrine with housemade mozzarella.",
@@ -331,7 +331,7 @@ window.SUP_MAINE_TRIP = {
       tip: "Board early (45 min before) for a rail seat; breezy evenings are far better. Sells out — book ahead. Pairs with your open dinner night (eat after)."
     },
     {
-      id: "p509", day: "d5", time: "4:00p", name: "Acadian Boat Tours (nature/lighthouse)", emoji: "🦭",
+      id: "p509", day: "d5", time: "4:00p", alt: true, name: "Acadian Boat Tours (nature/lighthouse)", emoji: "🦭",
       category: "activity", rating: 4.5, ratingSource: "Tripadvisor ~", price: "$42–66",
       address: "Atlantic Oceanside Hotel, 119 Eden St, Bar Harbor, ME 04609", mapsQuery: "Acadian Boat Tours Atlantic Oceanside Bar Harbor",
       why: "<b>Flexible, well-narrated nature cruise</b> — the fun substitute now that Diver Ed is closed.",
@@ -397,7 +397,7 @@ window.SUP_MAINE_TRIP = {
     },
     {
       id: "p607", day: "d6", time: "8:00p", name: "✅ Dinner — Beba", emoji: "🇦🇷",
-      category: "eat", rating: 4.7, ratingSource: "Michelin ~", price: "$$$",
+      category: "eat", needsConfirm: true, rating: 4.7, ratingSource: "Michelin ~", price: "$$$",
       address: "3900 Rue Éthel, Verdun, QC H4G 1S4",
       why: "Intimate <b>Argentine-Jewish</b> cooking in Verdun — a true Montréal favorite.",
       todo: "Share across the menu and DON'T skip the signature flan. Lean on the wine list.",
@@ -435,7 +435,7 @@ window.SUP_MAINE_TRIP = {
     },
     {
       id: "p704", day: "d7", time: "7:30p", name: "✅ Dinner — Limbo", emoji: "🍷",
-      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$$",
+      category: "eat", needsConfirm: true, rating: 4.7, ratingSource: "Google ~", price: "$$$",
       address: "45 Av. Mozart O, Montréal, QC H2S 1C1",
       why: "Little Italy's <b>buzzy new natural-wine room</b> — French-Italian-British, veg-forward.",
       todo: "Consider the chef's tasting (~CAD$95); let the natural-wine list lead. Organic veg are the stars.",

@@ -1,5 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <rect width="512" height="512" rx="112" fill="#faf4e8"/>
-  <circle cx="256" cy="256" r="190" fill="#d6553b"/>
-  <text x="256" y="330" font-size="220" text-anchor="middle" font-family="-apple-system, Segoe UI, Roboto, sans-serif">🦞</text>
+  <!-- sky glow -->
+  <circle cx="256" cy="196" r="150" fill="#f5e7cf"/>
+  <!-- light beams -->
+  <g fill="#e0a83d" opacity="0.55">
+    <path d="M256 150 L150 96 L150 132 Z"/>
+    <path d="M256 150 L362 96 L362 132 Z"/>
+  </g>
+  <!-- lighthouse -->
+  <g>
+    <!-- lantern light -->
+    <circle cx="256" cy="150" r="20" fill="#e0a83d"/>
+    <!-- lantern room -->
+    <rect x="236" y="150" width="40" height="26" fill="#2b4a6f"/>
+    <!-- tower -->
+    <path d="M226 176 L286 176 L300 360 L212 360 Z" fill="#fffdf8" stroke="#2c2622" stroke-width="6"/>
+    <!-- red stripes -->
+    <path d="M229 206 L283 206 L286 244 L226 244 Z" fill="#d6553b"/>
+    <path d="M292 300 L220 300 L223 262 L289 262 Z" fill="#d6553b"/>
+    <!-- door -->
+    <rect x="242" y="318" width="28" height="42" rx="14" fill="#2f6b4f"/>
+  </g>
+  <!-- rocky base -->
+  <path d="M150 372 Q200 348 256 360 Q312 348 362 372 L362 392 L150 392 Z" fill="#6f655b"/>
+  <!-- waves -->
+  <g fill="none" stroke="#2f6b4f" stroke-width="12" stroke-linecap="round" opacity="0.9">
+    <path d="M120 408 q28 -22 56 0 t56 0 t56 0 t56 0"/>
+    <path d="M120 444 q28 -22 56 0 t56 0 t56 0 t56 0" stroke="#2b4a6f"/>
+  </g>
 </svg>

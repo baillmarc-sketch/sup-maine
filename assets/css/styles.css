@@ -273,7 +273,49 @@ a { color: var(--navy); }
   box-shadow: var(--shadow-sm);
 }
 .banner--warn { background: #fdeede; border: 1px solid #f2c98f; color: #7a4a12; }
+.banner--now { background: #eaf2ec; border: 1px solid #bcd8c4; color: #245539; cursor: pointer; }
+.banner--confirm { background: #fff4d8; border: 1px solid #ecd28a; color: #6f5410; }
 .banner__sub { display: block; margin-top: 3px; font-size: 12.5px; opacity: .85; }
+.tripstats { font-size: 12.5px; color: var(--ink-soft); font-weight: 700; margin: -6px 2px 14px; }
+
+/* per-day map + alternatives */
+.day__map {
+  display: inline-block; margin: 2px 2px 12px; font-size: 12.5px; font-weight: 700;
+  color: var(--navy); background: #eaeef4; border: 1px solid #d6e0ec;
+  padding: 6px 11px; border-radius: 999px; text-decoration: none;
+}
+.day__map:active { transform: scale(.97); }
+.day__altbtn {
+  display: block; width: 100%; margin-top: 2px; padding: 9px; border-radius: 11px;
+  font-size: 13px; font-weight: 700; color: var(--ink-soft);
+  background: var(--paper-2); border: 1px dashed var(--line);
+}
+.day__alts { margin-top: 10px; }
+.day.is-collapsed .day__map,
+.day.is-collapsed .day__altbtn,
+.day.is-collapsed .day__alts { display: none; }
+
+/* packing list */
+.packlist { margin: 8px 0; }
+.packrow { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.packrow__box {
+  flex: none; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--line);
+  background: var(--card); color: #fff; font-size: 13px; font-weight: 800; display: grid; place-items: center;
+}
+.packrow__box.is-checked { background: var(--pine); border-color: var(--pine); }
+.packrow__txt { flex: 1; font-size: 14.5px; }
+.packrow.is-done .packrow__txt { text-decoration: line-through; color: var(--ink-soft); }
+.packrow__del { flex: none; color: var(--ink-soft); font-size: 14px; padding: 4px 6px; }
+.packadd { display: flex; gap: 8px; margin-top: 10px; }
+.packadd__input {
+  flex: 1; padding: 10px 12px; font-size: 15px; border: 1px solid var(--line);
+  border-radius: 11px; background: var(--paper); outline: none;
+}
+.packadd__input:focus { border-color: var(--pine); }
+.packadd__btn { flex: none; background: var(--pine); color: #fff; font-weight: 700; font-size: 14px; padding: 0 16px; border-radius: 11px; }
+
+/* footer */
+.appfoot { text-align: center; color: var(--ink-soft); font-size: 12px; padding: 18px 0 4px; opacity: .8; }
 
 /* ---------------- Day weather + today focus ---------------- */
 .day__head { flex-wrap: wrap; }
