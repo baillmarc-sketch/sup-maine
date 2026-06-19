@@ -303,6 +303,8 @@
       '<div class="field"><label>Home base / region</label><input id="pf-base" type="text" placeholder="Portland, exploring north"></div>' +
       '<div class="field"><label>Anything specific to include? (loose notes are fine)</label>' +
         '<textarea id="pf-notes" rows="3" placeholder="want a lobster shack, one hike, no early mornings, celebrating a birthday…"></textarea></div>' +
+      '<div class="field"><label>Already booked? (stays, dinners, tours)</label>' +
+        '<textarea id="pf-booked" rows="4" placeholder="Paste reservations with dates, cities & locations — plus how you\'re getting there. e.g.\nJun 19–22 Airbnb, 249 Vaughan St, Portland\nJun 20 7:15p dinner — Twelve, Portland\nDriving the whole loop (Waze)"></textarea></div>' +
       '<div class="field"><label>Your traveler profile (from the Profile tab)</label>' +
         '<textarea id="pf-profile" rows="5" placeholder="Paste the profile Claude/ChatGPT made for you…"></textarea></div>';
     var buildBtn = el("button", "btn-primary", "🧱 Build my prompt");
@@ -338,7 +340,7 @@
       var prompt = buildTripPrompt({
         start: $("#pf-start").value, end: $("#pf-end").value,
         base: $("#pf-base").value, notes: $("#pf-notes").value,
-        profile: $("#pf-profile").value
+        booked: $("#pf-booked").value, profile: $("#pf-profile").value
       });
       $("#plan-prompt").textContent = prompt;
       $("#plan-out").classList.remove("is-hidden");
