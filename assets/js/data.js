@@ -263,15 +263,6 @@ window.SUP_MAINE_TRIP = {
       ]
     },
     {
-      id: "p405", day: "d4", time: "Detour", alt: true, name: "Nervous Nellie's Jams & Jellies (Deer Isle)", emoji: "🫙",
-      category: "shop", rating: 4.7, ratingSource: "Google ~", price: "$",
-      address: "598 Sunshine Rd, Deer Isle, ME 04627",
-      why: "<b>Whimsical jam farm + folk-art sculpture village</b> — gloriously weird Maine.",
-      todo: "Taste & buy small-batch jams/jellies, then wander Peter Beerits's free sculpture village + gallery in the woods.",
-      facts: ["Jam studio + sculpture village + gallery on Deer Isle.", "Seasonal: mid-May–Oct, Tue–Sat 11–5 (closed Sun & Mon).", "Down the Blue Hill / Deer Isle peninsula — a real detour off Route 1."],
-      tip: "⚠️ Closed Mondays — your Portland→Acadia drive is Mon Jun 22, so you'd need to reshuffle (e.g. a Tue/Wed run from Bar Harbor) to catch it. Confirm it's open in 2026."
-    },
-    {
       id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
       category: "stay", checkIn: "2026-06-22", checkOut: "2026-06-24", rating: "", ratingSource: "", price: "",
       address: "12 Roberts Ave, Bar Harbor, ME 04609",
@@ -366,6 +357,69 @@ window.SUP_MAINE_TRIP = {
       todo: "2-hr nature/sunset cruise (or 3.5-hr puffin/lighthouse trip): Egg Rock Light, Frenchman Bay, seals, eagles, porpoises.",
       facts: ["⚠️ Diver Ed's Dive-In Theater is CLOSED for 2026 (returns 2027) — don't book it.", "Heated cabin + snack bar; free on-site parking.", "Nature $42–51 · Puffin/Lighthouse $66.", "Top-10% Travelers' Choice."],
       tip: "If the evening wind is under ~8 kn, this sunset cruise beats Margaret Todd (which may not actually sail). Lower deck if motion-sensitive."
+    },
+    {
+      id: "p510", day: "d5", time: "8:00a", alt: true, name: "🍓 Blue Hill / Deer Isle jam-loop detour", emoji: "🫙",
+      category: "shop", rating: "", ratingSource: "", price: "",
+      address: "598 Sunshine Rd, Deer Isle, ME 04627", mapsQuery: "Nervous Nellies Deer Isle Maine",
+      why: "<b>The peninsula jam-and-coffee run</b> — trade part of today's Acadia hiking for Deer Isle.",
+      todo: "A loose morning loop: Caterpillar Hill view → 44 North coffee → Nervous Nellie's jams → Stonington harbor, back by mid-afternoon for Ocean Path + Cadillac sunset.",
+      facts: ["~1.5 hrs each way from Bar Harbor (down Rte 15).", "Nellie's is Tue–Sat 11–5 — Tuesday works.", "All the cluster spots are tappable below."],
+      tip: "Excited about jams? This is the day to do it. Tap the spots in this section for addresses; verify limited-day spots (Tinder Hearth, El El Frijoles) before you rely on them."
+    },
+    {
+      id: "p511", day: "d5", time: "8:30a", alt: true, name: "Caterpillar Hill Scenic Overlook", emoji: "🏞️",
+      category: "sight", rating: 4.8, ratingSource: "Google ~", price: "Free",
+      address: "ME-15, Sedgwick, ME 04676", mapsQuery: "Caterpillar Hill Scenic Overlook Sedgwick Maine",
+      why: "<b>Jaw-dropping free pullover</b> over Penobscot Bay & the islands on the way down.",
+      todo: "Pull over for the view (and blueberry barrens in summer); 5-minute stop.",
+      facts: ["Right on Route 15 heading toward Deer Isle.", "One of the best roadside views in Maine."],
+      tip: "Great quick stretch-your-legs stop en route to the jams."
+    },
+    {
+      id: "p512", day: "d5", time: "9:30a", alt: true, name: "44 North Coffee (Deer Isle roaster)", emoji: "☕",
+      category: "coffee", rating: 4.7, ratingSource: "Google ~", price: "$",
+      address: "7 Main St, Deer Isle, ME 04627", mapsQuery: "44 North Coffee Deer Isle",
+      why: "<b>Among the best coffee in Maine</b> — a real island roaster, minutes from Nellie's.",
+      todo: "Grab a pour-over + a bag of beans before the jam stop.",
+      facts: ["Roasts its own; café in Deer Isle village.", "Tiny — order and go."],
+      tip: "Perfect pairing with Nervous Nellie's just up the road."
+    },
+    {
+      id: "p513", day: "d5", time: "10:30a", alt: true, name: "Nervous Nellie's Jams & Jellies", emoji: "🫙",
+      category: "shop", rating: 4.7, ratingSource: "Google ~", price: "$",
+      address: "598 Sunshine Rd, Deer Isle, ME 04627", mapsQuery: "Nervous Nellies Jams Jellies Deer Isle",
+      why: "<b>Whimsical jam farm + folk-art sculpture village</b> — gloriously weird Maine, and the reason for the loop.",
+      todo: "Taste & buy small-batch jams/jellies, then wander Peter Beerits's free sculpture village + gallery in the woods.",
+      facts: ["Jam studio + sculpture village + gallery on Deer Isle.", "Seasonal: mid-May–Oct, Tue–Sat 11–5 (closed Sun & Mon).", "Opens 11 — time the loop so you arrive after."],
+      tip: "⚠️ Confirm it's open in 2026 (one listing showed temporarily closed). Tuesday is your only open day on this trip."
+    },
+    {
+      id: "p514", day: "d5", time: "12:00p", alt: true, name: "Stonington harbor", emoji: "🦞",
+      category: "activity", rating: 4.8, ratingSource: "Google ~", price: "Free",
+      address: "Main St, Stonington, ME 04681", mapsQuery: "Stonington Maine harbor downtown",
+      why: "Maine's most photogenic <b>working lobster harbor</b> — galleries, boats, island views at the tip.",
+      todo: "Wander Main St galleries + the waterfront. Lunch here, or save room for a peninsula bite on the way back.",
+      facts: ["Busiest lobster port in Maine.", "Aragosta at Goose Cove (300 Goose Cove Rd) = a tasting-menu splurge if you want dinner down here."],
+      tip: "This is the turnaround point — head back to Bar Harbor for afternoon Acadia after."
+    },
+    {
+      id: "p515", day: "d5", time: "Lunch", alt: true, name: "Tinder Hearth (wood-fired bakery)", emoji: "🍕",
+      category: "eat", rating: 4.8, ratingSource: "Google ~", price: "$$",
+      address: "1452 Coastal Rd, Brooksville, ME 04617", mapsQuery: "Tinder Hearth Brooksville Maine",
+      why: "Cult <b>wood-fired bread & pizza</b> — people plan whole trips around it.",
+      todo: "Grab bread/pastries by day; pizza nights need advance tickets/reservations.",
+      facts: ["On the Blue Hill peninsula, on the way in/out.", "Limited days & hours; pizza nights sell out."],
+      tip: "⚠️ Check the schedule and book ahead — it's not a walk-in-anytime spot."
+    },
+    {
+      id: "p516", day: "d5", time: "Lunch", alt: true, name: "El El Frijoles (Mexican, in a barn)", emoji: "🌮",
+      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$",
+      address: "41 Caterpillar Hill Rd, Sargentville, ME 04673", mapsQuery: "El El Frijoles Sargentville Maine",
+      why: "Beloved scratch-made <b>Mexican-Maine</b> in a converted barn — a peninsula institution.",
+      todo: "Lobster taco or burrito with local ingredients; right by Caterpillar Hill.",
+      facts: ["Open since 2007; everything made daily.", "Seasonal + limited days — check before going."],
+      tip: "⚠️ Verify open days/hours; it's a great lunch if the timing lines up."
     },
 
     /* ---------------- DAY 6 — Acadia → Montréal ---------------- */
