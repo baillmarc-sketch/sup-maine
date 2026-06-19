@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v1.2";
+  var VERSION = "v1.3";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -842,7 +842,7 @@
     back.appendChild(el("h3", null, "Paste the trip JSON"));
     back.appendChild(el("p", "muted", "Paste exactly what the AI returns (the JSON object):"));
     var ta = el("textarea"); ta.id = "plan-json"; ta.rows = 6;
-    ta.className = ""; ta.style.cssText = "width:100%;margin-top:8px;padding:11px;border:1px solid var(--line);border-radius:11px;background:var(--paper);font-family:ui-monospace,monospace;font-size:12.5px;";
+    ta.className = ""; ta.style.cssText = "width:100%;margin-top:8px;padding:11px;border:1px solid var(--line);border-radius:11px;background:var(--paper);font-family:ui-monospace,monospace;font-size:16px;";
     back.appendChild(ta);
     var loadBtn = el("button", "btn-primary", "🚀 Load my trip");
     var importBtn = el("button", "btn-ghost", "📂 Import backup file (.json)");
@@ -979,6 +979,7 @@
     TRIP.isSample = false;
     applyTripMeta(); renderItinerary(); updateProgress();
     toast(added + " added to your trip 🦞");
+    closeAsk();
     go("itinerary");
   }
 
@@ -1041,46 +1042,30 @@
     box.scrollTop = box.scrollHeight;
   }
 
-  function renderAsk() {
-    var root = $("#view-ask");
-    if (!root) return;
-    root.innerHTML = "";
-
-    var intro = el("section", "panel");
-    intro.appendChild(el("h2", null, "💬 Ask Sup'Maine"));
-    intro.appendChild(el("p", "muted", "Your live trip concierge. Ask for recommendations, swaps, or rainy-day plans — it knows your itinerary and can drop new stops right into your trip."));
-    root.appendChild(intro);
-
-    var chat = el("section", "panel");
-    var logBox = el("div", "asklog"); logBox.id = "ask-log";
-    chat.appendChild(logBox);
-    var inputRow = el("div", "askinput");
-    var ta = el("textarea", "askinput__ta"); ta.rows = 2; ta.placeholder = "Ask about your trip…";
-    var sendBtn = el("button", "askinput__send", "Ask"); sendBtn.type = "button";
-    function fire() { var v = ta.value; ta.value = ""; askSend(v); }
-    sendBtn.addEventListener("click", fire);
-    ta.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); fire(); } });
-    inputRow.appendChild(ta); inputRow.appendChild(sendBtn);
-    chat.appendChild(inputRow);
-    root.appendChild(chat);
+  function openAsk() {
+    var m = document.getElementById("ask-modal");
+    if (!m) return;
+    m.classList.remove("is-hidden");
     renderAskLog();
-
-    var setp = el("section", "panel");
-    setp.appendChild(el("h3", null, "⚙️ Connection"));
-    setp.appendChild(el("p", "muted", "Leave blank to use the built-in proxy (sup-maine.vercel.app/api/ask). Override only if you move it."));
-    var f1 = el("div", "field");
-    f1.appendChild(el("label", null, "API endpoint URL"));
-    var i1 = el("input"); i1.type = "text"; i1.placeholder = DEFAULT_API;
-    i1.value = loadStr(API_URL_KEY);
-    i1.addEventListener("change", function () { saveStr(API_URL_KEY, i1.value.trim()); toast("Saved"); });
-    f1.appendChild(i1); setp.appendChild(f1);
-    var f2 = el("div", "field");
-    f2.appendChild(el("label", null, "Access token (optional)"));
-    var i2 = el("input"); i2.type = "text"; i2.placeholder = "matches SUPMAINE_TOKEN on the server";
-    i2.value = loadStr(API_TOKEN_KEY);
-    i2.addEventListener("change", function () { saveStr(API_TOKEN_KEY, i2.value.trim()); toast("Saved"); });
-    f2.appendChild(i2); setp.appendChild(f2);
-    root.appendChild(setp);
+    setTimeout(function () { var ta = document.getElementById("ask-ta"); if (ta) ta.focus(); }, 60);
+  }
+  function closeAsk() {
+    var m = document.getElementById("ask-modal");
+    if (m) m.classList.add("is-hidden");
+  }
+  function wireAsk() {
+    var fab = document.getElementById("ask-fab");
+    var close = document.getElementById("ask-close");
+    var backdrop = document.getElementById("ask-backdrop");
+    var ta = document.getElementById("ask-ta");
+    var send = document.getElementById("ask-send");
+    if (fab) fab.addEventListener("click", openAsk);
+    if (close) close.addEventListener("click", closeAsk);
+    if (backdrop) backdrop.addEventListener("click", closeAsk);
+    function fire() { if (!ta) return; var v = ta.value; ta.value = ""; askSend(v); }
+    if (send) send.addEventListener("click", fire);
+    if (ta) ta.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); fire(); } });
+    renderAskLog();
   }
 
   // =====================================================
@@ -1125,7 +1110,7 @@
 
   function go(view) {
     state.view = view;
-    ["itinerary", "profile", "plan", "ask"].forEach(function (v) {
+    ["itinerary", "profile", "plan"].forEach(function (v) {
       $("#view-" + v).classList.toggle("is-hidden", v !== view);
     });
     Array.prototype.forEach.call(document.querySelectorAll(".tabbar__btn"), function (b) {
@@ -1152,7 +1137,7 @@
     renderItinerary();
     renderProfile();
     renderPlan();
-    renderAsk();
+    renderAskLog();
   }
 
   // =====================================================
@@ -1161,6 +1146,7 @@
   applyTripMeta();
   renderChips();
   renderAll();
+  wireAsk();
   go("itinerary");
 
   // service worker (offline pocket-guide) — only on http(s)
