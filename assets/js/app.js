@@ -1035,11 +1035,16 @@
     };
   }
 
+  function deburr(s) {
+    s = String(s || "");
+    return s.normalize ? s.normalize("NFD").replace(/[̀-ͯ]/g, "") : s;
+  }
+
   function stashSearch(q) {
     var list = window.SUP_MAINE_STASH || [];
     if (!list.length) return [];
-    var raw = String(q || "").toLowerCase();
-    var toks = raw.replace(/[^a-z0-9é\s]/g, " ").split(/\s+/).filter(function (t) { return t.length > 2 && !STOP[t]; });
+    var raw = deburr(String(q || "").toLowerCase());
+    var toks = raw.replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(function (t) { return t.length > 2 && !STOP[t]; });
     if (!toks.length) return [];
 
     // category intent
@@ -1051,23 +1056,23 @@
     });
     var wantCatList = Object.keys(wantCats);
 
-    // city intent (match any city present in the stash, incl. multi-word)
-    var cities = {};
-    list.forEach(function (p) { if (p.city) cities[String(p.city).toLowerCase()] = true; });
+    // city intent (accent-insensitive; match any city present in the stash, incl. multi-word)
     var wantCity = null;
-    Object.keys(cities).forEach(function (c) { if (raw.indexOf(c) !== -1) wantCity = c; });
+    list.forEach(function (p) {
+      if (p.city && raw.indexOf(deburr(String(p.city).toLowerCase())) !== -1) wantCity = deburr(String(p.city).toLowerCase());
+    });
 
     var scored = [];
     list.forEach(function (p) {
       if (wantCatList.length && wantCatList.indexOf(p.category) === -1) return;
-      if (wantCity && String(p.city || "").toLowerCase() !== wantCity) return;
-      var hay = [p.name, (p.tags || []).join(" "), p.why, p.todo, (p.facts || []).join(" "), p.tip, p.city, p.category].join(" ").toLowerCase();
+      if (wantCity && deburr(String(p.city || "").toLowerCase()) !== wantCity) return;
+      var hay = deburr([p.name, (p.tags || []).join(" "), p.why, p.todo, (p.facts || []).join(" "), p.tip, p.city, p.category].join(" ").toLowerCase());
       var score = 0;
       if (wantCatList.length && wantCatList.indexOf(p.category) !== -1) score += 5;
       if (wantCity) score += 4;
       toks.forEach(function (t) {
-        if ((p.tags || []).some(function (tag) { return String(tag).toLowerCase().indexOf(t) !== -1; })) score += 2;
-        if (String(p.name).toLowerCase().indexOf(t) !== -1) score += 3;
+        if ((p.tags || []).some(function (tag) { return deburr(String(tag).toLowerCase()).indexOf(t) !== -1; })) score += 2;
+        if (deburr(String(p.name).toLowerCase()).indexOf(t) !== -1) score += 3;
         else if (hay.indexOf(t) !== -1) score += 1;
       });
       if (score > 0) scored.push({ p: p, score: score });
