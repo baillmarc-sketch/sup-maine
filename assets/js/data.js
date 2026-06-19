@@ -263,6 +263,15 @@ window.SUP_MAINE_TRIP = {
       ]
     },
     {
+      id: "p405", day: "d4", time: "Detour", alt: true, name: "Nervous Nellie's Jams & Jellies (Deer Isle)", emoji: "🫙",
+      category: "shop", rating: 4.7, ratingSource: "Google ~", price: "$",
+      address: "598 Sunshine Rd, Deer Isle, ME 04627",
+      why: "<b>Whimsical jam farm + folk-art sculpture village</b> — gloriously weird Maine.",
+      todo: "Taste & buy small-batch jams/jellies, then wander Peter Beerits's free sculpture village + gallery in the woods.",
+      facts: ["Jam studio + sculpture village + gallery on Deer Isle.", "Seasonal: mid-May–Oct, Tue–Sat 11–5 (closed Sun & Mon).", "Down the Blue Hill / Deer Isle peninsula — a real detour off Route 1."],
+      tip: "⚠️ Closed Mondays — your Portland→Acadia drive is Mon Jun 22, so you'd need to reshuffle (e.g. a Tue/Wed run from Bar Harbor) to catch it. Confirm it's open in 2026."
+    },
+    {
       id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
       category: "stay", checkIn: "2026-06-22", checkOut: "2026-06-24", rating: "", ratingSource: "", price: "",
       address: "12 Roberts Ave, Bar Harbor, ME 04609",
