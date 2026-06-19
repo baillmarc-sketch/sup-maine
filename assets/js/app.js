@@ -289,6 +289,34 @@
     setTimeout(function () { try { w.focus(); w.print(); } catch (e) {} }, 350);
   }
 
+  // ---- load a trip / backup from raw text (used by paste + file import) ----
+  function loadFromText(raw) {
+    raw = String(raw || "").replace(/^```(json)?/i, "").replace(/```\s*$/, "").trim();
+    if (!raw) { toast("Nothing to load"); return false; }
+    try {
+      var obj = JSON.parse(raw);
+      var tripObj = (obj && obj.trip && obj.trip.days) ? obj.trip : obj; // bundle vs raw trip
+      if (!tripObj || !tripObj.places || !tripObj.days) throw new Error("missing days/places");
+      localStorage.setItem(SAVED_KEY, JSON.stringify(tripObj));
+      TRIP = tripObj; TRIP.isSample = false;
+      if (obj && obj.checks) { checks = obj.checks; saveMap(CHECK_KEY, checks); }
+      if (obj && obj.notes) { notes = obj.notes; saveMap(NOTE_KEY, notes); }
+      applyTripMeta(); renderAll(); go("itinerary");
+      toast(obj && obj.app === "supmaine" ? "Trip + notes restored! 🦞" : "Trip loaded! 🦞");
+      return true;
+    } catch (e) { toast("Hmm, that JSON didn't parse"); return false; }
+  }
+
+  // ---- wipe just the check-offs + notes (keep the trip) ----
+  function clearMarks() {
+    if (typeof window.confirm === "function" &&
+        !window.confirm("Clear all your check-offs and notes? This can't be undone.")) return;
+    checks = {}; notes = {};
+    saveMap(CHECK_KEY, checks); saveMap(NOTE_KEY, notes);
+    renderAll(); go("itinerary");
+    toast("Check-offs & notes cleared");
+  }
+
   // =====================================================
   //  ITINERARY VIEW
   // =====================================================
@@ -613,8 +641,23 @@
     ta.className = ""; ta.style.cssText = "width:100%;margin-top:8px;padding:11px;border:1px solid var(--line);border-radius:11px;background:var(--paper);font-family:ui-monospace,monospace;font-size:12.5px;";
     back.appendChild(ta);
     var loadBtn = el("button", "btn-primary", "🚀 Load my trip");
+    var importBtn = el("button", "btn-ghost", "📂 Import backup file (.json)");
+    var fileInput = el("input"); fileInput.type = "file";
+    fileInput.accept = "application/json,.json"; fileInput.style.display = "none";
+    fileInput.addEventListener("change", function () {
+      var f = fileInput.files && fileInput.files[0];
+      if (!f) return;
+      var rdr = new FileReader();
+      rdr.onload = function () { loadFromText(String(rdr.result || "")); };
+      rdr.onerror = function () { toast("Couldn't read that file"); };
+      rdr.readAsText(f);
+      fileInput.value = "";
+    });
+    importBtn.addEventListener("click", function () { fileInput.click(); });
     var resetBtn = el("button", "btn-ghost", "↩︎ Back to sample trip");
     back.appendChild(loadBtn);
+    back.appendChild(importBtn);
+    back.appendChild(fileInput);
     back.appendChild(resetBtn);
     root.appendChild(back);
 
@@ -640,10 +683,14 @@
     var b4 = el("button", "btn-ghost", "🖨️ Printable diary → Save as PDF");
     b4.addEventListener("click", openPrintableDiary);
 
+    var b5 = el("button", "btn-ghost btn-danger", "🧹 Clear my check-offs & notes");
+    b5.addEventListener("click", clearMarks);
+
     saver.appendChild(b1);
     saver.appendChild(b3);
     saver.appendChild(b4);
     saver.appendChild(b2);
+    saver.appendChild(b5);
     root.appendChild(saver);
 
     buildBtn.addEventListener("click", function () {
@@ -658,26 +705,7 @@
     });
 
     loadBtn.addEventListener("click", function () {
-      var raw = $("#plan-json").value.trim();
-      if (!raw) { toast("Paste the JSON first"); return; }
-      // tolerate ```json fences
-      raw = raw.replace(/^```(json)?/i, "").replace(/```$/, "").trim();
-      try {
-        var obj = JSON.parse(raw);
-        // accept either a raw trip {days,places} or a backup bundle {trip,checks,notes}
-        var tripObj = (obj && obj.trip && obj.trip.days) ? obj.trip : obj;
-        if (!tripObj.places || !tripObj.days) throw new Error("missing days/places");
-        localStorage.setItem(SAVED_KEY, JSON.stringify(tripObj));
-        TRIP = tripObj; TRIP.isSample = false;
-        if (obj && obj.checks) { checks = obj.checks; saveMap(CHECK_KEY, checks); }
-        if (obj && obj.notes) { notes = obj.notes; saveMap(NOTE_KEY, notes); }
-        applyTripMeta();
-        renderAll();
-        go("itinerary");
-        toast(obj.app === "supmaine" ? "Trip + notes restored! 🦞" : "Trip loaded! 🦞");
-      } catch (e) {
-        toast("Hmm, that JSON didn't parse");
-      }
+      loadFromText($("#plan-json").value);
     });
 
     resetBtn.addEventListener("click", function () {

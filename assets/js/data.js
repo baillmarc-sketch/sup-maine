@@ -172,13 +172,32 @@ window.SUP_MAINE_TRIP = {
       tip: "Check the return ferry times before you settle in for a long lunch."
     },
     {
-      id: "p303", day: "d3", time: "Option", name: "Sailing charter (Casco Bay)", emoji: "⛵",
-      category: "activity", rating: 4.8, ratingSource: "Google ~", price: "$$$",
-      address: "Maine State Pier, Portland, ME 04101", mapsQuery: "Portland Maine schooner sailing charter",
-      why: "Swap the ferry for a <b>windjammer/day-sail</b> on Casco Bay. 🔖 book ahead.",
-      todo: "Book a 2-hr sail (sunset sails are gorgeous) out of the Old Port piers.",
-      facts: ["Several historic schooners run day sails in summer.", "Sunset trips sell out — reserve early.", "Bring a jacket; open water is cool."],
-      tip: "If sailing, skip Peaks — pick one water activity so the day stays loose."
+      id: "p303", day: "d3", time: "6:00p", name: "⭐ Portland Schooner Co. — Sunset Sail", emoji: "⛵",
+      category: "activity", rating: 4.7, ratingSource: "Google ~554", price: "$75/adult",
+      address: "Maine State Pier, 56 Commercial St, Portland, ME 04101", mapsQuery: "Portland Schooner Company Maine State Pier",
+      why: "<b>Wine at sunset under sail</b> on a 1924 wooden windjammer — exactly Anna's thing.",
+      todo: "BYOB: bring a bottle + cheese. ~2-hr sail past Portland Head Light, Fort Gorges & seals. Help hoist the sails if you like.",
+      facts: ["Historic schooners Bagheera (1924) / Wendameen (1912), on the National Register.", "BYOB — no bar aboard; bring wine, beer, a picnic.", "~2 hrs; departs the Maine State Pier (past Gate 5).", "Calm, protected water; all ages; not narrated."],
+      tip: "⚠️ Conflicts with your 7 PM Wayside dinner — the 6 PM sail ends ~8 PM. Take the 3:30 PM sail (or shift dinner) to do both. Arrive 30 min early for a bow-rail seat; book ~weeks ahead, it sells out.",
+      photo: "https://images.unsplash.com/photo-1502209524164-acea936639a2?auto=format&fit=crop&w=1200&q=60"
+    },
+    {
+      id: "p307", day: "d3", time: "1:00p", name: "Lucky Catch — Lobster Boat Cruise", emoji: "🦞",
+      category: "activity", rating: 4.6, ratingSource: "Yelp ~261", price: "$60/adult",
+      address: "Long Wharf, 170 Commercial St, Portland, ME 04101", mapsQuery: "Lucky Catch Cruises Long Wharf Portland",
+      why: "<b>Hands-on working lobster boat</b> — haul the traps, then eat your catch.",
+      todo: "Haul, measure & band lobsters; see Portland Head Light, Fort Gorges, Seal Rocks. Buy your lobster at boat price and walk it to Portland Lobster Co. to cook.",
+      facts: ["80–90 min on a real lobster boat.", "⚠️ Sunday Jun 21 = catch-and-release DEMO (Maine bars Sunday hauling in summer).", "No bar aboard.", "Small boat — books up fast."],
+      tip: "Sit near the guide — engine noise can drown the narration."
+    },
+    {
+      id: "p308", day: "d3", time: "Evening", name: "Casco Bay Lines — Sunset Run", emoji: "⛴️",
+      category: "activity", rating: 4.5, ratingSource: "Google ~", price: "~$25–30",
+      address: "Maine State Pier, 56 Commercial St, Portland, ME 04101", mapsQuery: "Casco Bay Lines Maine State Pier Portland",
+      why: "The <b>cheapest, longest, most relaxed</b> time on the water — low-key twilight ferry.",
+      todo: "2.5–3 hr loop of inner Casco Bay islands + the Portland skyline at twilight. Bring a picnic.",
+      facts: ["Large passenger ferry — 2.5–3 hrs.", "Fares rose Jun 19–20, 2026 — confirm the rate.", "⚠️ Alcohol generally prohibited on scheduled service — confirm before bringing wine.", "Narration only with 10+ passengers."],
+      tip: "Bring layers + a thermos. Good pick if you'd rather chill than actively sail."
     },
     {
       id: "p304", day: "d3", time: "Afternoon", name: "Old Port brewery crawl", emoji: "🍺",
@@ -291,6 +310,34 @@ window.SUP_MAINE_TRIP = {
       todo: "Whole steamed lobster + corn + a local ale. Side Street Cafe (lobster mac) is a reliable walk-in pick.",
       facts: ["Side Street Cafe: 49 Rodick St — generous, casual, off the main drag.", "Lobster pounds nearby for the messy-bib version.", "No booking on the calendar — put your name in early."],
       tip: "One of two open dinner nights — want me to lock a pick once you've run the recs prompt?"
+    },
+    {
+      id: "p507", day: "d5", time: "1:00p", name: "⭐ Bar Harbor Whale Watch", emoji: "🐋",
+      category: "activity", rating: 4.7, ratingSource: "Tripadvisor 2600+", price: "$84/adult",
+      address: "1 West St, Bar Harbor, ME 04609", mapsQuery: "Bar Harbor Whale Watch Co West St",
+      why: "The <b>real ocean-wildlife adventure</b> — humpbacks & puffins on a fast catamaran.",
+      todo: "3–3.5 hr run 20–50 mi offshore for whales, porpoises, seals & seabirds. College of the Atlantic naturalists narrate.",
+      facts: ["112-ft jet-powered catamaran (Friendship V) — fast & stable.", "June: usually one departure (~10 AM or 1 PM) — confirm time.", "Galley + Atlantic Brewing Co. beer — CASH only.", "No whales sighted = rebook voucher (good 3 yrs)."],
+      tip: "⚠️ It's 3–3.5 hrs — it'll eat much of your Acadia hiking day; book the earliest, calmest slot. Warm waterproof layers + cash; arrive up to 1 hr early for parking.",
+      photo: "https://images.unsplash.com/photo-1568430462989-44163eb1752f?auto=format&fit=crop&w=1200&q=60"
+    },
+    {
+      id: "p508", day: "d5", time: "6:30p", name: "⭐ Schooner Margaret Todd — Sunset Sail", emoji: "⛵",
+      category: "activity", rating: 4.3, ratingSource: "mixed ~", price: "$58/adult",
+      address: "Bar Harbor Inn Pier, 1 Newport Dr, Bar Harbor, ME 04609", mapsQuery: "Margaret Todd schooner Bar Harbor Inn Pier",
+      why: "Bar Harbor's <b>iconic four red-sail schooner</b> at golden hour, with live folk music.",
+      todo: "90–120 min sail of Frenchman Bay — Egg Rock Light, the Porcupine Islands, seals & eagles. Beer/wine sold aboard.",
+      facts: ["151-ft four-masted schooner with rust-red sails.", "Departs 6:30 PM; sunset's ~8:21 PM so it ends near dusk.", "Beer/wine sold aboard — NOT BYOB for alcohol.", "Wind-dependent — on calm nights it may motor, not sail."],
+      tip: "Board early (45 min before) for a rail seat; breezy evenings are far better. Sells out — book ahead. Pairs with your open dinner night (eat after)."
+    },
+    {
+      id: "p509", day: "d5", time: "4:00p", name: "Acadian Boat Tours (nature/lighthouse)", emoji: "🦭",
+      category: "activity", rating: 4.5, ratingSource: "Tripadvisor ~", price: "$42–66",
+      address: "Atlantic Oceanside Hotel, 119 Eden St, Bar Harbor, ME 04609", mapsQuery: "Acadian Boat Tours Atlantic Oceanside Bar Harbor",
+      why: "<b>Flexible, well-narrated nature cruise</b> — the fun substitute now that Diver Ed is closed.",
+      todo: "2-hr nature/sunset cruise (or 3.5-hr puffin/lighthouse trip): Egg Rock Light, Frenchman Bay, seals, eagles, porpoises.",
+      facts: ["⚠️ Diver Ed's Dive-In Theater is CLOSED for 2026 (returns 2027) — don't book it.", "Heated cabin + snack bar; free on-site parking.", "Nature $42–51 · Puffin/Lighthouse $66.", "Top-10% Travelers' Choice."],
+      tip: "If the evening wind is under ~8 kn, this sunset cruise beats Margaret Todd (which may not actually sail). Lower deck if motion-sensitive."
     },
 
     /* ---------------- DAY 6 — Acadia → Montréal ---------------- */
