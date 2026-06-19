@@ -630,3 +630,35 @@ window.SUP_MAINE_TRIP = {
     }
   ]
 };
+
+/* =========================================================
+   CANNED ANSWERS — hardcoded concierge replies
+   ---------------------------------------------------------
+   The "Ask Sup'Maine" concierge checks these FIRST. If your
+   question matches one (any trigger word/phrase appears in it,
+   case-insensitive), it answers INSTANTLY — no network, no
+   cost, works fully offline. If nothing matches, it falls
+   through to the live Claude proxy as usual.
+
+   To add your own, copy a block:
+     {
+       triggers: ["phrase one", "another phrase"],  // lowercase
+       answer: "**Bold** with markdown, \n for new lines.",
+       additions: [ { ...place object... } ]   // optional — shows an "➕ Add to my trip" button
+     }
+   First match wins, so put more specific entries higher up.
+   ========================================================= */
+window.SUP_MAINE_CANNED = [
+  {
+    triggers: ["two hours north", "2 hours north", "coffee on the way home", "coffee on the drive home", "stop on the way home", "halfway home"],
+    answer: "About two hours north of NYC drops you right in the **Hudson Valley** — a perfect coffee-and-stretch break on the drive home.\n\nMy pick: **Rough Draft Bar & Books** in Kingston's historic Stockade District — a cozy café-bookstore combo right off Thruway Exit 19. If you'd rather a pure coffee-and-pastry hit, **Outdated: An Antique Café** is another Kingston favorite.\n\nWant it on your itinerary? Tap below. 🦞",
+    additions: [
+      { day: "d10", time: "2:00p", name: "Rough Draft Bar & Books", emoji: "☕", category: "coffee", rating: 4.7, ratingSource: "Google", price: "$$", address: "82 John St, Kingston, NY 12401", why: "<b>Charming café-bookstore</b> in Kingston's Stockade District — great coffee plus a place to browse and recharge, right off Thruway Exit 19.", todo: "Grab a pour-over and a pastry, then wander the bookshelves before hitting the road.", facts: ["In Kingston's walkable Stockade District.", "Just off NY Thruway Exit 19 — an easy detour home."], tip: "Pop next door to see the colonial-era stone houses while your coffee cools.", mapsQuery: "Rough Draft Bar & Books, 82 John St, Kingston, NY" }
+    ]
+  },
+  {
+    triggers: ["best coffee in portland", "coffee roaster in portland", "portland coffee"],
+    answer: "Portland's coffee scene punches way up. The classics:\n\n• **Tandem Coffee + Bakery** (East End, 742 Congress St) — beloved roaster, incredible morning buns.\n• **Speckled Ax** (567 Congress St) — wood-roasted beans, downtown.\n• **Coffee By Design** (1 Diamond St) — the OG Portland roastery.\n\nAll three are already kicking around your Portland days — want me to lock one to a morning?",
+    additions: null
+  }
+];
