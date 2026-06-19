@@ -47,7 +47,10 @@ module.exports = async (req, res) => {
     const question = String(body.question || "").slice(0, 2000).trim();
     if (!question) { res.status(400).json({ error: "Missing question" }); return; }
 
-    const model = process.env.SUPMAINE_MODEL || "claude-opus-4-8";
+    // Only honor SUPMAINE_MODEL if it looks like a model id — guards against a
+    // misconfigured env var (e.g. an API key pasted here) becoming the model.
+    const envModel = process.env.SUPMAINE_MODEL;
+    const model = (envModel && /^claude[\w.-]*$/.test(envModel)) ? envModel : "claude-opus-4-8";
     const tools = process.env.SUPMAINE_WEB_SEARCH === "off"
       ? undefined
       : [{ type: "web_search_20260209", name: "web_search", max_uses: 5 }];
@@ -74,6 +77,8 @@ module.exports = async (req, res) => {
 
     res.status(200).json({ answer: answer, model: resp.model });
   } catch (e) {
-    res.status(e && e.status ? e.status : 500).json({ error: (e && e.message) || "Server error" });
+    // Never echo anything that looks like a key back to the client.
+    const msg = String((e && e.message) || "Server error").replace(/sk-ant-[A-Za-z0-9_-]+/g, "[redacted]");
+    res.status(e && e.status ? e.status : 500).json({ error: msg });
   }
 };
