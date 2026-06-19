@@ -342,6 +342,23 @@ a { color: var(--navy); }
 .packadd__input:focus { border-color: var(--pine); }
 .packadd__btn { flex: none; background: var(--pine); color: #fff; font-weight: 700; font-size: 14px; padding: 0 16px; border-radius: 11px; }
 
+/* ---------------- Ask Sup'Maine (chat) ---------------- */
+.asklog { max-height: 52vh; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 2px 0 12px; }
+.bubble { max-width: 90%; padding: 10px 13px; border-radius: 15px; font-size: 14.5px; line-height: 1.45; }
+.bubble--you { align-self: flex-end; background: var(--lobster); color: #fff; border-bottom-right-radius: 5px; }
+.bubble--sup { align-self: flex-start; background: var(--paper-2); color: var(--ink); border-bottom-left-radius: 5px; }
+.bubble.is-pending { opacity: .55; }
+.bubble__add { display: inline-block; margin-top: 9px; background: var(--pine); color: #fff; font-weight: 700; font-size: 13px; padding: 7px 12px; border-radius: 10px; }
+.bubble__add:active { transform: scale(.97); }
+.askinput { display: flex; gap: 8px; margin-top: 4px; }
+.askinput__ta {
+  flex: 1; padding: 10px 12px; font-size: 15px; border: 1px solid var(--line);
+  border-radius: 12px; background: var(--paper); outline: none; resize: none;
+}
+.askinput__ta:focus { border-color: var(--lobster); }
+.askinput__send { flex: none; background: var(--lobster); color: #fff; font-weight: 700; font-size: 14px; padding: 0 18px; border-radius: 12px; }
+.askinput__send:active { transform: scale(.97); }
+
 /* footer */
 .appfoot { text-align: center; color: var(--ink-soft); font-size: 12px; padding: 18px 0 4px; opacity: .8; }
 

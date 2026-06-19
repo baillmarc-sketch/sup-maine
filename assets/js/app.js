@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v1.1";
+  var VERSION = "v1.2";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -934,6 +934,155 @@
   }
 
   // =====================================================
+  //  ASK SUP'MAINE (live AI concierge)
+  // =====================================================
+  var API_URL_KEY = "supmaine.api.v1", API_TOKEN_KEY = "supmaine.token.v1";
+  function loadStr(k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } }
+  function saveStr(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  var askLog = [];
+
+  function tripContext() {
+    var t = TRIP.trip || {};
+    return {
+      title: t.title, dates: t.dates, base: t.base, vibe: t.vibe,
+      profile: TRIP.profile || {},
+      days: (TRIP.days || []).map(function (d) { return { id: d.id, date: d.date, label: d.label }; }),
+      places: (TRIP.places || []).map(function (p) {
+        return { day: p.day, time: p.time, name: stripLead(p.name), category: p.category };
+      })
+    };
+  }
+
+  function splitAnswer(text) {
+    text = String(text || "");
+    var additions = null, prose = text;
+    var m = text.match(/```json\s*([\s\S]*?)```/i) || text.match(/```\s*(\[[\s\S]*?\])\s*```/);
+    if (m) {
+      try { var arr = JSON.parse(m[1].trim()); if (Array.isArray(arr) && arr.length) additions = arr; } catch (e) {}
+      prose = text.replace(m[0], "").trim();
+    }
+    return { prose: prose || "Done.", additions: additions };
+  }
+
+  function addAiPlaces(arr) {
+    var added = 0;
+    (arr || []).forEach(function (p, i) {
+      if (!p || !p.name) return;
+      p.id = "ai" + Date.now() + "_" + i;
+      if (!p.category) p.category = "activity";
+      TRIP.places = TRIP.places || [];
+      TRIP.places.push(p); added++;
+    });
+    if (!added) { toast("Nothing to add"); return; }
+    try { localStorage.setItem(SAVED_KEY, JSON.stringify(TRIP)); } catch (e) {}
+    TRIP.isSample = false;
+    applyTripMeta(); renderItinerary(); updateProgress();
+    toast(added + " added to your trip 🦞");
+    go("itinerary");
+  }
+
+  function endpointHint(ep) {
+    if (/^https?:\/\//i.test(ep)) return "";
+    return " — no backend at " + ep + ". Set your deployed API URL in ⚙️ Connection below (see README → Live AI).";
+  }
+
+  function askSend(q) {
+    q = String(q || "").trim();
+    if (!q) return;
+    askLog.push({ role: "you", text: q });
+    askLog.push({ role: "sup", text: "…", pending: true });
+    renderAskLog();
+    var endpoint = loadStr(API_URL_KEY) || "/api/ask";
+    var token = loadStr(API_TOKEN_KEY);
+    var headers = { "Content-Type": "application/json" };
+    if (token) headers["x-supmaine-token"] = token;
+    function dropPending() { for (var i = askLog.length - 1; i >= 0; i--) { if (askLog[i].pending) { askLog.splice(i, 1); break; } } }
+    fetch(endpoint, { method: "POST", headers: headers, body: JSON.stringify({ question: q, trip: tripContext() }) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }, function () { return { ok: false, j: {} }; }); })
+      .then(function (res) {
+        dropPending();
+        if (!res.ok || !res.j || res.j.error) {
+          askLog.push({ role: "sup", text: "⚠️ " + ((res.j && res.j.error) || "Request failed") + endpointHint(endpoint) });
+        } else {
+          var parsed = splitAnswer(res.j.answer || "");
+          askLog.push({ role: "sup", text: parsed.prose, additions: parsed.additions });
+        }
+        renderAskLog();
+      })
+      .catch(function () {
+        dropPending();
+        askLog.push({ role: "sup", text: "⚠️ Couldn't reach the AI." + endpointHint(endpoint) });
+        renderAskLog();
+      });
+  }
+
+  function linkify(s) { return esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\n/g, "<br>"); }
+
+  function renderAskLog() {
+    var box = document.getElementById("ask-log");
+    if (!box) return;
+    box.innerHTML = "";
+    if (!askLog.length) {
+      box.appendChild(el("p", "muted", "Ask me anything about your trip — “a great coffee roaster near the Portland Airbnb?”, “swap the Day 3 dinner for something with a view”, “rainy-day plan for Acadia?” I can add new stops straight to your itinerary."));
+      return;
+    }
+    askLog.forEach(function (m) {
+      var row = el("div", "bubble bubble--" + (m.role === "you" ? "you" : "sup") + (m.pending ? " is-pending" : ""));
+      row.appendChild(el("div", "bubble__txt", m.pending ? "…" : linkify(m.text)));
+      if (m.additions && m.additions.length) {
+        var add = el("button", "bubble__add", "➕ Add " + m.additions.length + " to my trip");
+        add.type = "button";
+        add.addEventListener("click", function () { addAiPlaces(m.additions); });
+        row.appendChild(add);
+      }
+      box.appendChild(row);
+    });
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function renderAsk() {
+    var root = $("#view-ask");
+    if (!root) return;
+    root.innerHTML = "";
+
+    var intro = el("section", "panel");
+    intro.appendChild(el("h2", null, "💬 Ask Sup'Maine"));
+    intro.appendChild(el("p", "muted", "Your live trip concierge. Ask for recommendations, swaps, or rainy-day plans — it knows your itinerary and can drop new stops right into your trip."));
+    root.appendChild(intro);
+
+    var chat = el("section", "panel");
+    var logBox = el("div", "asklog"); logBox.id = "ask-log";
+    chat.appendChild(logBox);
+    var inputRow = el("div", "askinput");
+    var ta = el("textarea", "askinput__ta"); ta.rows = 2; ta.placeholder = "Ask about your trip…";
+    var sendBtn = el("button", "askinput__send", "Ask"); sendBtn.type = "button";
+    function fire() { var v = ta.value; ta.value = ""; askSend(v); }
+    sendBtn.addEventListener("click", fire);
+    ta.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); fire(); } });
+    inputRow.appendChild(ta); inputRow.appendChild(sendBtn);
+    chat.appendChild(inputRow);
+    root.appendChild(chat);
+    renderAskLog();
+
+    var setp = el("section", "panel");
+    setp.appendChild(el("h3", null, "⚙️ Connection"));
+    setp.appendChild(el("p", "muted", "Point this at your deployed Claude proxy (README → Live AI). Leave blank if the app itself is hosted on Vercel (uses /api/ask)."));
+    var f1 = el("div", "field");
+    f1.appendChild(el("label", null, "API endpoint URL"));
+    var i1 = el("input"); i1.type = "text"; i1.placeholder = "https://your-app.vercel.app/api/ask";
+    i1.value = loadStr(API_URL_KEY);
+    i1.addEventListener("change", function () { saveStr(API_URL_KEY, i1.value.trim()); toast("Saved"); });
+    f1.appendChild(i1); setp.appendChild(f1);
+    var f2 = el("div", "field");
+    f2.appendChild(el("label", null, "Access token (optional)"));
+    var i2 = el("input"); i2.type = "text"; i2.placeholder = "matches SUPMAINE_TOKEN on the server";
+    i2.value = loadStr(API_TOKEN_KEY);
+    i2.addEventListener("change", function () { saveStr(API_TOKEN_KEY, i2.value.trim()); toast("Saved"); });
+    f2.appendChild(i2); setp.appendChild(f2);
+    root.appendChild(setp);
+  }
+
+  // =====================================================
   //  CHROME: chips, tabs, header meta
   // =====================================================
   function renderChips() {
@@ -975,7 +1124,7 @@
 
   function go(view) {
     state.view = view;
-    ["itinerary", "profile", "plan"].forEach(function (v) {
+    ["itinerary", "profile", "plan", "ask"].forEach(function (v) {
       $("#view-" + v).classList.toggle("is-hidden", v !== view);
     });
     Array.prototype.forEach.call(document.querySelectorAll(".tabbar__btn"), function (b) {
@@ -1002,6 +1151,7 @@
     renderItinerary();
     renderProfile();
     renderPlan();
+    renderAsk();
   }
 
   // =====================================================
