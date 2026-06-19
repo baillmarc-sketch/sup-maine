@@ -67,7 +67,10 @@ a { color: var(--navy); }
   font-size: 26px; font-weight: 700; margin: 0; letter-spacing: -.3px;
   color: var(--ink);
 }
-.brand__tag { margin: 0; font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand__tag {
+  margin: 0; font-size: 12px; line-height: 1.3; color: var(--ink-soft);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
 
 .trip-chip {
   flex: none;
@@ -151,18 +154,19 @@ a { color: var(--navy); }
 .tipline { font-size: 13px; background: #fff7e6; border: 1px solid #f0e0bb; border-radius: 10px; padding: 8px 10px; margin-top: 12px; }
 .tipline b { color: var(--mustard); }
 
-/* action bar */
-.actions { display: flex; gap: 8px; padding: 12px 14px 14px; }
+/* action bar — Copy is the hero (full width), Maps + Waze share the row below */
+.actions { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px 14px; }
+.actions__row { display: flex; gap: 8px; }
 .act {
   flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
   padding: 11px 8px; border-radius: 12px; font-size: 13.5px; font-weight: 700;
-  border: 1px solid var(--line); background: var(--paper); color: var(--ink);
+  white-space: nowrap; border: 1px solid var(--line); background: var(--card); color: var(--ink);
   transition: transform .08s ease;
 }
 .act:active { transform: scale(.96); }
-.act--copy { background: var(--lobster); color: #fff; border-color: var(--lobster); }
-.act--maps { background: var(--card); }
-.act--waze { background: var(--card); }
+.act--copy { flex: none; width: 100%; padding: 13px; font-size: 14.5px;
+  background: var(--lobster); color: #fff; border-color: var(--lobster);
+  box-shadow: 0 2px 8px rgba(214,85,59,.28); }
 .act__ico { font-size: 15px; }
 
 .expandhint { text-align: center; font-size: 12px; color: var(--ink-soft); padding: 0 0 10px; }

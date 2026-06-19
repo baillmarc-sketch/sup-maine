@@ -170,8 +170,10 @@
     wazeBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
 
     actions.appendChild(copyBtn);
-    actions.appendChild(mapsBtn);
-    actions.appendChild(wazeBtn);
+    var actRow = el("div", "actions__row");
+    actRow.appendChild(mapsBtn);
+    actRow.appendChild(wazeBtn);
+    actions.appendChild(actRow);
     card.appendChild(actions);
 
     // tap head/why to expand
