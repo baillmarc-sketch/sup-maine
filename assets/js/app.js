@@ -1030,10 +1030,10 @@
     var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
     var nudge = setTimeout(function () {
       if (done) return;
-      pending.text = "🔎 searching the web — this can take ~20–30s…";
+      pending.text = "thinking…";
       renderAskLog();
     }, 4000);
-    var killer = setTimeout(function () { if (!done && ctrl) ctrl.abort(); }, 75000);
+    var killer = setTimeout(function () { if (!done && ctrl) ctrl.abort(); }, 45000);
     function cleanup() { done = true; clearTimeout(nudge); clearTimeout(killer); }
 
     fetch(endpoint, { method: "POST", headers: headers, body: JSON.stringify({ question: q, trip: tripContext() }), signal: ctrl ? ctrl.signal : undefined })

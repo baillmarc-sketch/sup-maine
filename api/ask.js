@@ -4,8 +4,8 @@
 //
 // Env vars (set in Vercel → Settings → Environment Variables):
 //   ANTHROPIC_API_KEY   (required)  your Claude API key
-//   SUPMAINE_MODEL      (optional)  defaults to claude-opus-4-8; use claude-sonnet-4-6 for cheaper production
-//   SUPMAINE_WEB_SEARCH (optional)  "off" to disable live web search (faster/cheaper)
+//   SUPMAINE_MODEL      (optional)  defaults to claude-sonnet-4-6 (cheap/fast); set claude-opus-4-8 for deeper answers
+//   SUPMAINE_WEB_SEARCH (optional)  "on" to ENABLE live web search (costs more); off by default to save credit
 //   SUPMAINE_TOKEN      (optional)  if set, callers must send a matching x-supmaine-token header
 
 const Anthropic = require("@anthropic-ai/sdk");
@@ -17,7 +17,7 @@ function buildSystem(trip) {
   try { ctx = JSON.stringify(trip || {}).slice(0, 12000); } catch (e) {}
   return [
     "You are Sup'Maine's in-app travel concierge for ONE specific trip.",
-    "Be warm, concise, and genuinely useful — a few tight sentences, not an essay.",
+    "Be warm and genuinely useful, but keep it SHORT — answer in 2–4 tight sentences (or a short bullet list). No preamble, no deep research, no long essays.",
     "Recommend REAL, specific, currently-operating venues (exact names) with a one-line why and the neighborhood. Prefer spots that fit the route, the dates, and the traveler profile. Never invent places; if you used web search, prefer what you found.",
     "",
     "TRIP CONTEXT (JSON):",
@@ -50,17 +50,18 @@ module.exports = async (req, res) => {
     // Only honor SUPMAINE_MODEL if it looks like a model id — guards against a
     // misconfigured env var (e.g. an API key pasted here) becoming the model.
     const envModel = process.env.SUPMAINE_MODEL;
-    const model = (envModel && /^claude[\w.-]*$/.test(envModel)) ? envModel : "claude-opus-4-8";
-    const tools = process.env.SUPMAINE_WEB_SEARCH === "off"
-      ? undefined
-      : [{ type: "web_search_20260209", name: "web_search", max_uses: 3 }];
+    // Budget-first defaults: cheap/fast Sonnet, web search OFF unless explicitly turned on.
+    const model = (envModel && /^claude[\w.-]*$/.test(envModel)) ? envModel : "claude-sonnet-4-6";
+    const tools = process.env.SUPMAINE_WEB_SEARCH === "on"
+      ? [{ type: "web_search_20260209", name: "web_search", max_uses: 2 }]
+      : undefined;
 
     const messages = [{ role: "user", content: question }];
     let resp, guard = 0;
     do {
       resp = await client.messages.create({
         model: model,
-        max_tokens: 1500,
+        max_tokens: 700,
         system: buildSystem(body.trip),
         messages: messages,
         tools: tools
