@@ -69,13 +69,15 @@ window.SUP_MAINE_TRIP = {
       tip: "Use Waze for the live I-95 backups; the Hampton, NH tolls clog up midday."
     },
     {
-      id: "p102", day: "d1", time: "Lunch", name: "Portsmouth, NH (coffee/lunch stop)", emoji: "⚓",
-      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$",
-      address: "Market Square, Portsmouth, NH 03801", mapsQuery: "Market Square Portsmouth NH",
-      why: "A <b>handsome harbor town</b> exactly at the halfway mark — perfect leg-stretch.",
-      todo: "Walk Market Square, grab lunch or coffee, peek at the waterfront before the final push.",
-      facts: ["One of the oldest towns in the US (settled 1623).", "Walkable brick downtown, tons of cafés.", "~1 hr south of Portland."],
-      tip: "Plenty of metered street parking around Market Square; bring a few quarters."
+      id: "p102", day: "d1", time: "Lunch", name: "Coffee / lunch stop — Portsmouth, NH", emoji: "⚓",
+      category: "eat", slot: true, searchQuery: "coffee and lunch Market Square Portsmouth NH",
+      why: "A <b>handsome harbor town</b> at the halfway mark — perfect leg-stretch. Pick a real spot below, or search the square.",
+      facts: ["One of the oldest towns in the US (settled 1623).", "Walkable brick downtown around Market Square.", "~1 hr south of Portland."],
+      tip: "Metered street parking around Market Square — bring a few quarters.",
+      options: [
+        { name: "Popovers on the Square", address: "8 Congress St, Portsmouth, NH 03801", rating: 4.4, price: "$$", note: "Market Square cafe + the namesake popovers" },
+        { name: "The Goods", address: "29 Vaughan Mall, Portsmouth, NH 03801", rating: 4.6, price: "$", note: "Great coffee + breakfast wraps" }
+      ]
     },
     {
       id: "p103", day: "d1", time: "3:00p", name: "✅ Stay — Morrill Mansion (Portland)", emoji: "🛏️",
@@ -238,13 +240,16 @@ window.SUP_MAINE_TRIP = {
       tip: "Waze around the Wiscasset backup; it's the worst pinch point on Route 1."
     },
     {
-      id: "p402", day: "d4", time: "12:30p", name: "Camden lunch + harbor", emoji: "🏔️",
-      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$",
-      address: "Camden Harbor, Camden, ME 04843", mapsQuery: "Camden Harbor Maine",
-      why: "<b>Where the mountains meet the sea</b> — the prettiest harbor stop on the drive.",
-      todo: "Lunch by the harbor, walk the windjammer docks; ambitious crew can zip up Mt. Battie.",
-      facts: ["Camden Hills State Park's Mt. Battie has a drive-up summit view.", "Classic windjammer schooner harbor.", "Walkable downtown for a quick bite."],
-      tip: "Short on time? Mt. Battie's auto road gives the big view in 20 minutes."
+      id: "p402", day: "d4", time: "12:30p", name: "Lunch stop — Camden", emoji: "🏔️",
+      category: "eat", slot: true, searchQuery: "lunch Camden Maine harbor",
+      why: "<b>Where the mountains meet the sea</b> — the prettiest stop on the drive. Grab lunch by the harbor.",
+      facts: ["Classic windjammer schooner harbor + walkable downtown.", "Mt. Battie's auto road gives a big view in ~20 min.", "Camden Hills State Park is right here."],
+      tip: "Short on time? Drive up Mt. Battie for the view, then a quick harbor-side bite.",
+      options: [
+        { name: "The Waterfront Restaurant", address: "40 Bayview St, Camden, ME 04843", rating: 4.4, price: "$$$", note: "Harborside seafood + lobster stew" },
+        { name: "Peter Ott's on the Water", address: "16 Bay View St, Camden, ME 04843", rating: 4.5, price: "$$", note: "Lobster rolls, harbor views" },
+        { name: "Camden Deli", address: "37 Main St, Camden, ME 04843", rating: 4.4, price: "$", note: "Casual sandwiches over the harbor" }
+      ]
     },
     {
       id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
@@ -304,12 +309,15 @@ window.SUP_MAINE_TRIP = {
     },
     {
       id: "p505", day: "d5", time: "7:30p", name: "🍽️ Dinner — Bar Harbor (open night)", emoji: "🦞",
-      category: "eat", rating: 4.5, ratingSource: "Google ~", price: "$$$",
-      address: "49 Rodick St, Bar Harbor, ME 04609", mapsQuery: "Side Street Cafe Bar Harbor Maine",
-      why: "Last Maine night and <b>no reservation yet</b> — go full lobster.",
-      todo: "Whole steamed lobster + corn + a local ale. Side Street Cafe (lobster mac) is a reliable walk-in pick.",
-      facts: ["Side Street Cafe: 49 Rodick St — generous, casual, off the main drag.", "Lobster pounds nearby for the messy-bib version.", "No booking on the calendar — put your name in early."],
-      tip: "One of two open dinner nights — want me to lock a pick once you've run the recs prompt?"
+      category: "eat", slot: true, searchQuery: "lobster dinner Bar Harbor Maine",
+      why: "Last Maine night and <b>no reservation yet</b> — go full lobster. Pick one below or search the town.",
+      facts: ["No booking on the calendar — put your name in early.", "Lobster pounds do the messy-bib whole-lobster version.", "Downtown Bar Harbor is walkable for dinner + ice cream."],
+      tip: "One of two open dinner nights — tell me your pick and I'll lock it in.",
+      options: [
+        { name: "Side Street Cafe", address: "49 Rodick St, Bar Harbor, ME 04609", rating: 4.5, price: "$$", note: "Casual; famous lobster mac & cheese" },
+        { name: "Stewman's Lobster Pound", address: "35 West St, Bar Harbor, ME 04609", rating: 4.3, price: "$$$", note: "Waterfront whole-lobster dinners" },
+        { name: "Geddy's", address: "19 Main St, Bar Harbor, ME 04609", rating: 4.3, price: "$$", note: "Lively downtown classic" }
+      ]
     },
     {
       id: "p507", day: "d5", time: "1:00p", name: "⭐ Bar Harbor Whale Watch", emoji: "🐋",
@@ -351,13 +359,15 @@ window.SUP_MAINE_TRIP = {
       tip: "Check passport expiry NOW, and set up an international data plan before you cross."
     },
     {
-      id: "p602", day: "d6", time: "9:30a", name: "Bangor coffee stop", emoji: "☕",
-      category: "coffee", rating: 4.5, ratingSource: "Google ~", price: "$",
-      address: "Bangor, ME 04401", mapsQuery: "best coffee downtown Bangor Maine",
-      why: "<b>Caffeine + leg-stretch</b> on the way out of Maine.",
-      todo: "Quick downtown Bangor coffee (and a Paul Bunyan statue photo if you're feeling silly).",
-      facts: ["~1 hr from Bar Harbor.", "Downtown Bangor has a few solid indie cafés.", "Stephen King's hometown — the gothic mansion is here."],
-      tip: "Note: 'Tandem' is Portland-only; in Bangor just grab the best-rated downtown café."
+      id: "p602", day: "d6", time: "9:30a", name: "Coffee stop — Bangor", emoji: "☕",
+      category: "coffee", slot: true, searchQuery: "coffee downtown Bangor Maine",
+      why: "<b>Caffeine + leg-stretch</b> on the way out of Maine — pick a real café below.",
+      facts: ["~1 hr from Bar Harbor.", "Stephen King's hometown — the gothic mansion is here.", "Paul Bunyan statue photo op if you're feeling silly."],
+      tip: "'Tandem' is Portland-only — in Bangor, Chimera is the local roaster pick.",
+      options: [
+        { name: "Chimera Coffee", address: "24 Broad St, Bangor, ME 04401", rating: 4.7, price: "$", note: "Local roaster in West Market Square" },
+        { name: "Bagel Central", address: "33 Central St, Bangor, ME 04401", rating: 4.5, price: "$", note: "Classic Bangor breakfast + bagels" }
+      ]
     },
     {
       id: "p603", day: "d6", time: "12:30p", name: "Burlington, VT — waterfront + lunch", emoji: "🏞️",
@@ -416,13 +426,14 @@ window.SUP_MAINE_TRIP = {
       tip: "Fairmount Bagel (a block over) is the eternal rival — do a taste-off."
     },
     {
-      id: "p702", day: "d7", time: "10:30a", name: "Mile End wander + cafés", emoji: "🎨",
-      category: "coffee", rating: 4.7, ratingSource: "Google ~", price: "$$",
-      address: "Avenue du Mont-Royal & Saint-Laurent, Montréal, QC", mapsQuery: "Mile End Montreal",
-      why: "Montréal's <b>artsy, café-and-bookshop neighborhood</b> — pure wander territory.",
-      todo: "Coffee, indie bookstores, vintage shops, murals. Let it be unstructured.",
-      facts: ["Historic Jewish & artist quarter.", "Leonard Cohen's old stomping grounds.", "Dense with cafés, record stores, boutiques."],
-      tip: "This is a 'no plan' block — follow your nose between cafés."
+      id: "p702", day: "d7", time: "10:30a", name: "Mile End — cafés & wander", emoji: "🎨",
+      category: "coffee", slot: true, searchQuery: "cafe Mile End Montreal",
+      why: "Montréal's <b>artsy café-and-bookshop neighborhood</b> — pure wander territory. Grab a coffee, then drift.",
+      facts: ["Historic Jewish & artist quarter; Leonard Cohen's old turf.", "Dense with cafés, record stores, boutiques & murals.", "A 'no plan' block — follow your nose."],
+      tip: "Run the venue prompt to add more Mile End cafés here.",
+      options: [
+        { name: "Café Olimpico", address: "124 Rue Saint-Viateur O, Montréal, QC H2T 2L4", rating: 4.5, price: "$", note: "Landmark Italian espresso bar (since 1970)" }
+      ]
     },
     {
       id: "p703", day: "d7", time: "1:00p", name: "Jean-Talon Market", emoji: "🍓",
@@ -473,12 +484,15 @@ window.SUP_MAINE_TRIP = {
     },
     {
       id: "p804", day: "d8", time: "8:00p", name: "🍽️ Dinner + cocktails — last MTL night (open)", emoji: "🍸",
-      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$$",
-      address: "2491 Rue Notre-Dame O, Montréal, QC H3J 1N6", mapsQuery: "Joe Beef Montreal",
-      why: "Your <b>second open dinner night</b> — make the last Québec night count.",
-      todo: "Big swing: Joe Beef (legendary, 2491 Notre-Dame O). Then cocktails around the Plateau/Mile End.",
+      category: "eat", slot: true, searchQuery: "best dinner Plateau Mile End Montreal",
+      why: "Your <b>second open dinner night</b> — make the last Québec night count, then cocktails nearby.",
       facts: ["No reservation on the calendar yet for tonight.", "Joe Beef books weeks ahead — set an alarm when bookings open.", "Plateau & Mile End are dense with bars; last call runs late."],
-      tip: "Other open-night ideas: Vin Mon Lapin, Mon Lapin, or Damas (Syrian). Want me to lock one in?"
+      tip: "Tell me your pick and I'll lock it in as a confirmed dinner.",
+      options: [
+        { name: "Joe Beef", address: "2491 Rue Notre-Dame O, Montréal, QC H3J 1N6", rating: 4.6, price: "$$$$", note: "Legendary; books weeks out" },
+        { name: "Vin Mon Lapin", address: "150 Rue Saint-Zotique E, Montréal, QC H2S 1K7", rating: 4.7, price: "$$$", note: "Small plates + natural wine" },
+        { name: "Damas", address: "1201 Av. Van Horne, Montréal, QC H2V 1K4", rating: 4.6, price: "$$$$", note: "Upscale Syrian" }
+      ]
     },
 
     /* ---------------- DAY 9 — Montréal → Hudson Valley ---------------- */

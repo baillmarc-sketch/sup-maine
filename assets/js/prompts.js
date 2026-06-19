@@ -28,6 +28,26 @@ var PROFILE_PROMPT =
 '  "notes": ""\n' +
 '}';
 
+/* A prompt to hand your research assistant to fill a "pick-one" slot
+   (coffee/lunch/dinner in an area) with REAL, specific, verified venues. */
+var VENUE_PROMPT =
+"You're filling in REAL, specific venues for my Sup'Maine trip planner.\n" +
+"I'll name an area + meal type. Return 3–5 LEGITIMATE, currently-operating, named\n" +
+"venues — NO neighborhoods, squares, or vague 'areas', and nothing closed.\n\n" +
+"FILL IN FOR: [e.g. \"coffee in Bangor, ME\" / \"lunch near Camden harbor, ME\"]\n\n" +
+"Return ONLY a JSON array in this exact shape (no other text):\n" +
+'[\n' +
+'  {\n' +
+'    "name": "",       // exact venue name\n' +
+'    "address": "",     // full street address\n' +
+'    "rating": 4.5,      // Google rating if known\n' +
+'    "price": "$$",      // $ to $$$$\n' +
+'    "note": ""         // one short line: why it\'s good / what to order\n' +
+'  }\n' +
+']\n\n' +
+"Rules: real places only, exact street addresses, verify each is open in 2026,\n" +
+"skip anything generic. Tell me which slot/day these are for.";
+
 /* Builds the trip-generation prompt from the user's inputs.
    The AI is told to return JSON matching Sup'Maine's exact schema,
    so the result can be pasted straight back into the Plan tab. */

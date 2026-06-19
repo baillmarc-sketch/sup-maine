@@ -295,6 +295,34 @@ a { color: var(--navy); }
 .day.is-collapsed .day__altbtn,
 .day.is-collapsed .day__alts { display: none; }
 
+/* pick-one slot (lunch/coffee/dinner with multiple specific venues) */
+.badge--pick { background: #e7eef4; color: var(--navy); }
+.slot { padding: 0 14px 14px; }
+.slot__search {
+  display: inline-block; font-size: 12.5px; font-weight: 700; color: var(--navy);
+  background: #eaeef4; border: 1px solid #d6e0ec; padding: 6px 11px; border-radius: 999px;
+  text-decoration: none; margin-bottom: 8px;
+}
+.slot__search:active { transform: scale(.97); }
+.slot__toggle {
+  display: block; width: 100%; padding: 9px; border-radius: 11px; font-size: 13px; font-weight: 700;
+  color: var(--ink-soft); background: var(--paper-2); border: 1px dashed var(--line);
+}
+.slot__list { margin-top: 6px; }
+.opt { display: flex; gap: 10px; align-items: flex-start; padding: 11px 0; border-top: 1px solid var(--line); }
+.opt__info { flex: 1; min-width: 0; }
+.opt__name { font-size: 14.5px; font-weight: 700; }
+.opt__rate { color: #8a6300; font-size: 12px; font-weight: 700; }
+.opt__price { color: var(--pine); font-size: 12px; font-weight: 700; }
+.opt__note { font-size: 12.5px; color: var(--ink-soft); margin-top: 1px; }
+.opt__addr { font-size: 12.5px; color: var(--ink); margin-top: 2px; }
+.opt__btns { flex: none; display: flex; gap: 6px; }
+.opt__btn {
+  width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--card); display: grid; place-items: center; font-size: 15px; text-decoration: none;
+}
+.opt__btn:active { transform: scale(.94); }
+
 /* packing list */
 .packlist { margin: 8px 0; }
 .packrow { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
