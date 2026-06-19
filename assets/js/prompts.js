@@ -56,6 +56,14 @@ profile + "\n\n" +
 "  suggest alternative lodging when a stay is already booked.\n" +
 "- Respect how I'm getting around (driving, train, etc.): keep routing and drive\n" +
 "  times sensible, and add 'drive' cards between far-apart stops.\n" +
+"- TRANSPORT CHECK: if I only gave a one-way flight/train OUT, flag that I still\n" +
+"  need to book the RETURN (and vice-versa). If I'm driving, assume a round-trip\n" +
+"  back to my start unless I said otherwise. Surface any missing leg as a card.\n" +
+"- LODGING CHECK: every night from the start date to the end date needs somewhere\n" +
+"  to sleep. Flag ANY night with no accommodation as a 'stay' card titled\n" +
+"  '⚠️ No lodging — <date>' (a friend's couch is fine, but it must be listed).\n" +
+"- WEATHER: in the trip 'blurb', note the typical weather/what to pack for these\n" +
+"  dates and region.\n" +
 "- Fill the GAPS: open days, activities, coffee, shopping, and dinners on nights\n" +
 "  with no reservation. Flag anything that still needs booking.\n" +
 "- Plan day by day. Each day gets a short evocative label + subtitle.\n" +
