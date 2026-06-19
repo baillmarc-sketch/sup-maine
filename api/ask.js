@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
     const model = (envModel && /^claude[\w.-]*$/.test(envModel)) ? envModel : "claude-opus-4-8";
     const tools = process.env.SUPMAINE_WEB_SEARCH === "off"
       ? undefined
-      : [{ type: "web_search_20260209", name: "web_search", max_uses: 5 }];
+      : [{ type: "web_search_20260209", name: "web_search", max_uses: 3 }];
 
     const messages = [{ role: "user", content: question }];
     let resp, guard = 0;

@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v1.3";
+  var VERSION = "v1.4";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -988,21 +988,58 @@
     return " — no backend at " + ep + ". Set your deployed API URL in ⚙️ Connection below (see README → Live AI).";
   }
 
+  // Check the hardcoded answers first (instant, offline, free).
+  // Returns the matching entry or null. First match wins.
+  function cannedMatch(q) {
+    var list = (window.SUP_MAINE_CANNED || []);
+    var s = String(q || "").toLowerCase();
+    for (var i = 0; i < list.length; i++) {
+      var triggers = list[i].triggers || [];
+      for (var j = 0; j < triggers.length; j++) {
+        if (s.indexOf(String(triggers[j]).toLowerCase()) !== -1) return list[i];
+      }
+    }
+    return null;
+  }
+
   function askSend(q) {
     q = String(q || "").trim();
     if (!q) return;
     askLog.push({ role: "you", text: q });
-    askLog.push({ role: "sup", text: "…", pending: true });
+
+    // 1) Hardcoded answers win — instant, no network.
+    var hit = cannedMatch(q);
+    if (hit) {
+      askLog.push({ role: "sup", text: hit.answer, additions: hit.additions || null });
+      renderAskLog();
+      return;
+    }
+
+    // 2) Fall through to the live Claude proxy.
+    var pending = { role: "sup", text: "…", pending: true };
+    askLog.push(pending);
     renderAskLog();
     var endpoint = loadStr(API_URL_KEY) || DEFAULT_API;
     var token = loadStr(API_TOKEN_KEY);
     var headers = { "Content-Type": "application/json" };
     if (token) headers["x-supmaine-token"] = token;
     function dropPending() { for (var i = askLog.length - 1; i >= 0; i--) { if (askLog[i].pending) { askLog.splice(i, 1); break; } } }
-    fetch(endpoint, { method: "POST", headers: headers, body: JSON.stringify({ question: q, trip: tripContext() }) })
+
+    // Reassure on long web-search calls; abort if it truly hangs.
+    var done = false;
+    var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    var nudge = setTimeout(function () {
+      if (done) return;
+      pending.text = "🔎 searching the web — this can take ~20–30s…";
+      renderAskLog();
+    }, 4000);
+    var killer = setTimeout(function () { if (!done && ctrl) ctrl.abort(); }, 75000);
+    function cleanup() { done = true; clearTimeout(nudge); clearTimeout(killer); }
+
+    fetch(endpoint, { method: "POST", headers: headers, body: JSON.stringify({ question: q, trip: tripContext() }), signal: ctrl ? ctrl.signal : undefined })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }, function () { return { ok: false, j: {} }; }); })
       .then(function (res) {
-        dropPending();
+        cleanup(); dropPending();
         if (!res.ok || !res.j || res.j.error) {
           askLog.push({ role: "sup", text: "⚠️ " + ((res.j && res.j.error) || "Request failed") + endpointHint(endpoint) });
         } else {
@@ -1012,8 +1049,8 @@
         renderAskLog();
       })
       .catch(function () {
-        dropPending();
-        askLog.push({ role: "sup", text: "⚠️ Couldn't reach the AI." + endpointHint(endpoint) });
+        cleanup(); dropPending();
+        askLog.push({ role: "sup", text: "⚠️ The AI took too long to answer. It works best on a solid connection — give it another try, or ask something simpler." });
         renderAskLog();
       });
   }
