@@ -234,7 +234,7 @@
   }
   function dayMapUrl(dayId) {
     var addrs = byTime((TRIP.places || []).filter(function (p) {
-      return p.day === dayId && p.category !== "drive" && p.address && !p.alt;
+      return p.day === dayId && p.category !== "drive" && p.address && !p.alt && !p.options;
     })).map(function (p) { return p.address; });
     addrs = addrs.filter(function (a, i) { return i === 0 || a !== addrs[i - 1]; });
     if (addrs.length < 2) return null;
@@ -379,7 +379,55 @@
     return true;
   }
 
+  // a "pick one" slot: search-the-area link + a dropdown of specific venues
+  function renderOptions(p) {
+    var wrap = el("div", "slot");
+    if (p.searchQuery) {
+      var sa = el("a", "slot__search", "🔍 Search " + esc(p.searchQuery) + " in Maps");
+      sa.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(p.searchQuery);
+      sa.target = "_blank"; sa.rel = "noopener";
+      sa.addEventListener("click", function (ev) { ev.stopPropagation(); });
+      wrap.appendChild(sa);
+    }
+    var list = el("div", "slot__list is-hidden");
+    p.options.forEach(function (o) {
+      var row = el("div", "opt");
+      var info = el("div", "opt__info");
+      info.appendChild(el("div", "opt__name", esc(o.name) +
+        (o.rating ? ' <span class="opt__rate">★ ' + esc(String(o.rating)) + "</span>" : "") +
+        (o.price ? ' <span class="opt__price">' + esc(o.price) + "</span>" : "")));
+      if (o.note) info.appendChild(el("div", "opt__note", esc(o.note)));
+      if (o.address) info.appendChild(el("div", "opt__addr", esc(o.address)));
+      row.appendChild(info);
+      var btns = el("div", "opt__btns");
+      if (o.address) {
+        var cp = el("button", "opt__btn", "📋"); cp.type = "button"; cp.title = "Copy address";
+        cp.addEventListener("click", function (ev) { ev.stopPropagation(); copyText(o.address, "Address copied — paste into Waze"); });
+        btns.appendChild(cp);
+      }
+      var mp = el("a", "opt__btn", "🗺️");
+      mp.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(o.mapsQuery || (o.name + " " + (o.address || "")));
+      mp.target = "_blank"; mp.rel = "noopener";
+      mp.addEventListener("click", function (ev) { ev.stopPropagation(); });
+      btns.appendChild(mp);
+      row.appendChild(btns);
+      list.appendChild(row);
+    });
+    var label = function (open) { return open ? "▴ hide options" : ("▾ " + p.options.length + " place" + (p.options.length > 1 ? "s" : "") + " to choose from"); };
+    var toggle = el("button", "slot__toggle", label(false));
+    toggle.type = "button";
+    toggle.addEventListener("click", function (ev) {
+      ev.stopPropagation();
+      var open = list.classList.toggle("is-hidden") === false;
+      toggle.textContent = label(open);
+    });
+    wrap.appendChild(toggle);
+    wrap.appendChild(list);
+    return wrap;
+  }
+
   function placeCard(p) {
+    var isSlot = !!(p.options && p.options.length);
     var card = el("article", "card" + (checks[p.id] ? " is-done" : ""));
     card.setAttribute("data-id", p.id);
 
@@ -410,11 +458,12 @@
     main.appendChild(top);
 
     var meta = el("div", "card__meta");
-    if (p.rating) meta.appendChild(el("span", "badge badge--rating", ratingStars(p.rating) +
+    if (p.rating && !isSlot) meta.appendChild(el("span", "badge badge--rating", ratingStars(p.rating) +
       (p.ratingSource ? " · " + esc(p.ratingSource) : "")));
-    if (p.price) meta.appendChild(el("span", "badge badge--price", esc(p.price)));
+    if (p.price && !isSlot) meta.appendChild(el("span", "badge badge--price", esc(p.price)));
     var catLabel = (CATEGORIES.filter(function (c) { return c.id === p.category; })[0] || {}).label || p.category;
     if (catLabel) meta.appendChild(el("span", "badge badge--cat", esc(catLabel)));
+    if (isSlot) meta.appendChild(el("span", "badge badge--pick", "Pick one · " + p.options.length));
     main.appendChild(meta);
 
     head.appendChild(main);
@@ -445,31 +494,36 @@
 
     card.appendChild(el("div", "expandhint"));
 
-    // actions
-    var actions = el("div", "actions");
-    var copyBtn = el("button", "act act--copy",
-      '<span class="act__ico">📋</span><span>Copy address</span>');
-    copyBtn.type = "button";
-    copyBtn.addEventListener("click", function (ev) {
-      ev.stopPropagation();
-      if (!p.address) { toast("No address on file"); return; }
-      copyText(p.address, "Address copied — paste into Waze");
-    });
+    if (isSlot) {
+      // pick-one slot: search link + dropdown of specific venues
+      card.appendChild(renderOptions(p));
+    } else {
+      // single venue: Copy address + Maps + Waze
+      var actions = el("div", "actions");
+      var copyBtn = el("button", "act act--copy",
+        '<span class="act__ico">📋</span><span>Copy address</span>');
+      copyBtn.type = "button";
+      copyBtn.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        if (!p.address) { toast("No address on file"); return; }
+        copyText(p.address, "Address copied — paste into Waze");
+      });
 
-    var mapsBtn = el("a", "act act--maps", '<span class="act__ico">🗺️</span><span>Maps</span>');
-    mapsBtn.href = mapsUrl(p); mapsBtn.target = "_blank"; mapsBtn.rel = "noopener";
-    mapsBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
+      var mapsBtn = el("a", "act act--maps", '<span class="act__ico">🗺️</span><span>Maps</span>');
+      mapsBtn.href = mapsUrl(p); mapsBtn.target = "_blank"; mapsBtn.rel = "noopener";
+      mapsBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
 
-    var wazeBtn = el("a", "act act--waze", '<span class="act__ico">🚦</span><span>Waze</span>');
-    wazeBtn.href = wazeUrl(p); wazeBtn.target = "_blank"; wazeBtn.rel = "noopener";
-    wazeBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
+      var wazeBtn = el("a", "act act--waze", '<span class="act__ico">🚦</span><span>Waze</span>');
+      wazeBtn.href = wazeUrl(p); wazeBtn.target = "_blank"; wazeBtn.rel = "noopener";
+      wazeBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
 
-    actions.appendChild(copyBtn);
-    var actRow = el("div", "actions__row");
-    actRow.appendChild(mapsBtn);
-    actRow.appendChild(wazeBtn);
-    actions.appendChild(actRow);
-    card.appendChild(actions);
+      actions.appendChild(copyBtn);
+      var actRow = el("div", "actions__row");
+      actRow.appendChild(mapsBtn);
+      actRow.appendChild(wazeBtn);
+      actions.appendChild(actRow);
+      card.appendChild(actions);
+    }
 
     // personal note (saved to this device)
     var noteBtn = el("button", "card__notebtn", notes[p.id] ? "📝 Edit note" : "📝 Add note");
@@ -833,6 +887,19 @@
     saver.appendChild(b2);
     saver.appendChild(b5);
     root.appendChild(saver);
+
+    // ---- venue-finder prompt ----
+    var venp = el("section", "panel");
+    venp.appendChild(el("h2", null, "🔎 Find real venues"));
+    venp.appendChild(el("p", "muted",
+      "Some stops are “pick-one” slots (coffee/lunch/open dinners). Hand this prompt to your " +
+      "research assistant to fill them with real, specific, verified venues — then paste the JSON back to me."));
+    var vcode = el("div", "codeblock", esc(VENUE_PROMPT));
+    venp.appendChild(vcode);
+    var vbtn = el("button", "copy-btn", "📋 Copy venue-finder prompt");
+    vbtn.addEventListener("click", function () { copyText(VENUE_PROMPT, "Venue prompt copied!"); });
+    venp.appendChild(vbtn);
+    root.appendChild(venp);
 
     buildBtn.addEventListener("click", function () {
       var prompt = buildTripPrompt({
