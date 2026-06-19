@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v1.4";
+  var VERSION = "v1.5";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -1002,20 +1002,106 @@
     return null;
   }
 
+  // ---- THE STASH: local search over window.SUP_MAINE_STASH (free, offline) ----
+  var CAT_SYN = {
+    coffee: ["coffee", "cafe", "café", "espresso", "latte", "roaster", "cappuccino", "drip"],
+    eat: ["eat", "restaurant", "restaurants", "dinner", "lunch", "breakfast", "brunch", "food", "seafood", "oyster", "oysters", "lobster", "meal", "dine", "bite"],
+    shop: ["shop", "shopping", "store", "boutique", "bookstore", "books", "market", "antique", "antiques", "gift"],
+    activity: ["activity", "activities", "hike", "hiking", "walk", "kayak", "tour", "fun", "rainy", "backup"],
+    sight: ["sight", "sights", "view", "views", "scenic", "overlook", "lighthouse", "park", "sunset", "vista"]
+  };
+  var STOP = { the: 1, and: 1, for: 1, with: 1, near: 1, around: 1, some: 1, good: 1, great: 1, best: 1, place: 1, places: 1, spot: 1, spots: 1, find: 1, what: 1, where: 1, give: 1, show: 1, want: 1, need: 1, looking: 1, recommend: 1, day: 1 };
+
+  function cityToDay(city) {
+    var days = TRIP.days || [];
+    if (!days.length) return "d1";
+    if (city) {
+      var c = String(city).toLowerCase();
+      for (var i = 0; i < days.length; i++) {
+        var d = days[i];
+        var hay = ((d.label || "") + " " + (d.subtitle || "") + " " + (d.base || "")).toLowerCase();
+        if (hay.indexOf(c) !== -1) return d.id;
+      }
+    }
+    return days[0].id;
+  }
+
+  function stashToPlace(p) {
+    return {
+      day: p.day || cityToDay(p.city), time: p.time || "", name: p.name, emoji: p.emoji || "📍",
+      category: p.category || "activity", rating: p.rating || "", ratingSource: p.ratingSource || "",
+      price: p.price || "", address: p.address || "", why: p.why || "", todo: p.todo || "",
+      facts: p.facts || [], tip: p.tip || "", mapsQuery: p.mapsQuery || (p.name + (p.city ? ", " + p.city : ""))
+    };
+  }
+
+  function stashSearch(q) {
+    var list = window.SUP_MAINE_STASH || [];
+    if (!list.length) return [];
+    var raw = String(q || "").toLowerCase();
+    var toks = raw.replace(/[^a-z0-9é\s]/g, " ").split(/\s+/).filter(function (t) { return t.length > 2 && !STOP[t]; });
+    if (!toks.length) return [];
+
+    // category intent
+    var wantCats = {};
+    toks.forEach(function (t) {
+      Object.keys(CAT_SYN).forEach(function (cat) {
+        if (CAT_SYN[cat].indexOf(t) !== -1 || CAT_SYN[cat].indexOf(t.replace(/s$/, "")) !== -1) wantCats[cat] = true;
+      });
+    });
+    var wantCatList = Object.keys(wantCats);
+
+    // city intent (match any city present in the stash, incl. multi-word)
+    var cities = {};
+    list.forEach(function (p) { if (p.city) cities[String(p.city).toLowerCase()] = true; });
+    var wantCity = null;
+    Object.keys(cities).forEach(function (c) { if (raw.indexOf(c) !== -1) wantCity = c; });
+
+    var scored = [];
+    list.forEach(function (p) {
+      if (wantCatList.length && wantCatList.indexOf(p.category) === -1) return;
+      if (wantCity && String(p.city || "").toLowerCase() !== wantCity) return;
+      var hay = [p.name, (p.tags || []).join(" "), p.why, p.todo, (p.facts || []).join(" "), p.tip, p.city, p.category].join(" ").toLowerCase();
+      var score = 0;
+      if (wantCatList.length && wantCatList.indexOf(p.category) !== -1) score += 5;
+      if (wantCity) score += 4;
+      toks.forEach(function (t) {
+        if ((p.tags || []).some(function (tag) { return String(tag).toLowerCase().indexOf(t) !== -1; })) score += 2;
+        if (String(p.name).toLowerCase().indexOf(t) !== -1) score += 3;
+        else if (hay.indexOf(t) !== -1) score += 1;
+      });
+      if (score > 0) scored.push({ p: p, score: score });
+    });
+    scored.sort(function (a, b) { return b.score - a.score; });
+    return scored.filter(function (x) { return x.score >= 3; }).slice(0, 4).map(function (x) { return x.p; });
+  }
+
   function askSend(q) {
     q = String(q || "").trim();
     if (!q) return;
     askLog.push({ role: "you", text: q });
 
-    // 1) Hardcoded answers win — instant, no network.
-    var hit = cannedMatch(q);
-    if (hit) {
-      askLog.push({ role: "sup", text: hit.answer, additions: hit.additions || null });
-      renderAskLog();
-      return;
+    // "force live" escape — skip the free local layers and ask the AI directly.
+    var wantsLive = /\b(live|web search|search the web|search online|fresh ideas|real ?time|ask claude)\b/i.test(q);
+
+    if (!wantsLive) {
+      // 1) Hardcoded answers win — instant, no network.
+      var hit = cannedMatch(q);
+      if (hit) {
+        askLog.push({ role: "sup", text: hit.answer, additions: hit.additions || null });
+        renderAskLog();
+        return;
+      }
+      // 2) Search the local stash — instant, offline, $0.
+      var picks = stashSearch(q);
+      if (picks.length) {
+        askLog.push({ role: "sup", text: "Pulled these from your stash (no AI credit used 💸) — tap to add:", picks: picks });
+        renderAskLog();
+        return;
+      }
     }
 
-    // 2) Fall through to the live Claude proxy.
+    // 3) Fall through to the live Claude proxy.
     var pending = { role: "sup", text: "…", pending: true };
     askLog.push(pending);
     renderAskLog();
@@ -1062,7 +1148,7 @@
     if (!box) return;
     box.innerHTML = "";
     if (!askLog.length) {
-      box.appendChild(el("p", "muted", "Ask me anything about your trip — “a great coffee roaster near the Portland Airbnb?”, “swap the Day 3 dinner for something with a view”, “rainy-day plan for Acadia?” I can add new stops straight to your itinerary."));
+      box.appendChild(el("p", "muted", "Ask me anything about your trip — “coffee in Bar Harbor”, “rainy-day Acadia”, “bookstore in Hudson”. I search your stash first (free, offline); add “live” to your question to ask the AI directly. Tap any result to add it to your itinerary."));
       return;
     }
     askLog.forEach(function (m) {
@@ -1073,6 +1159,22 @@
         add.type = "button";
         add.addEventListener("click", function () { addAiPlaces(m.additions); });
         row.appendChild(add);
+      }
+      if (m.picks && m.picks.length) {
+        m.picks.forEach(function (p) {
+          var pr = el("div", "pick");
+          var head = el("div", "pick__head");
+          head.innerHTML = "<b>" + esc((p.emoji ? p.emoji + " " : "") + p.name) + "</b>" +
+            (p.city ? " <span class='pick__city'>· " + esc(p.city) + "</span>" : "") +
+            (p.rating ? " <span class='pick__rate'>★ " + esc(String(p.rating)) + "</span>" : "");
+          pr.appendChild(head);
+          if (p.why) { var w = el("div", "pick__why"); w.innerHTML = linkify(p.why); pr.appendChild(w); }
+          var b = el("button", "pick__add", "➕ Add");
+          b.type = "button";
+          b.addEventListener("click", function () { addAiPlaces([stashToPlace(p)]); });
+          pr.appendChild(b);
+          row.appendChild(pr);
+        });
       }
       box.appendChild(row);
     });
