@@ -4,6 +4,8 @@
 (function () {
   "use strict";
 
+  var VERSION = "v1.1";
+
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
     { id: "all",      label: "All",        emoji: "✨" },
@@ -134,8 +136,10 @@
   // ---- per-device persistence: checks + notes ----
   function loadMap(k) { try { return JSON.parse(localStorage.getItem(k)) || {}; } catch (e) { return {}; } }
   function saveMap(k, m) { try { localStorage.setItem(k, JSON.stringify(m)); } catch (e) {} }
-  var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v1";
-  var checks = loadMap(CHECK_KEY), notes = loadMap(NOTE_KEY), wxCache = loadMap(WX_KEY);
+  function loadList(k) { try { return JSON.parse(localStorage.getItem(k)) || []; } catch (e) { return []; } }
+  function saveList(k, a) { try { localStorage.setItem(k, JSON.stringify(a)); } catch (e) {} }
+  var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v1", PACK_KEY = "supmaine.packing.v1";
+  var checks = loadMap(CHECK_KEY), notes = loadMap(NOTE_KEY), wxCache = loadMap(WX_KEY), packing = loadList(PACK_KEY);
 
   // ---- housing coverage: which trip nights have no stay ----
   function housingReport() {
@@ -205,17 +209,62 @@
     applyWx(); // paint whatever's already cached
   }
 
-  // ---- progress (done / total) ----
+  // ---- misc trip helpers (now/next, costs, confirmations, day map) ----
+  function stripLead(s) { var r = String(s || "").replace(/^[^\w(]+/, "").trim(); return r || String(s || ""); }
+  function priceNum(p) { var m = p && p.price && String(p.price).match(/\$\s?(\d+)/); return m ? parseInt(m[1], 10) : 0; }
+  function spendChecked() {
+    return (TRIP.places || []).reduce(function (s, p) { return s + (checks[p.id] ? priceNum(p) : 0); }, 0);
+  }
+  function confirmList() {
+    return (TRIP.places || []).filter(function (p) { return p.needsConfirm && !checks[p.id]; });
+  }
+  function computeNowNext() {
+    var today = (TRIP.days || []).filter(function (d) { return d.iso === todayISO(); })[0];
+    if (!today) return null;
+    var ps = byTime((TRIP.places || []).filter(function (p) {
+      return p.day === today.id && !p.alt && timeRank(p.time) < 9000;
+    }));
+    if (!ps.length) return null;
+    var now = new Date(), nm = now.getHours() * 60 + now.getMinutes(), next = null, cur = null;
+    for (var i = 0; i < ps.length; i++) {
+      if (timeRank(ps[i].time) >= nm) { next = ps[i]; break; }
+      cur = ps[i];
+    }
+    return { cur: cur, next: next, day: today };
+  }
+  function dayMapUrl(dayId) {
+    var addrs = byTime((TRIP.places || []).filter(function (p) {
+      return p.day === dayId && p.category !== "drive" && p.address && !p.alt;
+    })).map(function (p) { return p.address; });
+    addrs = addrs.filter(function (a, i) { return i === 0 || a !== addrs[i - 1]; });
+    if (addrs.length < 2) return null;
+    var origin = encodeURIComponent(addrs[0]), dest = encodeURIComponent(addrs[addrs.length - 1]);
+    var way = addrs.slice(1, -1).map(encodeURIComponent).join("|");
+    var url = "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=" + origin + "&destination=" + dest;
+    if (way) url += "&waypoints=" + way;
+    return url;
+  }
+
+  // ---- progress (done / total) + logged spend ----
   function updateProgress() {
     var pill = document.getElementById("trip-progress");
-    if (!pill) return;
-    var total = (TRIP.places || []).length;
-    var done = (TRIP.places || []).filter(function (p) { return checks[p.id]; }).length;
-    var pct = total ? Math.round(done / total * 100) : 0;
-    var fill = pill.querySelector(".progress-pill__fill");
-    var txt = pill.querySelector(".progress-pill__txt");
-    if (fill) fill.style.width = pct + "%";
-    if (txt) txt.textContent = "✓ " + done + "/" + total;
+    if (pill) {
+      var total = (TRIP.places || []).length;
+      var done = (TRIP.places || []).filter(function (p) { return checks[p.id]; }).length;
+      var pct = total ? Math.round(done / total * 100) : 0;
+      var fill = pill.querySelector(".progress-pill__fill");
+      var txt = pill.querySelector(".progress-pill__txt");
+      if (fill) fill.style.width = pct + "%";
+      if (txt) txt.textContent = "✓ " + done + "/" + total;
+    }
+    var costEl = document.getElementById("trip-cost");
+    if (costEl) {
+      var spent = spendChecked();
+      if (spent > 0) {
+        costEl.textContent = "💵 Logged spend: $" + spent + " (checked items with a listed price)";
+        costEl.style.display = "";
+      } else { costEl.style.display = "none"; }
+    }
   }
 
   // ---- save / export: backup bundle + travel diary ----
@@ -461,8 +510,33 @@
     root.innerHTML = "";
     var focusMode = state.filter === "all" && !state.query; // time-focus only when not filtering
 
-    // ---- housing-gap banner ----
+    // ---- top banners (focus mode only) ----
     if (focusMode) {
+      // now / next — live, today only
+      var nn = computeNowNext();
+      if (nn && (nn.cur || nn.next)) {
+        var nb = el("div", "banner banner--now");
+        var html = nn.next
+          ? '⏱ <b>Up next:</b> ' + (nn.next.time ? esc(nn.next.time) + " · " : "") + esc(stripLead(nn.next.name))
+          : "🎉 <b>That's a wrap for today</b> — nice work.";
+        if (nn.cur) html += '<span class="banner__sub">Just now: ' + esc(stripLead(nn.cur.name)) + "</span>";
+        nb.innerHTML = html;
+        nb.addEventListener("click", function () {
+          var s = document.querySelector('.day[data-day="' + nn.day.id + '"]');
+          if (s) s.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        root.appendChild(nb);
+      }
+      // confirm tentative reservations
+      var cf = confirmList();
+      if (cf.length) {
+        var cb = el("div", "banner banner--confirm");
+        cb.innerHTML = "📞 <b>Confirm " + cf.length + " tentative reservation" + (cf.length > 1 ? "s" : "") + ":</b> " +
+          cf.map(function (p) { return esc(stripLead(p.name).replace(/^Dinner — /, "")); }).join(", ") +
+          ". <span class=\"banner__sub\">Verify each, then check it off to clear this.</span>";
+        root.appendChild(cb);
+      }
+      // housing gap
       var hr = housingReport();
       if (hr.hasStays && hr.uncovered.length) {
         var n = hr.uncovered.length;
@@ -472,14 +546,22 @@
           ". <span class=\"banner__sub\">A friend's couch counts — just add it as a stay.</span>";
         root.appendChild(b);
       }
+      // logged spend line (filled by updateProgress)
+      var cost = el("div", "tripstats"); cost.id = "trip-cost"; cost.style.display = "none";
+      root.appendChild(cost);
     }
 
     var anyShown = false, todaySec = null;
     (TRIP.days || []).forEach(function (day) {
-      var dayPlaces = byTime((TRIP.places || [])
+      var dayAll = byTime((TRIP.places || [])
         .filter(function (p) { return p.day === day.id && matchesFilter(p); }));
-      if (!dayPlaces.length) return;
+      if (!dayAll.length) return;
       anyShown = true;
+
+      // in focus mode, split out 'alt' options into a collapsible block
+      var mains = focusMode ? dayAll.filter(function (p) { return !p.alt; }) : dayAll;
+      var alts = focusMode ? dayAll.filter(function (p) { return p.alt; }) : [];
+      if (!mains.length) { mains = dayAll; alts = []; } // never hide everything
 
       var ds = day.iso ? dayState(day.iso) : "future";
       var collapsed = focusMode && ds === "past";
@@ -495,9 +577,33 @@
       sec.appendChild(head);
       if (day.subtitle) sec.appendChild(el("p", "day__sub", esc(day.subtitle)));
 
+      // per-day route map
+      var murl = dayMapUrl(day.id);
+      if (murl) {
+        var mb = el("a", "day__map", "🧭 View day route in Maps");
+        mb.href = murl; mb.target = "_blank"; mb.rel = "noopener";
+        mb.addEventListener("click", function (ev) { ev.stopPropagation(); });
+        sec.appendChild(mb);
+      }
+
       var body = el("div", "day__body");
-      dayPlaces.forEach(function (p) { body.appendChild(placeCard(p)); });
+      mains.forEach(function (p) { body.appendChild(placeCard(p)); });
       sec.appendChild(body);
+
+      // alternatives (collapsed)
+      if (alts.length) {
+        var altLabel = function (open) { return (open ? "− hide " : "＋ ") + alts.length + " more option" + (alts.length > 1 ? "s" : ""); };
+        var altWrap = el("div", "day__alts is-hidden");
+        alts.forEach(function (p) { altWrap.appendChild(placeCard(p)); });
+        var altBtn = el("button", "day__altbtn", altLabel(false));
+        altBtn.type = "button";
+        altBtn.addEventListener("click", function () {
+          var open = altWrap.classList.toggle("is-hidden") === false;
+          altBtn.textContent = altLabel(open);
+        });
+        sec.appendChild(altBtn);
+        sec.appendChild(altWrap);
+      }
 
       // past days collapse; tap the header to peek
       if (collapsed) {
@@ -578,6 +684,41 @@
     cbtn.addEventListener("click", function () { copyText(PROFILE_PROMPT, "Profile prompt copied!"); });
     gen.appendChild(cbtn);
     root.appendChild(gen);
+
+    // ---- packing list ----
+    var pack = el("section", "panel");
+    pack.appendChild(el("h2", null, "🎒 Packing list"));
+    pack.appendChild(el("p", "muted", "A quick checklist — saved on this device."));
+    var list = el("div", "packlist");
+    function renderPack() {
+      list.innerHTML = "";
+      if (!packing.length) list.appendChild(el("p", "muted", "Nothing yet — add your first item below."));
+      packing.forEach(function (item, idx) {
+        var row = el("div", "packrow" + (item.done ? " is-done" : ""));
+        var box = el("button", "packrow__box" + (item.done ? " is-checked" : ""), item.done ? "✓" : "");
+        box.type = "button";
+        box.addEventListener("click", function () { packing[idx].done = !packing[idx].done; saveList(PACK_KEY, packing); renderPack(); });
+        var txt = el("span", "packrow__txt", esc(item.text));
+        var del = el("button", "packrow__del", "✕"); del.type = "button";
+        del.addEventListener("click", function () { packing.splice(idx, 1); saveList(PACK_KEY, packing); renderPack(); });
+        row.appendChild(box); row.appendChild(txt); row.appendChild(del);
+        list.appendChild(row);
+      });
+    }
+    pack.appendChild(list);
+    var addRow = el("div", "packadd");
+    var inp = el("input", "packadd__input"); inp.type = "text"; inp.placeholder = "Add an item (rain jacket, passports…)";
+    var addBtn = el("button", "packadd__btn", "Add");
+    function addItem() {
+      var v = inp.value.trim(); if (!v) return;
+      packing.push({ text: v, done: false }); saveList(PACK_KEY, packing); inp.value = ""; renderPack(); inp.focus();
+    }
+    addBtn.addEventListener("click", addItem);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") addItem(); });
+    addRow.appendChild(inp); addRow.appendChild(addBtn);
+    pack.appendChild(addRow);
+    renderPack();
+    root.appendChild(pack);
   }
 
   // =====================================================
@@ -740,6 +881,8 @@
     $("#trip-tagline").textContent = t.blurb ? (t.base || "your pocket guide to Maine") : "your pocket guide to Maine";
     if (t.base) $("#trip-tagline").textContent = t.base;
     $("#trip-chip-dates").textContent = t.dates || "Add dates";
+    var foot = document.getElementById("appfoot");
+    if (foot) foot.textContent = "Sup'Maine " + VERSION + " · " + (TRIP.places || []).length + " spots · made with 🦞";
   }
 
   $("#trip-chip").addEventListener("click", function () {
