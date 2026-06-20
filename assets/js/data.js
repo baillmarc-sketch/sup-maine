@@ -276,6 +276,20 @@ window.SUP_MAINE_TRIP = {
       facts: ["Mostly Italian & French; deep greens, gold and Victorian wood.", "Portland Press Herald called it 'a winner, with something for everyone.'", "Neighborhood feel, attentive service.", "A block from the Longfellow Hotel bar — good pre-dinner cocktail."],
       tip: "⚠️ Reservation marked TENTATIVE (Sun 7 PM) — confirm it (hours vary by day). Alt: Scales, 68 Commercial St, on the water."
     },
+    {
+      id: "p310", day: "d3", time: "Afternoon", name: "Sōlie", emoji: "🛍️",
+      category: "shop", done: true, rating: "", ratingSource: "", price: "",
+      address: "Old Port, Portland, ME 04101", mapsQuery: "Solie Portland Maine",
+      why: "<b>Adorable Old Port boutique</b> — you two loved it. ✨",
+      todo: "", facts: [], tip: "Visited — so cute. 💛"
+    },
+    {
+      id: "p311", day: "d3", time: "Afternoon", name: "Electric Buddha", emoji: "🛍️",
+      category: "shop", done: true, rating: "", ratingSource: "", price: "",
+      address: "Old Port, Portland, ME 04101", mapsQuery: "Electric Buddha Portland Maine",
+      why: "<b>Quirky Old Port shop</b> — gifts, finds, good vibes.",
+      todo: "", facts: [], tip: "Visited — so cute. 💛"
+    },
 
     /* ---------------- DAY 4 — Portland → Acadia ---------------- */
     {

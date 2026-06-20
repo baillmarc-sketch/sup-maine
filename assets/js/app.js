@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v3.7";
+  var VERSION = "v3.8";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -150,6 +150,7 @@
   function saveList(k, a) { try { localStorage.setItem(k, JSON.stringify(a)); } catch (e) {} }
   var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v4", PACK_KEY = "supmaine.packing.v1";
   var CHECK_META_KEY = "supmaine.checksMeta.v1", NOTE_META_KEY = "supmaine.notesMeta.v1";
+  var SEEDED_KEY = "supmaine.seeded.v1"; // tracks which done:true places we've auto-checked once
   var THEME_KEY = "supmaine.theme.v1"; // "auto" | "light" | "dark"
   var EXP_KEY = "supmaine.expenses.v1";
   var SYNC_CODE_KEY = "supmaine.sync.code.v1";
@@ -157,6 +158,19 @@
   var lastSyncAt = 0, syncing = false, syncPollStarted = false;
   var checks = loadMap(CHECK_KEY), notes = loadMap(NOTE_KEY), wxCache = loadMap(WX_KEY), packing = loadList(PACK_KEY);
   var checksMeta = loadMap(CHECK_META_KEY), notesMeta = loadMap(NOTE_META_KEY);
+  var seeded = loadMap(SEEDED_KEY);
+  // places flagged done:true in the data start checked — once per device, so
+  // you can still un-check them later and it sticks.
+  function seedDoneChecks() {
+    var changed = false;
+    (TRIP.places || []).forEach(function (p) {
+      if (p.done && !seeded[p.id]) {
+        if (checks[p.id] === undefined) { checks[p.id] = true; checksMeta[p.id] = Date.now(); }
+        seeded[p.id] = 1; changed = true;
+      }
+    });
+    if (changed) { saveMap(CHECK_KEY, checks); saveMap(CHECK_META_KEY, checksMeta); saveMap(SEEDED_KEY, seeded); }
+  }
   var expenses = loadList(EXP_KEY);
 
   // ---- housing coverage: which trip nights have no stay ----
@@ -1977,6 +1991,7 @@
   // =====================================================
   applyTheme(); // set theme before first paint to avoid a flash
   ensureExpMeta();
+  seedDoneChecks();
   applyTripMeta();
   renderChips();
   renderAll();
