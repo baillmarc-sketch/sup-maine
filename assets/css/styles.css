@@ -543,6 +543,16 @@ a { color: var(--navy); }
 .exprow__who { font-size: 12px; color: var(--ink-soft); font-weight: 700; }
 .exprow__amt { font-weight: 800; font-size: 15px; white-space: nowrap; }
 .exprow__del { flex: none; color: var(--ink-soft); font-size: 14px; min-width: 36px; min-height: 36px; }
+.cost-catbreak { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.cost-catpill {
+  font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 999px;
+  background: var(--paper-2); color: var(--ink-soft);
+}
+/* inline "log a cost" on place cards */
+.card__cost { padding: 0 14px 12px; }
+.card__cost .cost-row { margin-top: 8px; }
+.card__cost .cost-payer { flex: 1; }
+.card__cost .cost-addbtn { flex: 1; }
 
 @media (min-width: 560px) {
   .brand__name { font-size: 29px; }
