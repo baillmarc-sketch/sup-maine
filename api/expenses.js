@@ -27,13 +27,35 @@ function mergeById(a, b) {
   });
   return Object.keys(map).map(function (k) { return map[k]; });
 }
-// checks/notes: maps of id -> { v, at }; keep the newer per key
+// checks: maps of id -> { v, at }; keep the newer per key
 function mergeMap(a, b) {
   a = a || {}; b = b || {}; const out = {};
   Object.keys(a).forEach(function (k) { out[k] = a[k]; });
   Object.keys(b).forEach(function (k) {
     const bv = b[k] || {}, ov = out[k] || {};
     if (!out[k] || (bv.at || 0) >= (ov.at || 0)) out[k] = b[k];
+  });
+  return out;
+}
+// notes: don't lose text. Two different notes on the same spot are KEPT (both);
+// an edit that extends/contains the other replaces it; a clear (empty) wins only
+// if it's the newer change.
+function mergeNotes(a, b) {
+  a = a || {}; b = b || {}; const out = {}, keys = {};
+  Object.keys(a).forEach(function (k) { keys[k] = 1; });
+  Object.keys(b).forEach(function (k) { keys[k] = 1; });
+  Object.keys(keys).forEach(function (k) {
+    const x = a[k], y = b[k];
+    if (!x) { out[k] = y; return; }
+    if (!y) { out[k] = x; return; }
+    const xv = String(x.v || ""), yv = String(y.v || ""), at = Math.max(x.at || 0, y.at || 0);
+    if (xv === yv) { out[k] = { v: xv, at: at }; return; }
+    if (!xv || !yv) { out[k] = (x.at || 0) >= (y.at || 0) ? x : y; return; } // a clear wins only if newer
+    if (xv.indexOf(yv) !== -1) { out[k] = { v: xv, at: at }; return; }       // x extends y
+    if (yv.indexOf(xv) !== -1) { out[k] = { v: yv, at: at }; return; }       // y extends x
+    const first = (x.at || 0) <= (y.at || 0) ? xv : yv;                       // concurrent → keep both
+    const second = first === xv ? yv : xv;
+    out[k] = { v: (first + "\n" + second).slice(0, 2000), at: at };
   });
   return out;
 }
@@ -71,7 +93,7 @@ module.exports = async (req, res) => {
       const merged = {
         expenses: mergeById(stored.expenses, Array.isArray(body.expenses) ? body.expenses : []).slice(0, 2000),
         checks: mergeMap(stored.checks, body.checks || {}),
-        notes: mergeMap(stored.notes, body.notes || {})
+        notes: mergeNotes(stored.notes, body.notes || {})
       };
       await kv.set(key, merged);
       res.status(200).json(merged);
