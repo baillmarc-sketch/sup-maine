@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v2.5";
+  var VERSION = "v2.6";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -150,7 +150,9 @@
   function saveList(k, a) { try { localStorage.setItem(k, JSON.stringify(a)); } catch (e) {} }
   var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v4", PACK_KEY = "supmaine.packing.v1";
   var THEME_KEY = "supmaine.theme.v1"; // "auto" | "light" | "dark"
+  var EXP_KEY = "supmaine.expenses.v1";
   var checks = loadMap(CHECK_KEY), notes = loadMap(NOTE_KEY), wxCache = loadMap(WX_KEY), packing = loadList(PACK_KEY);
+  var expenses = loadList(EXP_KEY);
 
   // ---- housing coverage: which trip nights have no stay ----
   function housingReport() {
@@ -867,6 +869,164 @@
   }
 
   // =====================================================
+  //  COSTS VIEW (by-day expense tracker + who-paid)
+  // =====================================================
+  var EXP_CATS = [
+    { id: "parking", label: "Parking", emoji: "🅿️" },
+    { id: "gas",     label: "Gas",     emoji: "⛽" },
+    { id: "tolls",   label: "Tolls",   emoji: "🛣️" },
+    { id: "coffee",  label: "Coffee",  emoji: "☕" },
+    { id: "food",    label: "Food",    emoji: "🍽️" },
+    { id: "snacks",  label: "Snacks",  emoji: "🍿" },
+    { id: "misc",    label: "Misc",    emoji: "🧺" }
+  ];
+  var costDraft = { cat: "coffee", who: 0, day: null, note: "" };
+
+  function payerNames() {
+    var t = (TRIP.trip || {}).travelers || "";
+    var parts = t.split(/\s*(?:&|,|\band\b|\+)\s*/i).map(function (s) { return s.trim(); }).filter(Boolean);
+    if (parts.length >= 2) return [parts[0], parts[1]];
+    if (parts.length === 1) return [parts[0], "Other"];
+    return ["Me", "Other"];
+  }
+  function catOf(id) { for (var i = 0; i < EXP_CATS.length; i++) if (EXP_CATS[i].id === id) return EXP_CATS[i]; return EXP_CATS[EXP_CATS.length - 1]; }
+  function money(n) { return "$" + (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, ""); }
+  function defaultCostDay() {
+    var t = (TRIP.days || []).filter(function (d) { return d.iso === todayISO(); })[0];
+    return t ? t.id : (((TRIP.days || [])[0] || {}).id || "general");
+  }
+  function expensesByDay(dayId) { return expenses.filter(function (e) { return e.day === dayId; }); }
+  function expDayTotal(dayId) { return expensesByDay(dayId).reduce(function (s, e) { return s + (+e.amount || 0); }, 0); }
+  function costSummary() {
+    var names = payerNames(), paid = [0, 0];
+    expenses.forEach(function (e) {
+      var amt = +e.amount || 0;
+      if (e.who === 1) paid[1] += amt;
+      else if (e.who === 2) { paid[0] += amt / 2; paid[1] += amt / 2; }
+      else paid[0] += amt;
+    });
+    var total = paid[0] + paid[1], diff = paid[0] - paid[1], settle;
+    if (Math.abs(diff) < 0.005) settle = "All square 🤝";
+    else if (diff > 0) settle = names[1] + " owes " + names[0] + " " + money(diff / 2);
+    else settle = names[0] + " owes " + names[1] + " " + money(-diff / 2);
+    return { names: names, paid: paid, total: total, settle: settle };
+  }
+
+  function costRow(e, names) {
+    var row = el("div", "exprow");
+    var cat = catOf(e.cat);
+    var main = el("div", "exprow__main");
+    main.appendChild(el("span", "exprow__label", esc(cat.emoji + " " + (e.note || cat.label))));
+    main.appendChild(el("span", "exprow__who", "paid by " + esc(e.who === 2 ? "Both" : (names[e.who] || "?"))));
+    row.appendChild(main);
+    row.appendChild(el("span", "exprow__amt", money(e.amount)));
+    var del = el("button", "exprow__del", "✕"); del.type = "button";
+    del.setAttribute("aria-label", "Delete expense");
+    del.addEventListener("click", function () {
+      var i = expenses.indexOf(e);
+      if (i > -1) { expenses.splice(i, 1); saveList(EXP_KEY, expenses); renderCosts(); }
+    });
+    row.appendChild(del);
+    return row;
+  }
+
+  function buildCostAdd(names) {
+    if (!costDraft.day) costDraft.day = defaultCostDay();
+    var box = el("section", "panel");
+    box.appendChild(el("h3", null, "Add an expense"));
+
+    var cats = el("div", "cost-cats");
+    EXP_CATS.forEach(function (c) {
+      var chip = el("button", "cost-cat" + (costDraft.cat === c.id ? " is-active" : ""), c.emoji + " " + c.label);
+      chip.type = "button";
+      chip.addEventListener("click", function () {
+        costDraft.cat = c.id;
+        Array.prototype.forEach.call(cats.children, function (ch) { ch.classList.remove("is-active"); });
+        chip.classList.add("is-active");
+      });
+      cats.appendChild(chip);
+    });
+    box.appendChild(cats);
+
+    var row1 = el("div", "cost-row");
+    var amt = el("input", "cost-amt"); amt.type = "text"; amt.inputMode = "decimal"; amt.placeholder = "$ amount";
+    var note = el("input", "cost-note"); note.type = "text"; note.placeholder = "note (optional)"; note.value = costDraft.note || "";
+    note.addEventListener("input", function () { costDraft.note = note.value; });
+    row1.appendChild(amt); row1.appendChild(note);
+    box.appendChild(row1);
+
+    var row2 = el("div", "cost-row");
+    var daySel = el("select", "cost-day");
+    (TRIP.days || []).forEach(function (d) {
+      var o = el("option", null, esc(d.date) + (d.label ? " · " + esc(d.label) : "")); o.value = d.id; daySel.appendChild(o);
+    });
+    var og = el("option", null, "General (no day)"); og.value = "general"; daySel.appendChild(og);
+    daySel.value = costDraft.day;
+    daySel.addEventListener("change", function () { costDraft.day = daySel.value; });
+
+    var payBtn = el("button", "cost-payer"); payBtn.type = "button";
+    function payLabel() { return "💳 " + (costDraft.who === 2 ? "Both" : names[costDraft.who]); }
+    payBtn.textContent = payLabel();
+    payBtn.setAttribute("aria-label", "Who paid — tap to change");
+    payBtn.addEventListener("click", function () { costDraft.who = (costDraft.who + 1) % 3; payBtn.textContent = payLabel(); });
+
+    var addBtn = el("button", "cost-addbtn", "Add");
+    function submit() {
+      var v = parseFloat(String(amt.value).replace(/[^0-9.]/g, ""));
+      if (!v || v <= 0) { toast("Enter an amount"); amt.focus(); return; }
+      expenses.push({ id: "e" + Date.now(), day: daySel.value, cat: costDraft.cat,
+        note: note.value.trim(), amount: Math.round(v * 100) / 100, who: costDraft.who });
+      saveList(EXP_KEY, expenses);
+      costDraft.note = "";
+      toast("Added " + money(v) + " 🧾");
+      renderCosts();
+    }
+    addBtn.addEventListener("click", submit);
+    amt.addEventListener("keydown", function (e) { if (e.key === "Enter") submit(); });
+    row2.appendChild(daySel); row2.appendChild(payBtn); row2.appendChild(addBtn);
+    box.appendChild(row2);
+    return box;
+  }
+
+  function renderCosts() {
+    var root = $("#view-costs");
+    if (!root) return;
+    root.innerHTML = "";
+    var s = costSummary(), names = s.names;
+
+    var sum = el("section", "panel");
+    sum.appendChild(el("h2", null, "💵 Trip costs"));
+    sum.appendChild(el("div", "cost-total", money(s.total)));
+    sum.appendChild(el("p", "muted", "Total logged so far"));
+    var brk = el("div", "cost-breakdown");
+    brk.appendChild(el("div", "cost-person", "<b>" + esc(names[0]) + "</b> paid " + money(s.paid[0])));
+    brk.appendChild(el("div", "cost-person", "<b>" + esc(names[1]) + "</b> paid " + money(s.paid[1])));
+    sum.appendChild(brk);
+    sum.appendChild(el("div", "cost-settle", esc(s.settle) + (expenses.length ? " · split evenly" : "")));
+    root.appendChild(sum);
+
+    root.appendChild(buildCostAdd(names));
+
+    var anyRows = false;
+    (TRIP.days || []).concat([{ id: "general", date: "General", label: "" }]).forEach(function (d) {
+      var list = expensesByDay(d.id);
+      if (!list.length) return;
+      anyRows = true;
+      var sec = el("section", "panel");
+      var h = el("div", "cost-dayhead");
+      h.appendChild(el("h3", null, esc(d.date) + (d.label ? " · " + esc(d.label) : "")));
+      h.appendChild(el("span", "cost-daytotal", money(expDayTotal(d.id))));
+      sec.appendChild(h);
+      list.forEach(function (e) { sec.appendChild(costRow(e, names)); });
+      root.appendChild(sec);
+    });
+    if (!anyRows) {
+      root.appendChild(el("div", "empty",
+        '<div class="empty__big">🧾</div><p>No expenses yet. Pick a category above, punch in an amount, and tap Add — tolls, gas, that lobster roll. It tracks who paid and totals it up by day.</p>'));
+    }
+  }
+
+  // =====================================================
   //  INFO VIEW: reservations & codes + connection + setup
   // =====================================================
   // a small address row: tappable-to-copy address + Maps + Waze
@@ -1487,7 +1647,7 @@
 
   function go(view) {
     state.view = view;
-    ["itinerary", "profile", "plan"].forEach(function (v) {
+    ["itinerary", "profile", "plan", "costs"].forEach(function (v) {
       $("#view-" + v).classList.toggle("is-hidden", v !== view);
     });
     Array.prototype.forEach.call(document.querySelectorAll(".tabbar__btn"), function (b) {
@@ -1518,6 +1678,7 @@
     renderItinerary();
     renderProfile();
     renderPlan();
+    renderCosts();
     renderDayStrip();
     renderAskLog();
     syncTopbarH();
