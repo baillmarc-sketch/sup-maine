@@ -134,6 +134,15 @@ window.SUP_MAINE_TRIP = {
       tip: "Windy days, hold your napkins — and your roll."
     },
     {
+      id: "p203b", day: "d2", time: "11:00a", alt: true, name: "🦞 Bite Into Maine (cult food truck)", emoji: "🦞",
+      category: "eat", rating: 4.8, ratingSource: "Google ~", price: "$$",
+      address: "1000 Shore Rd, Cape Elizabeth, ME 04107", mapsQuery: "Bite Into Maine food truck Fort Williams Cape Elizabeth",
+      why: "<b>The IYKYK lobster roll, zero detour</b> — a food truck parked at Fort Williams, right where you're already seeing Portland Head Light.",
+      todo: "Try the Connecticut-style (warm, buttered) or go wild — wasabi, curry, picnic-style.",
+      facts: ["Truck sits at Fort Williams Park by the lighthouse.", "Creative lobster-roll styles you won't find elsewhere.", "Seasonal; eat it on the lawn."],
+      tip: "No detour at all — fold it into your Portland Head Light stop."
+    },
+    {
       id: "p204", day: "d2", time: "2:30p", name: "Kennebunkport (Dock Square)", emoji: "⛵",
       category: "activity", rating: 4.7, ratingSource: "Google ~", price: "",
       address: "Dock Square, Kennebunkport, ME 04046", mapsQuery: "Dock Square Kennebunkport ME",
@@ -268,6 +277,24 @@ window.SUP_MAINE_TRIP = {
         { name: "Peter Ott's on the Water", address: "16 Bay View St, Camden, ME 04843", rating: 4.5, price: "$$", note: "Lobster rolls, harbor views" },
         { name: "Camden Deli", address: "37 Main St, Camden, ME 04843", rating: 4.4, price: "$", note: "Casual sandwiches over the harbor" }
       ]
+    },
+    {
+      id: "p402b", day: "d4", time: "11:45a", alt: true, name: "🦞 McLoons Lobster Shack (hidden wharf)", emoji: "🦞",
+      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$",
+      address: "315 Island Rd, South Thomaston, ME 04858", mapsQuery: "McLoons Lobster Shack South Thomaston ME",
+      why: "<b>The IYKYK midcoast lobster roll</b> — a working wharf near Rockland, ~5 min off Route 1 and right before Camden.",
+      todo: "Order at the shack window, grab a picnic table over the water, lobster roll + a whoopie pie.",
+      facts: ["On a real working lobster wharf in Spruce Head.", "Seasonal (summer); order-at-window.", "~5 min detour off Route 1 — basically on the way to Camden."],
+      tip: "Beat the noon rush — tables fill fast on a sunny day. Swap this for the Camden lunch slot."
+    },
+    {
+      id: "p402c", day: "d4", time: "11:30a", alt: true, name: "🦞 Five Islands Lobster Co. (off the beaten path)", emoji: "🦞",
+      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$",
+      address: "1447 Five Islands Rd, Georgetown, ME 04548", mapsQuery: "Five Islands Lobster Co Georgetown ME",
+      why: "<b>Order off the dock, eat over the water</b> — the full hidden-gem experience, ~20 min down a peninsula off Route 1 near Bath.",
+      todo: "Lobster roll or a boiled lobster on the wharf; BYOB and watch the boats unload.",
+      facts: ["On a working dock in Georgetown — true off-the-beaten-path.", "~20 min out-and-back off Route 1.", "Seasonal; BYOB; cash-friendly."],
+      tip: "It's a detour, not on the way — leave Portland a touch earlier and make it an early lunch."
     },
     {
       id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
