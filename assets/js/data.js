@@ -107,7 +107,16 @@ window.SUP_MAINE_TRIP = {
 
     /* ---------------- DAY 2 — Southern Maine coast ---------------- */
     {
-      id: "p201", day: "d2", time: "10:00a", name: "Portland Head Light", emoji: "🗼",
+      id: "p200", day: "d2", time: "9:30a", name: "Tandem Coffee + Bakery", emoji: "☕",
+      category: "coffee", rating: 4.6, ratingSource: "Google ~", price: "$$",
+      address: "742 Congress St, Portland, ME 04102", mapsQuery: "Tandem Coffee + Bakery, 742 Congress St, Portland ME",
+      why: "<b>Beloved Portland roaster</b> with famously good pastries — the right way to kick off today.",
+      todo: "Grab a morning bun + a drip and roll out.",
+      facts: ["Cult-favorite morning buns.", "Two Portland locations."],
+      tip: "Heading there now — eat the bun warm. ☕"
+    },
+    {
+      id: "p201", day: "d2", time: "11:00a", name: "Portland Head Light", emoji: "🗼",
       category: "sight", rating: 4.8, ratingSource: "Google ~", price: "Free park",
       address: "12 Captain Strout Cir, Cape Elizabeth, ME 04107",
       why: "The <b>most-photographed lighthouse in America</b>, and it earns it.",
@@ -116,7 +125,7 @@ window.SUP_MAINE_TRIP = {
       tip: "Go early for soft light and easy parking; museum is a few bucks, cash."
     },
     {
-      id: "p202", day: "d2", time: "11:30a", name: "Two Lights State Park", emoji: "🌊",
+      id: "p202", day: "d2", time: "12:30p", name: "Two Lights State Park", emoji: "🌊",
       category: "activity", rating: 4.8, ratingSource: "Google ~", price: "$",
       address: "7 Tower Dr, Cape Elizabeth, ME 04107",
       why: "Rugged rocky headland — <b>big-ocean drama</b>, easy access, right by the lobster shack.",
@@ -125,7 +134,7 @@ window.SUP_MAINE_TRIP = {
       tip: "Pair it with lunch at The Lobster Shack a 2-min drive away."
     },
     {
-      id: "p203", day: "d2", time: "12:30p", name: "The Lobster Shack at Two Lights", emoji: "🦞",
+      id: "p203", day: "d2", time: "1:30p", name: "The Lobster Shack at Two Lights", emoji: "🦞",
       category: "eat", rating: 4.5, ratingSource: "Google ~", price: "$$",
       address: "225 Two Lights Rd, Cape Elizabeth, ME 04107",
       why: "Picnic tables on a cliff. <b>Lobster + Atlantic view</b> = peak Maine.",
@@ -134,7 +143,7 @@ window.SUP_MAINE_TRIP = {
       tip: "Windy days, hold your napkins — and your roll."
     },
     {
-      id: "p203b", day: "d2", time: "11:00a", alt: true, name: "🦞 Bite Into Maine (cult food truck)", emoji: "🦞",
+      id: "p203b", day: "d2", time: "12:00p", alt: true, name: "🦞 Bite Into Maine (cult food truck)", emoji: "🦞",
       category: "eat", rating: 4.8, ratingSource: "Google ~", price: "$$",
       address: "1000 Shore Rd, Cape Elizabeth, ME 04107", mapsQuery: "Bite Into Maine food truck Fort Williams Cape Elizabeth",
       why: "<b>The IYKYK lobster roll, zero detour</b> — a food truck parked at Fort Williams, right where you're already seeing Portland Head Light.",
@@ -143,7 +152,7 @@ window.SUP_MAINE_TRIP = {
       tip: "No detour at all — fold it into your Portland Head Light stop."
     },
     {
-      id: "p204", day: "d2", time: "2:30p", name: "Kennebunkport (Dock Square)", emoji: "⛵",
+      id: "p204", day: "d2", time: "3:30p", name: "Kennebunkport (Dock Square)", emoji: "⛵",
       category: "activity", rating: 4.7, ratingSource: "Google ~", price: "",
       address: "Dock Square, Kennebunkport, ME 04046", mapsQuery: "Dock Square Kennebunkport ME",
       why: "Postcard <b>seaside village</b> — boutiques, boats and Bush-family lore.",
@@ -152,7 +161,7 @@ window.SUP_MAINE_TRIP = {
       tip: "Drive Ocean Avenue for the mansion-and-sea views."
     },
     {
-      id: "p205", day: "d2", time: "4:30p", name: "Ogunquit — Marginal Way", emoji: "🪨",
+      id: "p205", day: "d2", time: "5:30p", name: "Ogunquit — Marginal Way", emoji: "🪨",
       category: "activity", rating: 4.9, ratingSource: "Google ~", price: "Free",
       address: "Marginal Way, Ogunquit, ME 03907", mapsQuery: "Marginal Way Ogunquit ME",
       why: "A <b>1.25-mi cliff-walk</b> over the sea — arguably the prettiest paved stroll in Maine.",
