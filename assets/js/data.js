@@ -375,13 +375,13 @@ window.SUP_MAINE_TRIP = {
       tip: "It's a detour, not on the way — leave Portland a touch earlier and make it an early lunch."
     },
     {
-      id: "p405", day: "d4", time: "3:00p", alt: true, name: "🥃 Luce Spirits (Rockland)", emoji: "🥃",
+      id: "p405", day: "d4", time: "3:00p", name: "🥃 Luce Spirits (Rockland)", emoji: "🥃",
       category: "activity", rating: "", ratingSource: "", price: "$$",
       address: "474 Main St, Rockland, ME 04841", mapsQuery: "Luce Spirits, 474 Main St, Rockland ME",
-      why: "<b>Maine-made spirits tasting room</b> in downtown Rockland — a fun midcoast pit stop you wanted to hit.",
-      todo: "Pop in for a tasting flight on the way up the coast.",
-      facts: ["Downtown Rockland, right on Route 1.", "⚠️ Tasting room open Fri–Sun, 3–9 PM only."],
-      tip: "⚠️ Heads up: closed Mondays — and Day 4 is a Monday. Time it for a Fri–Sun pass-through, or we can move this day around."
+      why: "<b>Maine-made spirits tasting room</b> in downtown Rockland — a fun midcoast stop, right on the Acadia drive.",
+      todo: "Pull off in Rockland for a tasting flight, then carry on up Route 1 toward Bar Harbor.",
+      facts: ["Downtown Rockland, on Route 1 (~1h30 from Portland, ~1h45 to Bar Harbor).", "Open Mondays ~3–8 PM (hours vary — worth a quick confirm)."],
+      tip: "Time it ~3 PM so you still make Cadillac sunset. One taster drives. 🥃"
     },
     {
       id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
