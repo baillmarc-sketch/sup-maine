@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v1.8";
+  var VERSION = "v1.9";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -87,6 +87,16 @@
   function ratingStars(r) {
     if (!r) return "";
     return "★ " + Number(r).toFixed(1);
+  }
+
+  // escape, then make any phone number tappable (tel:)
+  function factHtml(f) {
+    var s = esc(f);
+    return s.replace(/(\+?1[\s.\-]?)?\(?\d{3}\)?[\s.\-]\d{3}[\s.\-]\d{4}/g, function (m) {
+      var tel = m.replace(/[^\d+]/g, "");
+      if (tel.replace(/\D/g, "").length < 10) return m;
+      return '<a href="tel:' + tel + '">' + m + "</a>";
+    });
   }
 
   // =====================================================
@@ -495,7 +505,7 @@
     if (p.facts && p.facts.length) {
       more.appendChild(el("div", "section-h", "Quick facts"));
       var ul = el("ul", "facts");
-      p.facts.forEach(function (f) { ul.appendChild(el("li", null, esc(f))); });
+      p.facts.forEach(function (f) { ul.appendChild(el("li", null, factHtml(f))); });
       more.appendChild(ul);
     }
     if (p.tip) more.appendChild(el("div", "tipline", "<b>💡 Tip:</b> " + esc(p.tip)));
@@ -507,30 +517,43 @@
       // pick-one slot: search link + dropdown of specific venues
       card.appendChild(renderOptions(p));
     } else {
-      // single venue: Copy address + Maps + Waze
+      // single venue: tappable address (copies) + Navigate (hero) + Waze + Copy
+      if (p.address) {
+        var addrLine = el("button", "card__addrline",
+          '<span class="pin" aria-hidden="true">📍</span><span class="addrtxt">' + esc(p.address) +
+          '</span><span class="copyhint">tap to copy</span>');
+        addrLine.type = "button";
+        addrLine.setAttribute("aria-label", "Copy address: " + p.address);
+        addrLine.addEventListener("click", function (ev) {
+          ev.stopPropagation();
+          copyText(p.address, "Address copied — paste into Waze");
+        });
+        card.appendChild(addrLine);
+      }
+
       var actions = el("div", "actions");
-      var copyBtn = el("button", "act act--copy",
-        '<span class="act__ico">📋</span><span>Copy address</span>');
+      var mapsBtn = el("a", "act act--maps", '<span class="act__ico" aria-hidden="true">🗺️</span><span>Navigate</span>');
+      mapsBtn.href = mapsUrl(p); mapsBtn.target = "_blank"; mapsBtn.rel = "noopener";
+      mapsBtn.setAttribute("aria-label", "Navigate with Google Maps");
+      mapsBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
+
+      var wazeBtn = el("a", "act act--waze", "<span>Waze</span>");
+      wazeBtn.href = wazeUrl(p); wazeBtn.target = "_blank"; wazeBtn.rel = "noopener";
+      wazeBtn.setAttribute("aria-label", "Navigate with Waze");
+      wazeBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
+
+      var copyBtn = el("button", "act act--copy", '<span class="act__ico" aria-hidden="true">📋</span>');
       copyBtn.type = "button";
+      copyBtn.setAttribute("aria-label", "Copy address");
       copyBtn.addEventListener("click", function (ev) {
         ev.stopPropagation();
         if (!p.address) { toast("No address on file"); return; }
         copyText(p.address, "Address copied — paste into Waze");
       });
 
-      var mapsBtn = el("a", "act act--maps", '<span class="act__ico">🗺️</span><span>Maps</span>');
-      mapsBtn.href = mapsUrl(p); mapsBtn.target = "_blank"; mapsBtn.rel = "noopener";
-      mapsBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
-
-      var wazeBtn = el("a", "act act--waze", "<span>Open Waze</span>");
-      wazeBtn.href = wazeUrl(p); wazeBtn.target = "_blank"; wazeBtn.rel = "noopener";
-      wazeBtn.addEventListener("click", function (ev) { ev.stopPropagation(); });
-
+      actions.appendChild(mapsBtn);
+      actions.appendChild(wazeBtn);
       actions.appendChild(copyBtn);
-      var actRow = el("div", "actions__row");
-      actRow.appendChild(mapsBtn);
-      actRow.appendChild(wazeBtn);
-      actions.appendChild(actRow);
       card.appendChild(actions);
     }
 
@@ -1209,6 +1232,11 @@
     function fire() { if (!ta) return; var v = ta.value; ta.value = ""; askSend(v); }
     if (send) send.addEventListener("click", fire);
     if (ta) ta.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); fire(); } });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      var m = document.getElementById("ask-modal");
+      if (m && !m.classList.contains("is-hidden")) closeAsk();
+    });
     renderAskLog();
   }
 

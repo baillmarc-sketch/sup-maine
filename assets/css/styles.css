@@ -54,6 +54,17 @@ button, input { font: inherit; color: inherit; }
 button { cursor: pointer; border: none; background: none; }
 a { color: var(--navy); }
 
+/* visible keyboard/switch-control focus (we strip the tap highlight above) */
+:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; border-radius: 6px; }
+
+/* respect reduced-motion: kill animations/transitions for those who ask */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important; scroll-behavior: auto !important;
+  }
+}
+
 .app { max-width: var(--maxw); margin: 0 auto; padding-bottom: calc(70px + var(--safe-b)); }
 .is-hidden { display: none !important; }
 
@@ -179,19 +190,26 @@ a { color: var(--navy); }
 .tipline { font-size: 13px; background: #fff7e6; border: 1px solid #f0e0bb; border-radius: 10px; padding: 8px 10px; margin-top: 12px; }
 .tipline b { color: var(--mustard); }
 
-/* action bar — Copy is the hero (full width), Maps + Waze share the row below */
-.actions { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px 14px; }
-.actions__row { display: flex; gap: 8px; }
+/* action bar — Navigate (Maps) is the hero; the address itself is tappable to copy */
+.card__addrline {
+  display: flex; align-items: center; gap: 7px; width: 100%; text-align: left;
+  padding: 11px 14px 0; font-size: 13px; color: var(--ink-soft); background: none;
+}
+.card__addrline .addrtxt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card__addrline .copyhint { margin-left: auto; flex: none; font-size: 11px; opacity: .55; font-weight: 700; }
+.card__addrline:active { opacity: .55; }
+.actions { display: flex; gap: 8px; padding: 9px 14px 14px; }
 .act {
-  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 9px 8px; border-radius: 11px; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 11px 8px; border-radius: 11px; font-size: 13.5px; font-weight: 700;
   white-space: nowrap; border: 1px solid var(--line); background: var(--card); color: var(--ink);
   text-decoration: none; transition: transform .08s ease;
 }
 .act:active { transform: scale(.96); }
-/* Copy is the primary action but kept muted (soft clay, no glow) */
-.act--copy { flex: none; width: 100%; padding: 9px; font-size: 13px;
-  background: #c98a72; color: #fff; border-color: #c0805f; box-shadow: none; }
+/* Navigate is the hero (lobster, widest); Waze secondary; Copy a compact icon */
+.act--maps { flex: 2; background: var(--lobster); color: #fff; border-color: var(--lobster); box-shadow: var(--shadow-sm); }
+.act--waze { flex: 1.3; }
+.act--copy { flex: none; width: 48px; padding: 11px 0; }
 .act__ico { font-size: 14px; }
 
 .expandhint { text-align: center; font-size: 12px; color: var(--ink-soft); padding: 0 0 10px; }
@@ -327,7 +345,7 @@ a { color: var(--navy); }
 .opt__addr { font-size: 12.5px; color: var(--ink); margin-top: 2px; }
 .opt__btns { flex: none; display: flex; gap: 6px; }
 .opt__btn {
-  width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line);
+  width: 42px; height: 42px; border-radius: 10px; border: 1px solid var(--line);
   background: var(--card); display: grid; place-items: center; font-size: 15px; text-decoration: none;
 }
 .opt__btn:active { transform: scale(.94); }
@@ -396,7 +414,7 @@ a { color: var(--navy); }
 @keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .modal__head { display: flex; align-items: center; justify-content: space-between; padding: 2px 2px 8px; }
 .modal__title { font-family: var(--serif); font-size: 19px; font-weight: 700; }
-.modal__close { font-size: 18px; color: var(--ink-soft); padding: 4px 10px; line-height: 1; }
+.modal__close { font-size: 18px; color: var(--ink-soft); min-width: 44px; min-height: 44px; display: grid; place-items: center; line-height: 1; }
 .modal .asklog { flex: 1; max-height: none; min-height: 30vh; }
 
 /* footer */
@@ -425,9 +443,9 @@ a { color: var(--navy); }
 
 /* ---------------- Check-off + done state ---------------- */
 .card__check {
-  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  flex: none; width: 30px; height: 30px; border-radius: 50%;
   border: 2px solid var(--line); background: var(--card); color: #fff;
-  font-size: 14px; font-weight: 800; line-height: 1; display: grid; place-items: center;
+  font-size: 15px; font-weight: 800; line-height: 1; display: grid; place-items: center;
   margin-left: 4px; transition: transform .08s ease;
 }
 .card__check:active { transform: scale(.9); }
