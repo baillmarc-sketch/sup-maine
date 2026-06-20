@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v5.2";
+  var VERSION = "v5.3";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -155,7 +155,11 @@
   var EXP_KEY = "supmaine.expenses.v1";
   var SYNC_CODE_KEY = "supmaine.sync.code.v1";
   var SYNC_API = "https://sup-maine.vercel.app/api/expenses";
+  var PRIVATE_API = SYNC_API.replace("/expenses", "/private");
   var lastSyncAt = 0, syncing = false, syncPollStarted = false;
+  // private lodging details (address/codes/facts), keyed by place id; fetched
+  // from the server only when a share code is set. Never in the public bundle.
+  var privateStays = {};
   var checks = loadMap(CHECK_KEY), notes = loadMap(NOTE_KEY), wxCache = loadMap(WX_KEY), packing = loadList(PACK_KEY);
   var checksMeta = loadMap(CHECK_META_KEY), notesMeta = loadMap(NOTE_META_KEY);
   var seeded = loadMap(SEEDED_KEY);
@@ -546,6 +550,7 @@
     var isSlot = !!(p.options && p.options.length);
     // a place we're staying at, while no share code is set → hide address/codes
     var stayLocked = p.category === "stay" && !unlocked();
+    if (p.category === "stay" && !stayLocked) p = withPrivate(p); // overlay private address/codes
     var card = el("article", "card" + (checks[p.id] ? " is-done" : ""));
     card.setAttribute("data-id", p.id);
 
@@ -950,6 +955,62 @@
   // Sensitive lodging info (addresses + door/wifi codes for stays) is private:
   // only shown once a shared trip code is set. No code → name/dates only.
   function unlocked() { return !!syncCode(); }
+  // overlay private stay details onto a place (only used when unlocked)
+  function withPrivate(p) {
+    if (p.category !== "stay") return p;
+    var pr = privateStays[p.id];
+    if (!pr) return p;
+    return extend(extend({}, p), {
+      address: pr.address || p.address,
+      mapsQuery: pr.mapsQuery || p.mapsQuery,
+      codes: (pr.codes && pr.codes.length) ? pr.codes : p.codes,
+      facts: (pr.facts && pr.facts.length) ? pr.facts : p.facts
+    });
+  }
+  function fetchPrivate() {
+    var code = syncCode();
+    if (!code) { privateStays = {}; return; }
+    fetch(PRIVATE_API + "?code=" + encodeURIComponent(code), { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        privateStays = (j && j.stays) || {};
+        renderItinerary(); renderPlan();
+      })
+      .catch(function () {});
+  }
+  // parse "Label: value (sub note)" lines from the seeding editor into code chips
+  function parseCodeLines(text) {
+    return String(text || "").split("\n").map(function (line) {
+      line = line.trim(); if (!line) return null;
+      var i = line.indexOf(":");
+      var label = i >= 0 ? line.slice(0, i).trim() : "Code";
+      var rest = (i >= 0 ? line.slice(i + 1) : line).trim();
+      var sub = null, m = rest.match(/^(.*?)\s*\((.+)\)\s*$/);
+      if (m) { rest = m[1].trim(); sub = m[2].trim(); }
+      if (!rest) return null;
+      return sub ? { label: label, value: rest, sub: sub } : { label: label, value: rest };
+    }).filter(Boolean);
+  }
+  function savePrivateStay(id, address, codesText, factsText) {
+    var code = syncCode();
+    if (!code) { toast("Set a share code first"); return; }
+    privateStays[id] = {
+      address: String(address || "").trim(),
+      codes: parseCodeLines(codesText),
+      facts: String(factsText || "").split("\n").map(function (s) { return s.trim(); }).filter(Boolean),
+      updatedAt: Date.now()
+    };
+    fetch(PRIVATE_API, { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: code, stays: privateStays }) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }, function () { return { ok: false, j: {} }; }); })
+      .then(function (res) {
+        if (res.ok && res.j && res.j.stays) {
+          privateStays = res.j.stays; toast("Saved privately ✓");
+        } else { toast((res.j && res.j.error) || "Couldn't save"); }
+        renderItinerary(); renderPlan();
+      })
+      .catch(function () { toast("Couldn't save — check connection"); });
+  }
   function idTime(id) { var m = String(id || "").match(/(\d{10,})/); return m ? parseInt(m[1], 10) : 0; }
   function ensureExpMeta() {
     var ch = false;
@@ -1028,6 +1089,7 @@
     renderCosts();
     renderItinerary();        // unlock stay addresses on cards
     renderPlan();             // unlock Reservations & codes
+    fetchPrivate();           // pull private stay details for this code
     syncNow({ force: true, toast: true });
   }
   function startSyncPoll() {
@@ -1289,7 +1351,7 @@
       var now = el("button", "btn-primary", "🔄 Sync now");
       now.addEventListener("click", function () { syncNow({ toast: true, force: true }); });
       var stop = el("button", "btn-ghost btn-danger", "Stop sharing");
-      stop.addEventListener("click", function () { saveStr(SYNC_CODE_KEY, ""); toast("Stopped sharing"); renderCosts(); renderItinerary(); renderPlan(); });
+      stop.addEventListener("click", function () { saveStr(SYNC_CODE_KEY, ""); privateStays = {}; toast("Stopped sharing"); renderCosts(); renderItinerary(); renderPlan(); });
       box.appendChild(now); box.appendChild(stop);
     }
     return box;
@@ -1374,13 +1436,18 @@
       if (locked) {
         card.appendChild(el("div", "resv__hidden", "🔒 Address & codes hidden"));
       } else {
-        var codes = resvCodes(p);
+        var pv = withPrivate(p);
+        var codes = resvCodes(pv);
         if (codes) card.appendChild(codes);
-        if (p.address) card.appendChild(resvAddrRow(p));
-        if (p.facts && p.facts.length) {
+        if (pv.address) card.appendChild(resvAddrRow(pv));
+        if (pv.facts && pv.facts.length) {
           var ul = el("ul", "facts");
-          p.facts.forEach(function (f) { ul.appendChild(el("li", null, factHtml(f))); });
+          pv.facts.forEach(function (f) { ul.appendChild(el("li", null, factHtml(f))); });
           card.appendChild(ul);
+        }
+        if (!pv.address && (!pv.codes || !pv.codes.length)) {
+          card.appendChild(el("div", "resv__hidden",
+            "No private details saved yet — add them in “🔒 Private stay details” below."));
         }
       }
       sec.appendChild(card);
@@ -1402,6 +1469,54 @@
         sec.appendChild(card);
       });
     }
+    return sec;
+  }
+
+  // one-time-ish editor to populate the private (server-stored) stay details.
+  // Values are typed here and saved to KV under the share code — they are never
+  // committed to the public app, so each device fills these in once.
+  function buildPrivateEditor() {
+    var sec = el("section", "panel");
+    sec.appendChild(el("h3", null, "🔒 Private stay details"));
+    sec.appendChild(el("p", "muted",
+      "Saved privately under your shared trip code — never in the public app, so both phones with the code can see and edit them. Stored on Anna's phone too."));
+
+    var stays = (TRIP.places || []).filter(function (p) { return p.category === "stay"; })
+      .sort(function (a, b) { return String(a.checkIn || "").localeCompare(String(b.checkIn || "")); });
+
+    stays.forEach(function (p) {
+      var pr = privateStays[p.id] || {};
+      var box = el("div", "resv");
+      box.appendChild(el("div", "resv__name", esc(stripLead(p.name))));
+
+      var fa = el("div", "field");
+      fa.appendChild(el("label", null, "Address"));
+      var ia = el("input"); ia.type = "text"; ia.autocapitalize = "words";
+      ia.placeholder = "123 Main St, City, ST 00000"; ia.value = pr.address || "";
+      fa.appendChild(ia); box.appendChild(fa);
+
+      var fc = el("div", "field");
+      fc.appendChild(el("label", null, "Door / wifi codes — one per line, “Label: value (note)”"));
+      var ic = el("textarea"); ic.rows = 3;
+      ic.placeholder = "Front door: 1234\nBedroom: 5678 (turn the deadbolt)\nWi-Fi: NetworkName (pw: secret)";
+      ic.value = (pr.codes || []).map(function (c) {
+        return c.label + ": " + c.value + (c.sub ? " (" + c.sub + ")" : "");
+      }).join("\n");
+      fc.appendChild(ic); box.appendChild(fc);
+
+      var ff = el("div", "field");
+      ff.appendChild(el("label", null, "Notes — one per line (confirmation #, host phone, parking…)"));
+      var iff = el("textarea"); iff.rows = 2;
+      iff.placeholder = "Confirmation ABC123\nHost phone +1 555-123-4567";
+      iff.value = (pr.facts || []).join("\n");
+      ff.appendChild(iff); box.appendChild(ff);
+
+      var save = el("button", "btn-primary", "Save");
+      save.type = "button";
+      save.addEventListener("click", function () { savePrivateStay(p.id, ia.value, ic.value, iff.value); });
+      box.appendChild(save);
+      sec.appendChild(box);
+    });
     return sec;
   }
 
@@ -1449,6 +1564,7 @@
 
     // essentials first — the stuff you actually need mid-trip
     root.appendChild(buildReservations());
+    if (unlocked()) root.appendChild(buildPrivateEditor());
     root.appendChild(buildConnection());
 
     var intro = el("section", "panel");
@@ -1478,7 +1594,7 @@
       '<div class="field"><label>Anything specific to include? (loose notes are fine)</label>' +
         '<textarea id="pf-notes" rows="3" placeholder="want a lobster shack, one hike, no early mornings, celebrating a birthday…"></textarea></div>' +
       '<div class="field"><label>Already booked? (stays, dinners, tours)</label>' +
-        '<textarea id="pf-booked" rows="4" placeholder="Paste reservations with dates, cities & locations — plus how you\'re getting there. e.g.\nJun 19–22 Airbnb, 249 Vaughan St, Portland\nJun 20 7:15p dinner — Twelve, Portland\nDriving the whole loop (Waze)"></textarea></div>' +
+        '<textarea id="pf-booked" rows="4" placeholder="Paste reservations with dates, cities & locations — plus how you\'re getting there. e.g.\nJun 19–22 Airbnb, 123 Main St, Portland\nJun 20 7:15p dinner — Twelve, Portland\nDriving the whole loop (Waze)"></textarea></div>' +
       '<div class="field"><label>Your traveler profile (from the Profile tab)</label>' +
         '<textarea id="pf-profile" rows="5" placeholder="Paste the profile Claude/ChatGPT made for you…"></textarea></div>';
     var buildBtn = el("button", "btn-primary", "🧱 Build my prompt");
@@ -2031,11 +2147,11 @@
   if (themeBtn) themeBtn.addEventListener("click", cycleTheme);
   setInterval(applyTheme, 60000); // re-check sunset crossover when on Auto
   startSyncPoll();
-  if (syncCode()) syncNow(); // pull shared expenses on launch
+  if (syncCode()) { syncNow(); fetchPrivate(); } // pull shared expenses + private stay details on launch
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) return;
     applyTheme();
-    if (syncCode()) syncNow();
+    if (syncCode()) { syncNow(); fetchPrivate(); }
   });
   window.addEventListener("resize", syncTopbarH);
   window.addEventListener("orientationchange", function () { setTimeout(syncTopbarH, 200); });
