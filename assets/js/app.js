@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v1.9";
+  var VERSION = "v2.0";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -1243,6 +1243,48 @@
   // =====================================================
   //  CHROME: chips, tabs, header meta
   // =====================================================
+  // keep --topbar-h in sync so scroll-to-day clears the sticky header
+  function syncTopbarH() {
+    var tb = document.getElementById("topbar");
+    if (tb) document.documentElement.style.setProperty("--topbar-h", tb.offsetHeight + "px");
+  }
+
+  // jump-to-day strip (persistent wayfinding)
+  function gotoDay(dayId) {
+    var sec = document.querySelector('.day[data-day="' + dayId + '"]');
+    if (!sec) return;
+    sec.classList.remove("is-collapsed"); // peek past days when jumped to
+    syncTopbarH();
+    sec.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function renderDayStrip() {
+    var wrap = document.getElementById("daystrip");
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    var days = TRIP.days || [];
+    if (days.length < 2) { wrap.style.display = "none"; return; }
+    wrap.style.display = "";
+    var todayPill = null;
+    days.forEach(function (d, idx) {
+      var ds = d.iso ? dayState(d.iso) : "future";
+      var b = el("button", "daystrip__pill daystrip__pill--" + ds);
+      b.type = "button";
+      var parts = String(d.date || "").split(/\s+/);
+      var dow = parts[0] || ("D" + (idx + 1));
+      var num = parts[parts.length - 1] || String(idx + 1);
+      b.innerHTML = '<span class="daystrip__dow">' + esc(dow) + "</span>" +
+        '<span class="daystrip__num">' + esc(num) + "</span>";
+      b.setAttribute("aria-label", "Jump to " + (d.date || ("day " + (idx + 1))) +
+        (d.label ? " — " + d.label : ""));
+      b.addEventListener("click", function () { gotoDay(d.id); });
+      wrap.appendChild(b);
+      if (ds === "today") todayPill = b;
+    });
+    if (todayPill) setTimeout(function () {
+      try { todayPill.scrollIntoView({ inline: "center", block: "nearest" }); } catch (e) {}
+    }, 0);
+  }
+
   function renderChips() {
     var wrap = $("#chips");
     wrap.innerHTML = "";
@@ -1288,12 +1330,16 @@
     Array.prototype.forEach.call(document.querySelectorAll(".tabbar__btn"), function (b) {
       b.classList.toggle("is-active", b.getAttribute("data-go") === view);
     });
-    // search + chips + progress only make sense on itinerary
-    $("#chips").style.display = view === "itinerary" ? "" : "none";
-    $(".searchwrap").style.display = view === "itinerary" ? "" : "none";
+    // search + chips + day-strip + progress only make sense on itinerary
+    var onItin = view === "itinerary";
+    $("#chips").style.display = onItin ? "" : "none";
+    $(".searchwrap").style.display = onItin ? "" : "none";
+    var dstrip = document.getElementById("daystrip");
+    if (dstrip) dstrip.style.display = onItin ? "" : "none";
     var prog = document.getElementById("trip-progress");
-    if (prog) prog.style.display = view === "itinerary" ? "" : "none";
+    if (prog) prog.style.display = onItin ? "" : "none";
     window.scrollTo({ top: 0 });
+    syncTopbarH();
   }
 
   Array.prototype.forEach.call(document.querySelectorAll(".tabbar__btn"), function (b) {
@@ -1309,7 +1355,9 @@
     renderItinerary();
     renderProfile();
     renderPlan();
+    renderDayStrip();
     renderAskLog();
+    syncTopbarH();
   }
 
   // =====================================================
@@ -1320,6 +1368,9 @@
   renderAll();
   wireAsk();
   go("itinerary");
+  syncTopbarH();
+  window.addEventListener("resize", syncTopbarH);
+  window.addEventListener("orientationchange", function () { setTimeout(syncTopbarH, 200); });
 
   // service worker (offline pocket-guide) — only on http(s)
   if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
