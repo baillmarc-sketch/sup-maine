@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v2.6";
+  var VERSION = "v2.7";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -383,6 +383,14 @@
       });
       out.push("");
     });
+    if (expenses.length) {
+      var cs = costSummary();
+      out.push("## 💵 Expenses");
+      out.push("**Total " + money(cs.total) + "** — " + cs.names[0] + " paid " + money(cs.paid[0]) +
+        ", " + cs.names[1] + " paid " + money(cs.paid[1]) + ". " + cs.settle + ".");
+      catTotals().forEach(function (x) { out.push("- " + x.cat.label + ": " + money(x.total)); });
+      out.push("");
+    }
     return out.join("\n");
   }
   function buildDiaryHTML() {
@@ -642,6 +650,9 @@
     card.appendChild(noteBtn);
     card.appendChild(noteWrap);
 
+    // quick cost logger (totals show on the Costs tab)
+    card.appendChild(buildCardCost(p));
+
     // tap head/why to expand
     [head, card.querySelector(".card__why"), card.querySelector(".expandhint")].forEach(function (z) {
       if (z) z.addEventListener("click", function () { card.classList.toggle("is-open"); });
@@ -891,6 +902,71 @@
   }
   function catOf(id) { for (var i = 0; i < EXP_CATS.length; i++) if (EXP_CATS[i].id === id) return EXP_CATS[i]; return EXP_CATS[EXP_CATS.length - 1]; }
   function money(n) { return "$" + (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, ""); }
+  function placeCatToExp(c) {
+    return ({ eat: "food", coffee: "coffee", drive: "gas", shop: "misc", stay: "misc", sight: "misc", activity: "misc" })[c] || "misc";
+  }
+  function catTotals() {
+    var m = {};
+    expenses.forEach(function (e) { m[e.cat] = (m[e.cat] || 0) + (+e.amount || 0); });
+    return EXP_CATS.filter(function (c) { return m[c.id]; }).map(function (c) { return { cat: c, total: m[c.id] }; });
+  }
+  function csvCell(s) { s = String(s == null ? "" : s); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+  function expensesCSV() {
+    var names = payerNames(), dl = {};
+    (TRIP.days || []).forEach(function (d) { dl[d.id] = d.date; });
+    var rows = [["Day", "Category", "Note", "Amount", "Paid by"]];
+    expenses.forEach(function (e) {
+      rows.push([dl[e.day] || (e.day === "general" ? "General" : e.day) || "General",
+        catOf(e.cat).label, e.note || "", (+e.amount || 0).toFixed(2),
+        e.who === 2 ? "Both" : (names[e.who] || "")]);
+    });
+    return rows.map(function (r) { return r.map(csvCell).join(","); }).join("\n");
+  }
+
+  // inline "log a cost" block shown on every place card
+  function buildCardCost(p) {
+    var wrap = el("div", "card__cost-wrap");
+    var btn = el("button", "card__notebtn", "💵 Log a cost");
+    btn.type = "button";
+    var form = el("div", "card__cost is-hidden");
+    var names = payerNames();
+
+    var amt = el("input", "cost-amt"); amt.type = "text"; amt.inputMode = "decimal"; amt.placeholder = "$ amount";
+    var sel = el("select", "cost-day");
+    EXP_CATS.forEach(function (c) { var o = el("option", null, c.emoji + " " + c.label); o.value = c.id; sel.appendChild(o); });
+    sel.value = placeCatToExp(p.category);
+    var pay = el("button", "cost-payer"); pay.type = "button";
+    function plab() { return "💳 " + (costDraft.who === 2 ? "Both" : names[costDraft.who]); }
+    pay.textContent = plab();
+    var add = el("button", "cost-addbtn", "Add");
+
+    function submit() {
+      var v = parseFloat(String(amt.value).replace(/[^0-9.]/g, ""));
+      if (!v || v <= 0) { toast("Enter an amount"); amt.focus(); return; }
+      expenses.push({ id: "e" + Date.now(), day: p.day || defaultCostDay(), cat: sel.value,
+        note: stripLead(p.name), amount: Math.round(v * 100) / 100, who: costDraft.who });
+      saveList(EXP_KEY, expenses);
+      amt.value = ""; form.classList.add("is-hidden");
+      toast("Logged " + money(v) + " 🧾");
+      renderCosts();
+    }
+    [amt, sel, pay, add].forEach(function (z) { z.addEventListener("click", function (ev) { ev.stopPropagation(); }); });
+    pay.addEventListener("click", function () { costDraft.who = (costDraft.who + 1) % 3; pay.textContent = plab(); });
+    add.addEventListener("click", submit);
+    amt.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { ev.preventDefault(); submit(); } });
+
+    var r1 = el("div", "cost-row"); r1.appendChild(amt); r1.appendChild(sel);
+    var r2 = el("div", "cost-row"); r2.appendChild(pay); r2.appendChild(add);
+    form.appendChild(r1); form.appendChild(r2);
+
+    btn.addEventListener("click", function (ev) {
+      ev.stopPropagation();
+      form.classList.toggle("is-hidden");
+      if (!form.classList.contains("is-hidden")) { pay.textContent = plab(); amt.focus(); }
+    });
+    wrap.appendChild(btn); wrap.appendChild(form);
+    return wrap;
+  }
   function defaultCostDay() {
     var t = (TRIP.days || []).filter(function (d) { return d.iso === todayISO(); })[0];
     return t ? t.id : (((TRIP.days || [])[0] || {}).id || "general");
@@ -1003,6 +1079,15 @@
     brk.appendChild(el("div", "cost-person", "<b>" + esc(names[1]) + "</b> paid " + money(s.paid[1])));
     sum.appendChild(brk);
     sum.appendChild(el("div", "cost-settle", esc(s.settle) + (expenses.length ? " · split evenly" : "")));
+    // by-category breakdown
+    var cts = catTotals();
+    if (cts.length) {
+      var catWrap = el("div", "cost-catbreak");
+      cts.forEach(function (x) {
+        catWrap.appendChild(el("span", "cost-catpill", x.cat.emoji + " " + x.cat.label + " " + money(x.total)));
+      });
+      sum.appendChild(catWrap);
+    }
     root.appendChild(sum);
 
     root.appendChild(buildCostAdd(names));
@@ -1022,7 +1107,24 @@
     });
     if (!anyRows) {
       root.appendChild(el("div", "empty",
-        '<div class="empty__big">🧾</div><p>No expenses yet. Pick a category above, punch in an amount, and tap Add — tolls, gas, that lobster roll. It tracks who paid and totals it up by day.</p>'));
+        '<div class="empty__big">🧾</div><p>No expenses yet. Pick a category above, punch in an amount, and tap Add — tolls, gas, that lobster roll. It tracks who paid and totals it up by day. You can also tap “💵 Log a cost” on any spot in your itinerary.</p>'));
+    }
+
+    if (expenses.length) {
+      var exp = el("section", "panel");
+      exp.appendChild(el("h3", null, "Export"));
+      exp.appendChild(el("p", "muted", "Save your expenses as a spreadsheet (CSV) — opens in Numbers, Excel, or Sheets."));
+      var copyBtn = el("button", "btn-primary", "📋 Copy expenses (CSV)");
+      copyBtn.addEventListener("click", function () { copyText(expensesCSV(), "Expenses copied as CSV"); });
+      var dlBtn = el("button", "btn-ghost", "⬇️ Download expenses (.csv)");
+      dlBtn.addEventListener("click", function () { downloadFile("supmaine-expenses.csv", expensesCSV(), "text/csv"); });
+      var clrBtn = el("button", "btn-ghost btn-danger", "🧹 Clear all expenses");
+      clrBtn.addEventListener("click", function () {
+        if (typeof window.confirm === "function" && !window.confirm("Delete all logged expenses? This can't be undone.")) return;
+        expenses = []; saveList(EXP_KEY, expenses); renderCosts(); toast("Expenses cleared");
+      });
+      exp.appendChild(copyBtn); exp.appendChild(dlBtn); exp.appendChild(clrBtn);
+      root.appendChild(exp);
     }
   }
 
