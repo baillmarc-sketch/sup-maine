@@ -181,6 +181,15 @@ window.SUP_MAINE_TRIP = {
 
     /* ---------------- DAY 3 — Portland flex day ---------------- */
     {
+      id: "p300", day: "d3", time: "8:00a", name: "Standard Baking Co.", emoji: "🥐",
+      category: "coffee", rating: 4.7, ratingSource: "Google ~", price: "$",
+      address: "75 Commercial St, Portland, ME 04101", mapsQuery: "Standard Baking Co, 75 Commercial St, Portland ME",
+      why: "<b>Best bakery on the waterfront</b> — croissants, morning buns and proper bread.",
+      todo: "Almond croissant + a coffee to walk with along the working waterfront.",
+      facts: ["Below the Fore Street restaurant on Commercial St.", "Gets busy early; pastries are the move.", "Cash-friendly, quick in-and-out."],
+      tip: "Grab extras for the Peaks Island ferry."
+    },
+    {
       id: "p301", day: "d3", time: "9:00a", name: "Tandem Coffee + Bakery", emoji: "☕",
       category: "coffee", rating: 4.7, ratingSource: "Google ~", price: "$$",
       address: "742 Congress St, Portland, ME 04102",
