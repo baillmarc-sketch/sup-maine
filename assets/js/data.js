@@ -386,13 +386,13 @@ window.SUP_MAINE_TRIP = {
       tip: "Address & confirmation are private — open them in the 🔑 Info tab once your share code is set."
     },
     {
-      id: "p404", day: "d4", time: "Sunset", name: "Cadillac Mountain sunset", emoji: "🌄",
+      id: "p404", day: "d4", time: "3:30p", name: "Cadillac Mountain sunset", emoji: "🌄",
       category: "sight", rating: 4.8, ratingSource: "Google ~", price: "$$ park + 🔖",
       address: "Cadillac Summit Rd, Bar Harbor, ME 04609",
       why: "Tallest peak on the US Atlantic coast — <b>360° sunset over island and sea</b>.",
-      todo: "Drive up ~1 hr before sunset, walk the summit loop, watch the light go.",
-      facts: ["1,530 ft — highest point on the Eastern Seaboard.", "🔖 Summit-road VEHICLE RESERVATION required in season — book ahead.", "Inside Acadia NP — park pass needed."],
-      tip: "Reservations sell out fast on recreation.gov — grab the sunset slot the moment you can."
+      todo: "Enter at your 3:30 PM reserved slot, walk the summit loop, then stay up top for the sunset light.",
+      facts: ["✅ Vehicle reservation booked — 3:30 PM summit-road entry.", "1,530 ft — highest point on the Eastern Seaboard.", "Inside Acadia NP — park pass needed."],
+      tip: "Your timed entry is 3:30 PM — once you're up, you can linger through sunset."
     },
 
     /* ---------------- DAY 5 — Full Acadia day ---------------- */
