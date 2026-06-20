@@ -2,7 +2,7 @@
    Strategy: NETWORK-FIRST for our own app files (so updates show up as soon as
    you're online), falling back to cache when there's no signal (on the road).
    Cross-origin assets (photos) are cache-first to save data. */
-var CACHE = "supmaine-v46";
+var CACHE = "supmaine-v47";
 var SHELL = [
   "./",
   "./index.html",
