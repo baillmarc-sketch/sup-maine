@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v3.4";
+  var VERSION = "v3.5";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -151,6 +151,9 @@
   var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v4", PACK_KEY = "supmaine.packing.v1";
   var THEME_KEY = "supmaine.theme.v1"; // "auto" | "light" | "dark"
   var EXP_KEY = "supmaine.expenses.v1";
+  var SYNC_CODE_KEY = "supmaine.sync.code.v1";
+  var SYNC_API = "https://sup-maine.vercel.app/api/expenses";
+  var lastSyncAt = 0, syncing = false, syncPollStarted = false;
   var checks = loadMap(CHECK_KEY), notes = loadMap(NOTE_KEY), wxCache = loadMap(WX_KEY), packing = loadList(PACK_KEY);
   var expenses = loadList(EXP_KEY);
 
@@ -906,9 +909,64 @@
   function placeCatToExp(c) {
     return ({ eat: "food", coffee: "coffee", drive: "gas", shop: "misc", stay: "misc", sight: "misc", activity: "misc" })[c] || "misc";
   }
+
+  // ---- shared expense sync (Vercel KV via /api/expenses) ----
+  function syncCode() { return loadStr(SYNC_CODE_KEY); }
+  function idTime(id) { var m = String(id || "").match(/(\d{10,})/); return m ? parseInt(m[1], 10) : 0; }
+  function ensureExpMeta() {
+    var ch = false;
+    expenses.forEach(function (e) {
+      if (e.updatedAt == null) { e.updatedAt = idTime(e.id) || Date.now(); ch = true; }
+      if (e.deleted == null) { e.deleted = false; ch = true; }
+    });
+    if (ch) saveList(EXP_KEY, expenses);
+  }
+  function activeExp() { return expenses.filter(function (e) { return !e.deleted; }); }
+  function expHash() { return expenses.length + ":" + expenses.reduce(function (s, e) { return s + (e.updatedAt || 0) + (e.deleted ? 1 : 0); }, 0); }
+  function touchExp(e) { e.updatedAt = Date.now(); }
+  function paintSyncStatus() {
+    var s = document.getElementById("sync-status"); if (!s) return;
+    var code = syncCode();
+    var ago = lastSyncAt ? (Math.max(0, Math.round((Date.now() - lastSyncAt) / 1000)) + "s ago") : "not yet";
+    s.innerHTML = "Sharing as <b>" + esc(code) + "</b> · " + (syncing ? "syncing…" : "last sync " + ago);
+  }
+  function syncNow(opts) {
+    opts = opts || {};
+    var code = syncCode(); if (!code) return;
+    ensureExpMeta();
+    syncing = true; paintSyncStatus();
+    fetch(SYNC_API, { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: code, expenses: expenses }) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }, function () { return { ok: false, j: {} }; }); })
+      .then(function (res) {
+        syncing = false;
+        if (res.ok && res.j && res.j.expenses) {
+          var before = expHash();
+          expenses = res.j.expenses; saveList(EXP_KEY, expenses); lastSyncAt = Date.now();
+          if (expHash() !== before || opts.force) renderCosts(); else paintSyncStatus();
+          if (opts.toast) toast("Synced ✓");
+        } else {
+          if (opts.toast) toast((res.j && res.j.error) || "Sync failed");
+          paintSyncStatus();
+        }
+      })
+      .catch(function () { syncing = false; if (opts.toast) toast("Couldn't reach sync"); paintSyncStatus(); });
+  }
+  function setSyncCode(c) {
+    c = String(c || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 40);
+    if (!c) { toast("Enter a code"); return; }
+    saveStr(SYNC_CODE_KEY, c);
+    renderCosts();
+    syncNow({ force: true, toast: true });
+  }
+  function startSyncPoll() {
+    if (syncPollStarted) return; syncPollStarted = true;
+    setInterval(function () { if (syncCode() && !document.hidden) syncNow(); }, 7000);
+  }
+
   function catTotals() {
     var m = {};
-    expenses.forEach(function (e) { m[e.cat] = (m[e.cat] || 0) + (+e.amount || 0); });
+    activeExp().forEach(function (e) { m[e.cat] = (m[e.cat] || 0) + (+e.amount || 0); });
     return EXP_CATS.filter(function (c) { return m[c.id]; }).map(function (c) { return { cat: c, total: m[c.id] }; });
   }
   function csvCell(s) { s = String(s == null ? "" : s); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
@@ -916,7 +974,7 @@
     var names = payerNames(), dl = {};
     (TRIP.days || []).forEach(function (d) { dl[d.id] = d.date; });
     var rows = [["Day", "Category", "Note", "Amount", "Paid by"]];
-    expenses.forEach(function (e) {
+    activeExp().forEach(function (e) {
       rows.push([dl[e.day] || (e.day === "general" ? "General" : e.day) || "General",
         catOf(e.cat).label, e.note || "", (+e.amount || 0).toFixed(2),
         e.who === 2 ? "Both" : (names[e.who] || "")]);
@@ -945,11 +1003,13 @@
       var v = parseFloat(String(amt.value).replace(/[^0-9.]/g, ""));
       if (!v || v <= 0) { toast("Enter an amount"); amt.focus(); return; }
       expenses.push({ id: "e" + Date.now(), day: p.day || defaultCostDay(), cat: sel.value,
-        note: stripLead(p.name), amount: Math.round(v * 100) / 100, who: costDraft.who });
+        note: stripLead(p.name), amount: Math.round(v * 100) / 100, who: costDraft.who,
+        updatedAt: Date.now(), deleted: false });
       saveList(EXP_KEY, expenses);
       amt.value = ""; form.classList.add("is-hidden");
       toast("Logged " + money(v) + " 🧾");
       renderCosts();
+      syncNow();
     }
     [amt, sel, pay, add].forEach(function (z) { z.addEventListener("click", function (ev) { ev.stopPropagation(); }); });
     pay.addEventListener("click", function () { costDraft.who = (costDraft.who + 1) % 3; pay.textContent = plab(); });
@@ -972,11 +1032,11 @@
     var t = (TRIP.days || []).filter(function (d) { return d.iso === todayISO(); })[0];
     return t ? t.id : (((TRIP.days || [])[0] || {}).id || "general");
   }
-  function expensesByDay(dayId) { return expenses.filter(function (e) { return e.day === dayId; }); }
+  function expensesByDay(dayId) { return activeExp().filter(function (e) { return e.day === dayId; }); }
   function expDayTotal(dayId) { return expensesByDay(dayId).reduce(function (s, e) { return s + (+e.amount || 0); }, 0); }
   function costSummary() {
     var names = payerNames(), paid = [0, 0];
-    expenses.forEach(function (e) {
+    activeExp().forEach(function (e) {
       var amt = +e.amount || 0;
       if (e.who === 1) paid[1] += amt;
       else if (e.who === 2) { paid[0] += amt / 2; paid[1] += amt / 2; }
@@ -1000,8 +1060,7 @@
     var del = el("button", "exprow__del", "✕"); del.type = "button";
     del.setAttribute("aria-label", "Delete expense");
     del.addEventListener("click", function () {
-      var i = expenses.indexOf(e);
-      if (i > -1) { expenses.splice(i, 1); saveList(EXP_KEY, expenses); renderCosts(); }
+      e.deleted = true; touchExp(e); saveList(EXP_KEY, expenses); renderCosts(); syncNow();
     });
     row.appendChild(del);
     return row;
@@ -1027,6 +1086,8 @@
 
     var row1 = el("div", "cost-row");
     var amt = el("input", "cost-amt"); amt.type = "text"; amt.inputMode = "decimal"; amt.placeholder = "$ amount";
+    amt.value = costDraft.amt || "";
+    amt.addEventListener("input", function () { costDraft.amt = amt.value; });
     var note = el("input", "cost-note"); note.type = "text"; note.placeholder = "note (optional)"; note.value = costDraft.note || "";
     note.addEventListener("input", function () { costDraft.note = note.value; });
     row1.appendChild(amt); row1.appendChild(note);
@@ -1052,11 +1113,13 @@
       var v = parseFloat(String(amt.value).replace(/[^0-9.]/g, ""));
       if (!v || v <= 0) { toast("Enter an amount"); amt.focus(); return; }
       expenses.push({ id: "e" + Date.now(), day: daySel.value, cat: costDraft.cat,
-        note: note.value.trim(), amount: Math.round(v * 100) / 100, who: costDraft.who });
+        note: note.value.trim(), amount: Math.round(v * 100) / 100, who: costDraft.who,
+        updatedAt: Date.now(), deleted: false });
       saveList(EXP_KEY, expenses);
-      costDraft.note = "";
+      costDraft.note = ""; costDraft.amt = "";
       toast("Added " + money(v) + " 🧾");
       renderCosts();
+      syncNow();
     }
     addBtn.addEventListener("click", submit);
     amt.addEventListener("keydown", function (e) { if (e.key === "Enter") submit(); });
@@ -1079,7 +1142,7 @@
     brk.appendChild(el("div", "cost-person", "<b>" + esc(names[0]) + "</b> paid " + money(s.paid[0])));
     brk.appendChild(el("div", "cost-person", "<b>" + esc(names[1]) + "</b> paid " + money(s.paid[1])));
     sum.appendChild(brk);
-    sum.appendChild(el("div", "cost-settle", esc(s.settle) + (expenses.length ? " · split evenly" : "")));
+    sum.appendChild(el("div", "cost-settle", esc(s.settle) + (activeExp().length ? " · split evenly" : "")));
     // by-category breakdown
     var cts = catTotals();
     if (cts.length) {
@@ -1111,7 +1174,9 @@
         '<div class="empty__big">🧾</div><p>No expenses yet. Pick a category above, punch in an amount, and tap Add — tolls, gas, that lobster roll. It tracks who paid and totals it up by day. You can also tap “💵 Log a cost” on any spot in your itinerary.</p>'));
     }
 
-    if (expenses.length) {
+    root.appendChild(buildSyncPanel());
+
+    if (activeExp().length) {
       var exp = el("section", "panel");
       exp.appendChild(el("h3", null, "Export"));
       exp.appendChild(el("p", "muted", "Save your expenses as a spreadsheet (CSV) — opens in Numbers, Excel, or Sheets."));
@@ -1122,11 +1187,41 @@
       var clrBtn = el("button", "btn-ghost btn-danger", "🧹 Clear all expenses");
       clrBtn.addEventListener("click", function () {
         if (typeof window.confirm === "function" && !window.confirm("Delete all logged expenses? This can't be undone.")) return;
-        expenses = []; saveList(EXP_KEY, expenses); renderCosts(); toast("Expenses cleared");
+        activeExp().forEach(function (e) { e.deleted = true; touchExp(e); });
+        saveList(EXP_KEY, expenses); renderCosts(); toast("Expenses cleared"); syncNow();
       });
       exp.appendChild(copyBtn); exp.appendChild(dlBtn); exp.appendChild(clrBtn);
       root.appendChild(exp);
     }
+  }
+
+  function buildSyncPanel() {
+    var box = el("section", "panel");
+    box.appendChild(el("h3", null, "🔗 Share with Anna"));
+    var code = syncCode();
+    if (!code) {
+      box.appendChild(el("p", "muted",
+        "Put the same code on both phones to share expenses live (updates land within a few seconds). Pick anything you'll both type the same."));
+      var f = el("div", "field");
+      f.appendChild(el("label", null, "Shared trip code"));
+      var inp = el("input"); inp.type = "text"; inp.placeholder = "e.g. as-mb-maine"; inp.autocapitalize = "none";
+      f.appendChild(inp);
+      box.appendChild(f);
+      var go = el("button", "btn-primary", "Start sharing");
+      go.addEventListener("click", function () { setSyncCode(inp.value); });
+      box.appendChild(go);
+    } else {
+      var ago = lastSyncAt ? (Math.max(0, Math.round((Date.now() - lastSyncAt) / 1000)) + "s ago") : "not yet";
+      var status = el("div", "sync-status",
+        "Sharing as <b>" + esc(code) + "</b> · " + (syncing ? "syncing…" : "last sync " + ago));
+      status.id = "sync-status"; box.appendChild(status);
+      var now = el("button", "btn-primary", "🔄 Sync now");
+      now.addEventListener("click", function () { syncNow({ toast: true, force: true }); });
+      var stop = el("button", "btn-ghost btn-danger", "Stop sharing");
+      stop.addEventListener("click", function () { saveStr(SYNC_CODE_KEY, ""); toast("Stopped sharing"); renderCosts(); });
+      box.appendChild(now); box.appendChild(stop);
+    }
+    return box;
   }
 
   // =====================================================
@@ -1834,6 +1929,7 @@
   //  INIT
   // =====================================================
   applyTheme(); // set theme before first paint to avoid a flash
+  ensureExpMeta();
   applyTripMeta();
   renderChips();
   renderAll();
@@ -1843,7 +1939,13 @@
   var themeBtn = document.getElementById("theme-btn");
   if (themeBtn) themeBtn.addEventListener("click", cycleTheme);
   setInterval(applyTheme, 60000); // re-check sunset crossover when on Auto
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) applyTheme(); });
+  startSyncPoll();
+  if (syncCode()) syncNow(); // pull shared expenses on launch
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) return;
+    applyTheme();
+    if (syncCode()) syncNow();
+  });
   window.addEventListener("resize", syncTopbarH);
   window.addEventListener("orientationchange", function () { setTimeout(syncTopbarH, 200); });
 

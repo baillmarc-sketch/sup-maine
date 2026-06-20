@@ -4,6 +4,7 @@
   "private": true,
   "description": "Sup'Maine — pocket trip guide. Static PWA front-end; /api is a Vercel serverless proxy to the Claude API.",
   "dependencies": {
-    "@anthropic-ai/sdk": "latest"
+    "@anthropic-ai/sdk": "latest",
+    "@vercel/kv": "latest"
   }
 }

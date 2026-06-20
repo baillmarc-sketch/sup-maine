@@ -559,6 +559,8 @@ a { color: var(--navy); }
 .cost-payer:active { transform: scale(.96); }
 .cost-addbtn { flex: none; background: var(--pine); color: #fff; font-weight: 800; font-size: 14px; padding: 0 20px; border-radius: 11px; }
 .cost-addbtn:active { transform: scale(.97); }
+.sync-status { font-size: 13.5px; color: var(--ink-soft); margin: 2px 0 10px; }
+.sync-status b { color: var(--ink); }
 .cost-dayhead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
 .cost-dayhead h3 { margin: 0; }
 .cost-daytotal { font-weight: 800; color: var(--pine); font-size: 14px; white-space: nowrap; }
