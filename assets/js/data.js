@@ -277,18 +277,25 @@ window.SUP_MAINE_TRIP = {
       tip: "⚠️ Reservation marked TENTATIVE (Sun 7 PM) — confirm it (hours vary by day). Alt: Scales, 68 Commercial St, on the water."
     },
     {
-      id: "p310", day: "d2", time: "Afternoon", name: "Sōlie", emoji: "🛍️",
+      id: "p310", day: "d2", time: "Afternoon", name: "Soleil", emoji: "🎁",
       category: "shop", done: true, rating: "", ratingSource: "", price: "",
-      address: "Old Port, Portland, ME 04101", mapsQuery: "Solie Portland Maine",
-      why: "<b>Adorable Old Port boutique</b> — you two loved it. ✨",
+      address: "550 Congress St, Portland, ME 04101", mapsQuery: "Soleil, 550 Congress St, Portland ME",
+      why: "<b>Cheery home-goods & gift shop</b> in the Arts District — you two loved it. ✨",
       todo: "", facts: [], tip: "Visited — so cute. 💛"
     },
     {
-      id: "p311", day: "d2", time: "Afternoon", name: "Electric Buddha", emoji: "🛍️",
+      id: "p311", day: "d2", time: "Afternoon", name: "Electric Buddhas", emoji: "🎵",
       category: "shop", done: true, rating: "", ratingSource: "", price: "",
-      address: "Old Port, Portland, ME 04101", mapsQuery: "Electric Buddha Portland Maine",
-      why: "<b>Quirky Old Port shop</b> — gifts, finds, good vibes.",
+      address: "556 Congress St, Portland, ME 04101", mapsQuery: "Electric Buddhas, 556 Congress St, Portland ME",
+      why: "<b>Vinyl record shop</b> right next to Soleil — flip the crates, good finds.",
       todo: "", facts: [], tip: "Visited — so cute. 💛"
+    },
+    {
+      id: "p312", day: "d2", time: "Afternoon", name: "September", emoji: "👗",
+      category: "shop", done: true, rating: "", ratingSource: "", price: "",
+      address: "19 Pleasant St, Portland, ME 04101", mapsQuery: "September, 19 Pleasant St, Portland ME",
+      why: "<b>Where Anna got the dress.</b> 👗 A lovely little Portland boutique.",
+      todo: "", facts: [], tip: "Dress acquired. 💛"
     },
 
     /* ---------------- DAY 4 — Portland → Acadia ---------------- */
