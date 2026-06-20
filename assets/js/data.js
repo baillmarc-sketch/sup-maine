@@ -297,6 +297,21 @@ window.SUP_MAINE_TRIP = {
       why: "<b>Where Anna got the dress.</b> 👗 A lovely little Portland boutique.",
       todo: "", facts: [], tip: "Dress acquired. 💛"
     },
+    {
+      id: "p313", day: "d2", time: "Afternoon", name: "Ember", emoji: "🏺",
+      category: "shop", done: true, rating: "", ratingSource: "", price: "",
+      address: "5 South St, Portland, ME 04101", mapsQuery: "Ember, 5 South St, Portland ME",
+      why: "<b>Joint shop from Campfire Pottery & Mulxiply</b> — handmade ceramics, jewelry, and emerging makers.",
+      todo: "", facts: [], tip: "This is where you spotted the Campfire plates. 💛"
+    },
+    {
+      id: "p314", day: "d2", time: "To buy", name: "Campfire Pottery — plates (order online)", emoji: "🍽️",
+      category: "shop", rating: "", ratingSource: "", price: "",
+      why: "<b>Order the plates online</b> when you're home — same makers as Ember. <a href=\"https://campfirepottery.com\" target=\"_blank\" rel=\"noopener\">Shop campfirepottery.com →</a>",
+      todo: "Pick the plates (sandstone is the classic) and ship them home.",
+      facts: ["Handmade in Gray, Maine.", "Plates, bowls, mugs in earthy tones."],
+      tip: "Check the ✓ once you've ordered."
+    },
 
     /* ---------------- DAY 4 — Portland → Acadia ---------------- */
     {
