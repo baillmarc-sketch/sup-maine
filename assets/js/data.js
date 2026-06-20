@@ -277,14 +277,14 @@ window.SUP_MAINE_TRIP = {
       tip: "⚠️ Reservation marked TENTATIVE (Sun 7 PM) — confirm it (hours vary by day). Alt: Scales, 68 Commercial St, on the water."
     },
     {
-      id: "p310", day: "d3", time: "Afternoon", name: "Sōlie", emoji: "🛍️",
+      id: "p310", day: "d2", time: "Afternoon", name: "Sōlie", emoji: "🛍️",
       category: "shop", done: true, rating: "", ratingSource: "", price: "",
       address: "Old Port, Portland, ME 04101", mapsQuery: "Solie Portland Maine",
       why: "<b>Adorable Old Port boutique</b> — you two loved it. ✨",
       todo: "", facts: [], tip: "Visited — so cute. 💛"
     },
     {
-      id: "p311", day: "d3", time: "Afternoon", name: "Electric Buddha", emoji: "🛍️",
+      id: "p311", day: "d2", time: "Afternoon", name: "Electric Buddha", emoji: "🛍️",
       category: "shop", done: true, rating: "", ratingSource: "", price: "",
       address: "Old Port, Portland, ME 04101", mapsQuery: "Electric Buddha Portland Maine",
       why: "<b>Quirky Old Port shop</b> — gifts, finds, good vibes.",
