@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v2.2";
+  var VERSION = "v2.3";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -148,7 +148,7 @@
   function saveMap(k, m) { try { localStorage.setItem(k, JSON.stringify(m)); } catch (e) {} }
   function loadList(k) { try { return JSON.parse(localStorage.getItem(k)) || []; } catch (e) { return []; } }
   function saveList(k, a) { try { localStorage.setItem(k, JSON.stringify(a)); } catch (e) {} }
-  var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v2", PACK_KEY = "supmaine.packing.v1";
+  var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v3", PACK_KEY = "supmaine.packing.v1";
   var checks = loadMap(CHECK_KEY), notes = loadMap(NOTE_KEY), wxCache = loadMap(WX_KEY), packing = loadList(PACK_KEY);
 
   // ---- housing coverage: which trip nights have no stay ----
@@ -169,6 +169,12 @@
 
   // ---- weather (Open-Meteo, free, no key) ----
   function wxKey(lat, lon) { return Number(lat).toFixed(3) + "," + Number(lon).toFixed(3); }
+  function fmtClock(iso) {
+    var m = String(iso || "").match(/T(\d{2}):(\d{2})/);
+    if (!m) return "";
+    var h = parseInt(m[1], 10), ap = h >= 12 ? "p" : "a", hh = h % 12; if (hh === 0) hh = 12;
+    return hh + ":" + m[2] + ap;
+  }
   function wxEmoji(c) {
     if (c === 0) return "☀️";
     if (c <= 3) return "⛅";
@@ -189,7 +195,8 @@
       var span = document.querySelector('.day[data-day="' + d.id + '"] .day__wx');
       if (span && w) {
         span.textContent = wxEmoji(w.code) + " " + w.max + "°/" + w.min + "°" +
-          (w.pop != null ? " · 💧" + w.pop + "%" : "");
+          (w.pop != null ? " · 💧" + w.pop + "%" : "") +
+          (w.set ? " · 🌇 " + fmtClock(w.set) : "");
         span.style.display = "";
       }
     });
@@ -207,17 +214,18 @@
       if (cached && (Date.now() - cached.at < 6 * 3600 * 1000)) return; // fresh enough
       var g = groups[k], dates = g.dates.sort();
       var url = "https://api.open-meteo.com/v1/forecast?latitude=" + g.lat + "&longitude=" + g.lon +
-        "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit" +
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunset&temperature_unit=fahrenheit" +
         "&timezone=auto&start_date=" + dates[0] + "&end_date=" + dates[dates.length - 1];
       fetch(url).then(function (r) { return r.json(); }).then(function (j) {
         if (!j || !j.daily || !j.daily.time) return;
-        var days = {}, pp = j.daily.precipitation_probability_max;
+        var days = {}, pp = j.daily.precipitation_probability_max, ss = j.daily.sunset;
         j.daily.time.forEach(function (t, i) {
           days[t] = {
             code: j.daily.weather_code[i],
             max: Math.round(j.daily.temperature_2m_max[i]),
             min: Math.round(j.daily.temperature_2m_min[i]),
-            pop: pp ? pp[i] : null
+            pop: pp ? pp[i] : null,
+            set: ss ? ss[i] : null
           };
         });
         wxCache[k] = { at: Date.now(), days: days };
@@ -280,7 +288,7 @@
     if (costEl) {
       var spent = spendChecked();
       if (spent > 0) {
-        costEl.textContent = "💵 Logged spend: $" + spent + " (checked items with a listed price)";
+        costEl.textContent = "💵 Rough tally so far: $" + spent + " (only checked items that list a $ price)";
         costEl.style.display = "";
       } else { costEl.style.display = "none"; }
     }
