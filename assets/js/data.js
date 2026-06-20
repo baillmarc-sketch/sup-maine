@@ -85,10 +85,13 @@ window.SUP_MAINE_TRIP = {
       address: "249 Vaughan St, Portland, ME 04102", mapsQuery: "249 Vaughan St Portland ME",
       why: "Your <b>base for 3 nights</b> (Jun 19–22) in the West End, walk to the Old Port.",
       todo: "Self check-in (front door C2490 → Room 2, bedroom code 1592), drop bags, grab your parking spot off Brackett St, then dinner at Ladyfish.",
+      codes: [
+        { label: "Front door", value: "C2490" },
+        { label: "Bedroom · Room 2", value: "1592", sub: "enter, then turn the deadbolt" },
+        { label: "Wi-Fi", value: "Morrill Mansion", sub: "pw: Portland" }
+      ],
       facts: [
-        "🚪 Front door: C2490 · Bedroom (Room 2): 1592 — enter the code to engage the deadbolt, then turn it to lock/unlock.",
         "🛏️ Room 2, 2nd floor. Brick building, green trim & gold doors, corner of Brackett & Vaughan.",
-        "📶 Wifi: Morrill Mansion · Password: Portland",
         "🅿️ One off-street spot (compact car) — entrance around on Brackett St, park inside the white lines, unassigned.",
         "Check-in Fri Jun 19, 3–10 PM · Checkout Mon Jun 22, 10 AM.",
         "Hosts Katrina & Mark live a block away — message for towels/TP/trash. Host +1 978-270-2354 · Conf HMPN9HPQ2M."
