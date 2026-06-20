@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v4.0";
+  var VERSION = "v4.1";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -615,7 +615,7 @@
     if (isSlot) {
       // pick-one slot: search link + dropdown of specific venues
       card.appendChild(renderOptions(p));
-    } else {
+    } else if (p.address || p.mapsQuery) {
       // single venue: tappable address (copies) + Navigate (hero) + Waze + Copy
       if (p.address) {
         var addrLine = el("button", "card__addrline",
