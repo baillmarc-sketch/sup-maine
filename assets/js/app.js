@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v2.9";
+  var VERSION = "v3.0";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -1731,7 +1731,8 @@
     var t = TRIP.trip || {};
     $("#trip-tagline").textContent = t.blurb ? (t.base || "your pocket guide to Maine") : "your pocket guide to Maine";
     if (t.base) $("#trip-tagline").textContent = t.base;
-    $("#trip-chip-dates").textContent = t.dates || "Add dates";
+    // drop the year from the header chip to keep the top row tight
+    $("#trip-chip-dates").textContent = t.dates ? t.dates.replace(/,?\s*\d{4}\s*$/, "") : "Add dates";
     var foot = document.getElementById("appfoot");
     if (foot) foot.textContent = "Sup'Maine " + VERSION + " · " + (TRIP.places || []).length + " spots · made with 🦞";
   }
