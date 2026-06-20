@@ -591,6 +591,33 @@ window.SUP_MAINE_TRIP = {
       tip: "Fairmount Bagel (a block over) is the eternal rival — do a taste-off."
     },
     {
+      id: "p707", day: "d7", time: "8:45a", alt: true, name: "🥯 Mile End bagel tour (top 3–5)", emoji: "🥯",
+      category: "activity", rating: "", ratingSource: "", price: "$",
+      address: "263 Rue Saint-Viateur O, Montréal, QC H2V 1Y1", mapsQuery: "St-Viateur Bagel Montreal",
+      why: "<b>Walk the Mile End bagel circuit</b> and taste-test for the best Montréal bagel.",
+      todo: "St-Viateur + Fairmount (a block apart), then wander for a few more. Sesame, hot, split one each.",
+      facts: ["St-Viateur: 263 Rue Saint-Viateur O.", "Fairmount: 74 Av Fairmount O.", "🗣️ Rec from the owner of September (Portland)."],
+      tip: "Go hungry and share so you can try the top 3–5."
+    },
+    {
+      id: "p705", day: "d7", time: "12:00p", name: "Kahwa Café (best sandwich)", emoji: "🥪",
+      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$",
+      address: "331 Av du Mont-Royal E, Montréal, QC", mapsQuery: "Kahwa Cafe, 331 Av du Mont-Royal E, Montreal",
+      why: "<b>Local pick for the best sandwich in town</b> — Mediterranean subs on bread baked on-site.",
+      todo: "Try the chicken panko or the merguez. The bread's the secret.",
+      facts: ["In the Plateau, on Av du Mont-Royal E.", "🗣️ Rec from the owner of September (Portland)."],
+      tip: "Great quick lunch between Mile End and Jean-Talon."
+    },
+    {
+      id: "p706", day: "d7", time: "7:00p", alt: true, name: "L'Express (French bistro)", emoji: "🍷",
+      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$$",
+      address: "3927 Rue Saint-Denis, Montréal, QC H2W 2M4", mapsQuery: "L'Express, 3927 Saint-Denis, Montreal",
+      why: "<b>Quintessential Parisian-style bistro</b> — timeless, buzzy, open late.",
+      todo: "Get the steak frites. Reserve ahead.",
+      facts: ["A Montréal classic since 1980.", "🗣️ Rec from the owner of September (Portland)."],
+      tip: "⚠️ Make a reservation. You've got Limbo booked this night, so use this as a swap or on another Montréal evening."
+    },
+    {
       id: "p702", day: "d7", time: "10:30a", name: "Mile End — cafés & wander", emoji: "🎨",
       category: "coffee", slot: true, searchQuery: "cafe Mile End Montreal",
       why: "Montréal's <b>artsy café-and-bookshop neighborhood</b> — pure wander territory. Grab a coffee, then drift.",
