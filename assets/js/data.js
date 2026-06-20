@@ -327,11 +327,11 @@ window.SUP_MAINE_TRIP = {
       todo: "", facts: ["Licensed brewery doing kombucha + tea-infused beers.", "A few doors from Onggi."], tip: "So good. 💛"
     },
     {
-      id: "p318", day: "d2", time: "Afternoon", name: "The Post", emoji: "⭐",
-      category: "eat", done: true, rating: "", ratingSource: "", price: "",
-      mapsQuery: "The Post Portland Maine",
-      why: "<b>Amazing</b> — you loved it. 💛 (Confirm exact spot/address.)",
-      todo: "", facts: ["📍 Address not yet pinned — tell Sup'Maine the neighborhood and I'll lock it in."], tip: ""
+      id: "p318", day: "d2", time: "Afternoon", name: "The Post Supply", emoji: "🕯️",
+      category: "shop", done: true, rating: "", ratingSource: "", price: "$$",
+      address: "65 Washington Ave, Portland, ME 04101", mapsQuery: "The Post Supply, 65 Washington Ave, Portland ME",
+      why: "<b>Amazing</b> home-goods & gift shop — candles, decor, unique finds. You loved it. 💛",
+      todo: "", facts: ["Same Washington Ave strip as Sissle, Onggi & Root Wild.", "Closed Tuesdays."], tip: ""
     },
     {
       id: "p317", day: "d2", time: "Afternoon", name: "Sissle & Daughters Cheesemongers & Grocers", emoji: "🧀",
