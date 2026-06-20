@@ -503,3 +503,48 @@ a { color: var(--navy); }
 @media (min-width: 560px) {
   .brand__name { font-size: 29px; }
 }
+
+/* ---------------- Dark theme (opt-in via [data-theme="dark"]; auto after sunset) ---------------- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:    #1b1712;
+  --paper-2:  #262019;
+  --card:     #241f18;
+  --ink:      #f2e9d8;
+  --ink-soft: #b0a594;
+  --line:     #3b3328;
+  --lobster-d:#f08161;   /* brighter so "why" highlights pop on dark */
+  --shadow:   0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.5);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.45);
+}
+[data-theme="dark"] body {
+  background-image:
+    radial-gradient(circle at 18% 0%, rgba(224,168,61,.07), transparent 42%),
+    radial-gradient(circle at 92% 8%, rgba(47,107,79,.07), transparent 40%);
+}
+[data-theme="dark"] a { color: #84acdf; }
+[data-theme="dark"] .badge--rating { background: #3a2f12; color: #ecc560; }
+[data-theme="dark"] .badge--price  { background: #1d3326; color: #8fd3a8; }
+[data-theme="dark"] .badge--cat    { background: #33232f; color: #d8a8c8; }
+[data-theme="dark"] .opt__rate     { color: #ecc560; }
+[data-theme="dark"] .opt__price    { color: #8fd3a8; }
+[data-theme="dark"] .tipline { background: #2c2410; border-color: #4a3d1c; }
+[data-theme="dark"] .card__note-input { background: #1f1b15; }
+[data-theme="dark"] .day__wx,
+[data-theme="dark"] .day__map,
+[data-theme="dark"] .slot__search,
+[data-theme="dark"] .resv__btn,
+[data-theme="dark"] .badge--pick { background: #1f2a3a; border-color: #2c3a50; color: #aac4e8; }
+[data-theme="dark"] .banner--warn    { background: #38260f; border-color: #6a4a1c; color: #f0c98f; }
+[data-theme="dark"] .banner--now     { background: #14271b; border-color: #2c5539; color: #9fd8b4; }
+[data-theme="dark"] .banner--confirm { background: #322a10; border-color: #5a4a1c; color: #ecd28a; }
+[data-theme="dark"] .progress-pill__txt { color: #8fd3a8; }
+[data-theme="dark"] .day--past .day__pill { background: #4a4234; color: #d8cdb8; }
+
+/* header theme toggle */
+.theme-btn {
+  flex: none; width: 38px; height: 34px; border-radius: 999px;
+  background: var(--paper-2); border: 1px solid var(--line);
+  font-size: 16px; line-height: 1; display: grid; place-items: center;
+}
+.theme-btn:active { transform: scale(.94); }

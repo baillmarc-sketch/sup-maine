@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v2.4";
+  var VERSION = "v2.5";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -148,7 +148,8 @@
   function saveMap(k, m) { try { localStorage.setItem(k, JSON.stringify(m)); } catch (e) {} }
   function loadList(k) { try { return JSON.parse(localStorage.getItem(k)) || []; } catch (e) { return []; } }
   function saveList(k, a) { try { localStorage.setItem(k, JSON.stringify(a)); } catch (e) {} }
-  var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v3", PACK_KEY = "supmaine.packing.v1";
+  var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v4", PACK_KEY = "supmaine.packing.v1";
+  var THEME_KEY = "supmaine.theme.v1"; // "auto" | "light" | "dark"
   var checks = loadMap(CHECK_KEY), notes = loadMap(NOTE_KEY), wxCache = loadMap(WX_KEY), packing = loadList(PACK_KEY);
 
   // ---- housing coverage: which trip nights have no stay ----
@@ -200,6 +201,7 @@
         span.style.display = "";
       }
     });
+    if (typeof applyTheme === "function") applyTheme(); // sunset now known — refresh auto theme
   }
   function fetchWeather() {
     if (typeof fetch !== "function") return;
@@ -214,17 +216,18 @@
       if (cached && (Date.now() - cached.at < 6 * 3600 * 1000)) return; // fresh enough
       var g = groups[k], dates = g.dates.sort();
       var url = "https://api.open-meteo.com/v1/forecast?latitude=" + g.lat + "&longitude=" + g.lon +
-        "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunset&temperature_unit=fahrenheit" +
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&temperature_unit=fahrenheit" +
         "&timezone=auto&start_date=" + dates[0] + "&end_date=" + dates[dates.length - 1];
       fetch(url).then(function (r) { return r.json(); }).then(function (j) {
         if (!j || !j.daily || !j.daily.time) return;
-        var days = {}, pp = j.daily.precipitation_probability_max, ss = j.daily.sunset;
+        var days = {}, pp = j.daily.precipitation_probability_max, ss = j.daily.sunset, sr = j.daily.sunrise;
         j.daily.time.forEach(function (t, i) {
           days[t] = {
             code: j.daily.weather_code[i],
             max: Math.round(j.daily.temperature_2m_max[i]),
             min: Math.round(j.daily.temperature_2m_min[i]),
             pop: pp ? pp[i] : null,
+            rise: sr ? sr[i] : null,
             set: ss ? ss[i] : null
           };
         });
@@ -234,6 +237,54 @@
       }).catch(function () {});
     });
     applyWx(); // paint whatever's already cached
+  }
+
+  // ---- theme: light by day, dark after sunset (auto), with manual override ----
+  function getThemePref() { return loadStr(THEME_KEY) || "auto"; }
+  function todaySun() {
+    var today = (TRIP.days || []).filter(function (d) { return d.iso === todayISO(); })[0];
+    if (!today || today.lat == null) return null;
+    var c = wxCache[wxKey(today.lat, today.lon)];
+    var w = c && c.days && c.days[today.iso];
+    if (!w) return null;
+    return { rise: w.rise ? new Date(w.rise) : null, set: w.set ? new Date(w.set) : null };
+  }
+  function autoIsDark() {
+    var now = new Date(), s = todaySun();
+    if (s && s.set) {
+      if (now >= s.set) return true;                       // after sunset
+      if (s.rise && now < s.rise) return true;             // before sunrise
+      if (!s.rise && now.getHours() < 6) return true;
+      return false;
+    }
+    var h = now.getHours();                                 // fallback: ~8pm–6am
+    return h >= 20 || h < 6;
+  }
+  function effectiveTheme() {
+    var pref = getThemePref();
+    if (pref === "light" || pref === "dark") return pref;
+    return autoIsDark() ? "dark" : "light";
+  }
+  function applyTheme() {
+    var t = effectiveTheme();
+    document.documentElement.setAttribute("data-theme", t);
+    var mc = document.querySelector('meta[name="theme-color"]');
+    if (mc) mc.setAttribute("content", t === "dark" ? "#1b1712" : "#f7efe2");
+    var btn = document.getElementById("theme-btn");
+    if (btn) {
+      var pref = getThemePref();
+      btn.textContent = pref === "light" ? "☀️" : (pref === "dark" ? "🌙" : "🌗");
+      btn.setAttribute("aria-label",
+        "Theme: " + pref + (pref === "auto" ? " (dark after sunset)" : "") + " — tap to change");
+    }
+  }
+  function cycleTheme() {
+    var order = ["auto", "light", "dark"], cur = getThemePref();
+    var next = order[(order.indexOf(cur) + 1) % order.length];
+    saveStr(THEME_KEY, next);
+    applyTheme();
+    toast(next === "auto" ? "Theme: Auto · dark after sunset 🌗"
+      : (next === "dark" ? "Theme: Dark 🌙" : "Theme: Light ☀️"));
   }
 
   // ---- misc trip helpers (now/next, costs, confirmations, day map) ----
@@ -1475,12 +1526,17 @@
   // =====================================================
   //  INIT
   // =====================================================
+  applyTheme(); // set theme before first paint to avoid a flash
   applyTripMeta();
   renderChips();
   renderAll();
   wireAsk();
   go("itinerary");
   syncTopbarH();
+  var themeBtn = document.getElementById("theme-btn");
+  if (themeBtn) themeBtn.addEventListener("click", cycleTheme);
+  setInterval(applyTheme, 60000); // re-check sunset crossover when on Auto
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) applyTheme(); });
   window.addEventListener("resize", syncTopbarH);
   window.addEventListener("orientationchange", function () { setTimeout(syncTopbarH, 200); });
 
