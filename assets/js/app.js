@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v3.0";
+  var VERSION = "v3.1";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -1390,6 +1390,7 @@
   function loadStr(k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } }
   function saveStr(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   var askLog = [];
+  var askLiveMode = false; // when on, every question goes straight to the live AI
 
   function tripContext() {
     var t = TRIP.trip || {};
@@ -1535,8 +1536,8 @@
     if (!q) return;
     askLog.push({ role: "you", text: q });
 
-    // "force live" escape — skip the free local layers and ask the AI directly.
-    var wantsLive = /\b(live|web search|search the web|search online|fresh ideas|real ?time|ask claude)\b/i.test(q);
+    // "force live" — the Live toggle, or a magic word in the question.
+    var wantsLive = askLiveMode || /\b(live|web search|search the web|search online|fresh ideas|real ?time|ask claude)\b/i.test(q);
 
     if (!wantsLive) {
       // 1) Hardcoded answers win — instant, no network.
@@ -1658,6 +1659,21 @@
     function fire() { if (!ta) return; var v = ta.value; ta.value = ""; askSend(v); }
     if (send) send.addEventListener("click", fire);
     if (ta) ta.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); fire(); } });
+
+    var liveBtn = document.getElementById("ask-live");
+    var liveHint = document.getElementById("ask-live-hint");
+    function paintLive() {
+      if (!liveBtn) return;
+      liveBtn.classList.toggle("is-on", askLiveMode);
+      liveBtn.textContent = askLiveMode ? "🌐 Live web search: on" : "🌐 Live web search: off";
+      liveBtn.setAttribute("aria-pressed", askLiveMode ? "true" : "false");
+      if (liveHint) liveHint.textContent = askLiveMode
+        ? "Asking the live AI (uses credit)"
+        : "Answers from your saved stash (free, offline)";
+      if (ta) ta.placeholder = askLiveMode ? "Ask the live AI anything…" : "Ask about your trip…";
+    }
+    if (liveBtn) liveBtn.addEventListener("click", function () { askLiveMode = !askLiveMode; paintLive(); });
+    paintLive();
     document.addEventListener("keydown", function (e) {
       if (e.key !== "Escape") return;
       var m = document.getElementById("ask-modal");
