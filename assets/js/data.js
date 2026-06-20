@@ -326,6 +326,13 @@ window.SUP_MAINE_TRIP = {
       why: "<b>Kombucha & tea-beer taproom</b> — organic, foraged ingredients, dog-friendly patio energy.",
       todo: "", facts: ["Licensed brewery doing kombucha + tea-infused beers.", "A few doors from Onggi."], tip: "So good. 💛"
     },
+    {
+      id: "p317", day: "d2", time: "Afternoon", name: "Sissle & Daughters Cheesemongers & Grocers", emoji: "🧀",
+      category: "shop", done: true, rating: "", ratingSource: "", price: "$$",
+      address: "107 Washington Ave, Portland, ME 04101", mapsQuery: "Sissle & Daughters, 107 Washington Ave, Portland ME",
+      why: "<b>Absolutely loved it</b> — cheesemonger & grocer with stellar cheese, charcuterie, wine & gourmet bits.",
+      todo: "", facts: ["Founded 2018 by Mary Chapman & Will Sissle.", "Same Washington Ave strip as Onggi & Root Wild."], tip: "Got cheese & such — so good. 🧀💛"
+    },
 
     /* ---------------- DAY 4 — Portland → Acadia ---------------- */
     {
