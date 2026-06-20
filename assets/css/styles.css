@@ -395,7 +395,7 @@ a { color: var(--navy); }
 .bubble__add:active { transform: scale(.97); }
 .pick { margin-top: 9px; padding: 9px 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; }
 .pick__head { font-size: 14px; }
-.pick__city { color: var(--muted); font-weight: 600; }
+.pick__city { color: var(--ink-soft); font-weight: 600; }
 .pick__rate { color: var(--lobster); font-weight: 700; }
 .pick__why { font-size: 13px; color: var(--ink); opacity: .85; margin-top: 3px; line-height: 1.4; }
 .pick__add { display: inline-block; margin-top: 8px; background: var(--pine); color: #fff; font-weight: 700; font-size: 12.5px; padding: 6px 11px; border-radius: 9px; }
@@ -482,4 +482,51 @@ a { color: var(--navy); }
 
 @media (min-width: 560px) {
   .brand__name { font-size: 29px; }
+}
+
+/* ---------------- Dark mode (warm charcoal — easy on the eyes at night) ---------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper:    #1b1712;
+    --paper-2:  #262019;
+    --card:     #241f18;
+    --ink:      #f2e9d8;
+    --ink-soft: #b0a594;
+    --line:     #3b3328;
+    --lobster-d:#f08161;   /* brighter so "why" highlights pop on dark */
+    --shadow:   0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.5);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.45);
+  }
+  body {
+    background-image:
+      radial-gradient(circle at 18% 0%, rgba(224,168,61,.07), transparent 42%),
+      radial-gradient(circle at 92% 8%, rgba(47,107,79,.07), transparent 40%);
+  }
+  a { color: #84acdf; }
+
+  /* badges + ratings */
+  .badge--rating { background: #3a2f12; color: #ecc560; }
+  .badge--price  { background: #1d3326; color: #8fd3a8; }
+  .badge--cat    { background: #33232f; color: #d8a8c8; }
+  .opt__rate     { color: #ecc560; }
+  .opt__price    { color: #8fd3a8; }
+
+  /* tip + note */
+  .tipline { background: #2c2410; border-color: #4a3d1c; }
+  .card__note-input { background: #1f1b15; }
+
+  /* navy info pills (weather, day map, search-area, pick) */
+  .day__wx,
+  .day__map,
+  .slot__search,
+  .badge--pick { background: #1f2a3a; border-color: #2c3a50; color: #aac4e8; }
+
+  /* banners */
+  .banner--warn    { background: #38260f; border-color: #6a4a1c; color: #f0c98f; }
+  .banner--now     { background: #14271b; border-color: #2c5539; color: #9fd8b4; }
+  .banner--confirm { background: #322a10; border-color: #5a4a1c; color: #ecd28a; }
+
+  /* progress + past-day pill */
+  .progress-pill__txt { color: #8fd3a8; }
+  .day--past .day__pill { background: #4a4234; color: #d8cdb8; }
 }
