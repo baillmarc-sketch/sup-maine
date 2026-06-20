@@ -277,6 +277,25 @@ a { color: var(--navy); }
 .btn-ghost:active { transform: scale(.98); }
 .btn-danger { color: var(--lobster-d); border-color: #eccbc2; margin-top: 14px; }
 
+/* reservations & codes cards (Info tab) */
+.resv { border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-top: 10px; background: var(--paper); }
+.resv__name { font-weight: 800; font-size: 15.5px; }
+.resv__ok { font-size: 12px; font-weight: 700; color: var(--pine); }
+.resv__dates { font-size: 13px; color: var(--ink-soft); font-weight: 700; margin-top: 3px; }
+.resv__actions { display: flex; gap: 6px; margin-top: 9px; align-items: center; flex-wrap: wrap; }
+.resv__addr {
+  flex: 1 1 auto; min-width: 0; text-align: left; font-size: 13px; color: var(--ink);
+  background: var(--card); border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.resv__addr:active { transform: scale(.98); }
+.resv__btn {
+  flex: none; font-weight: 700; font-size: 13px; color: var(--navy);
+  background: #eaeef4; border: 1px solid #d6e0ec; border-radius: 9px; padding: 8px 12px; text-decoration: none;
+}
+.resv__btn:active { transform: scale(.95); }
+.resv .facts { margin-top: 9px; }
+
 .steps { counter-reset: s; list-style: none; padding: 0; margin: 8px 0 0; }
 .steps li { counter-increment: s; position: relative; padding-left: 34px; margin-bottom: 12px; font-size: 14px; }
 .steps li::before {
@@ -519,6 +538,7 @@ a { color: var(--navy); }
   .day__wx,
   .day__map,
   .slot__search,
+  .resv__btn,
   .badge--pick { background: #1f2a3a; border-color: #2c3a50; color: #aac4e8; }
 
   /* banners */
