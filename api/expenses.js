@@ -1,7 +1,7 @@
-// Sup'Maine — shared expense sync (Vercel serverless + Vercel KV).
-// Two phones using the same trip "code" share one expense list.
-//   GET  /api/expenses?code=as-mb-maine   -> { expenses: [...] }
-//   POST /api/expenses  { code, expenses } -> merges, saves, returns merged
+// Sup'Maine — shared trip sync (Vercel serverless + Vercel KV).
+// Two phones using the same trip "code" share expenses, notes & check-offs.
+//   GET  /api/expenses?code=as-mb-maine            -> { expenses, checks, notes }
+//   POST /api/expenses  { code, expenses, checks, notes } -> merges, saves, returns merged
 //
 // Setup (one-time, in the Vercel dashboard):
 //   Storage → create a KV (Upstash) store → connect it to this project.
@@ -17,7 +17,7 @@ const kv = createClient({ url: KV_URL, token: KV_TOKEN });
 function cleanCode(c) {
   return String(c || "").toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 40);
 }
-// union by id; for the same id keep the most recently updated record (tombstones included)
+// expenses: union by id, keep most recently updated (tombstones included)
 function mergeById(a, b) {
   const map = {};
   [].concat(a || [], b || []).forEach(function (e) {
@@ -26,6 +26,22 @@ function mergeById(a, b) {
     if (!cur || (e.updatedAt || 0) >= (cur.updatedAt || 0)) map[e.id] = e;
   });
   return Object.keys(map).map(function (k) { return map[k]; });
+}
+// checks/notes: maps of id -> { v, at }; keep the newer per key
+function mergeMap(a, b) {
+  a = a || {}; b = b || {}; const out = {};
+  Object.keys(a).forEach(function (k) { out[k] = a[k]; });
+  Object.keys(b).forEach(function (k) {
+    const bv = b[k] || {}, ov = out[k] || {};
+    if (!out[k] || (bv.at || 0) >= (ov.at || 0)) out[k] = b[k];
+  });
+  return out;
+}
+// stored value may be a legacy array (expenses only) or a {expenses,checks,notes} doc
+function asDoc(stored) {
+  if (Array.isArray(stored)) return { expenses: stored, checks: {}, notes: {} };
+  stored = stored || {};
+  return { expenses: stored.expenses || [], checks: stored.checks || {}, notes: stored.notes || {} };
 }
 
 module.exports = async (req, res) => {
@@ -47,22 +63,23 @@ module.exports = async (req, res) => {
     const key = "exp:" + code;
 
     if (req.method === "GET") {
-      const stored = (await kv.get(key)) || [];
-      res.status(200).json({ expenses: stored });
+      res.status(200).json(asDoc(await kv.get(key)));
       return;
     }
     if (req.method === "POST") {
-      const incoming = Array.isArray(body.expenses) ? body.expenses : [];
-      const stored = (await kv.get(key)) || [];
-      const merged = mergeById(stored, incoming).slice(0, 2000);
+      const stored = asDoc(await kv.get(key));
+      const merged = {
+        expenses: mergeById(stored.expenses, Array.isArray(body.expenses) ? body.expenses : []).slice(0, 2000),
+        checks: mergeMap(stored.checks, body.checks || {}),
+        notes: mergeMap(stored.notes, body.notes || {})
+      };
       await kv.set(key, merged);
-      res.status(200).json({ expenses: merged });
+      res.status(200).json(merged);
       return;
     }
     res.status(405).json({ error: "Use GET or POST" });
   } catch (e) {
     const msg = String((e && e.message) || "Sync error");
-    // Most likely cause: KV store not connected yet.
     res.status(500).json({ error: msg, hint: "Connect a Vercel KV store to this project and redeploy." });
   }
 };
