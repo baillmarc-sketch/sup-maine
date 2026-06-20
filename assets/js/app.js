@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v3.5";
+  var VERSION = "v3.6";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -149,12 +149,14 @@
   function loadList(k) { try { return JSON.parse(localStorage.getItem(k)) || []; } catch (e) { return []; } }
   function saveList(k, a) { try { localStorage.setItem(k, JSON.stringify(a)); } catch (e) {} }
   var CHECK_KEY = "supmaine.checks.v1", NOTE_KEY = "supmaine.notes.v1", WX_KEY = "supmaine.wx.v4", PACK_KEY = "supmaine.packing.v1";
+  var CHECK_META_KEY = "supmaine.checksMeta.v1", NOTE_META_KEY = "supmaine.notesMeta.v1";
   var THEME_KEY = "supmaine.theme.v1"; // "auto" | "light" | "dark"
   var EXP_KEY = "supmaine.expenses.v1";
   var SYNC_CODE_KEY = "supmaine.sync.code.v1";
   var SYNC_API = "https://sup-maine.vercel.app/api/expenses";
   var lastSyncAt = 0, syncing = false, syncPollStarted = false;
   var checks = loadMap(CHECK_KEY), notes = loadMap(NOTE_KEY), wxCache = loadMap(WX_KEY), packing = loadList(PACK_KEY);
+  var checksMeta = loadMap(CHECK_META_KEY), notesMeta = loadMap(NOTE_META_KEY);
   var expenses = loadList(EXP_KEY);
 
   // ---- housing coverage: which trip nights have no stay ----
@@ -439,9 +441,13 @@
       if (!tripObj || !tripObj.places || !tripObj.days) throw new Error("missing days/places");
       localStorage.setItem(SAVED_KEY, JSON.stringify(tripObj));
       TRIP = tripObj; TRIP.isSample = false;
-      if (obj && obj.checks) { checks = obj.checks; saveMap(CHECK_KEY, checks); }
-      if (obj && obj.notes) { notes = obj.notes; saveMap(NOTE_KEY, notes); }
+      var nowT = Date.now();
+      if (obj && obj.checks) { checks = obj.checks; saveMap(CHECK_KEY, checks);
+        Object.keys(checks).forEach(function (k) { checksMeta[k] = nowT; }); saveMap(CHECK_META_KEY, checksMeta); }
+      if (obj && obj.notes) { notes = obj.notes; saveMap(NOTE_KEY, notes);
+        Object.keys(notes).forEach(function (k) { notesMeta[k] = nowT; }); saveMap(NOTE_META_KEY, notesMeta); }
       applyTripMeta(); renderAll(); go("itinerary");
+      if (syncCode()) syncNow();
       toast(obj && obj.app === "supmaine" ? "Trip + notes restored! 🦞" : "Trip loaded! 🦞");
       return true;
     } catch (e) { toast("Hmm, that JSON didn't parse"); return false; }
@@ -451,9 +457,14 @@
   function clearMarks() {
     if (typeof window.confirm === "function" &&
         !window.confirm("Clear all your check-offs and notes? This can't be undone.")) return;
+    var nowT = Date.now();
+    Object.keys(checks).forEach(function (k) { checksMeta[k] = nowT; });
+    Object.keys(notes).forEach(function (k) { notesMeta[k] = nowT; });
     checks = {}; notes = {};
     saveMap(CHECK_KEY, checks); saveMap(NOTE_KEY, notes);
+    saveMap(CHECK_META_KEY, checksMeta); saveMap(NOTE_META_KEY, notesMeta);
     renderAll(); go("itinerary");
+    if (syncCode()) syncNow();
     toast("Check-offs & notes cleared");
   }
 
@@ -538,12 +549,14 @@
     checkBtn.addEventListener("click", function (ev) {
       ev.stopPropagation();
       if (checks[p.id]) { delete checks[p.id]; } else { checks[p.id] = true; }
-      saveMap(CHECK_KEY, checks);
+      checksMeta[p.id] = Date.now();
+      saveMap(CHECK_KEY, checks); saveMap(CHECK_META_KEY, checksMeta);
       var on = !!checks[p.id];
       checkBtn.classList.toggle("is-checked", on);
       checkBtn.textContent = on ? "✓" : "";
       card.classList.toggle("is-done", on);
       updateProgress();
+      syncNow();
     });
     top.appendChild(checkBtn);
     main.appendChild(top);
@@ -638,11 +651,14 @@
     noteInput.placeholder = "Your note (loved it, want to try, parking tip…)";
     noteInput.value = notes[p.id] || "";
     noteInput.addEventListener("click", function (ev) { ev.stopPropagation(); });
+    var noteSyncT;
     noteInput.addEventListener("input", function () {
       var v = noteInput.value.trim();
       if (v) { notes[p.id] = v; } else { delete notes[p.id]; }
-      saveMap(NOTE_KEY, notes);
+      notesMeta[p.id] = Date.now();
+      saveMap(NOTE_KEY, notes); saveMap(NOTE_META_KEY, notesMeta);
       noteBtn.textContent = v ? "📝 Edit note" : "📝 Add note";
+      clearTimeout(noteSyncT); noteSyncT = setTimeout(function () { syncNow(); }, 1200);
     });
     noteWrap.appendChild(noteInput);
     noteBtn.addEventListener("click", function (ev) {
@@ -922,8 +938,36 @@
     if (ch) saveList(EXP_KEY, expenses);
   }
   function activeExp() { return expenses.filter(function (e) { return !e.deleted; }); }
-  function expHash() { return expenses.length + ":" + expenses.reduce(function (s, e) { return s + (e.updatedAt || 0) + (e.deleted ? 1 : 0); }, 0); }
   function touchExp(e) { e.updatedAt = Date.now(); }
+  // a cheap fingerprint of everything we sync, to decide whether a re-render is needed
+  function syncHash() {
+    var ex = expenses.reduce(function (s, e) { return s + (e.updatedAt || 0) + (e.deleted ? 1 : 0); }, 0);
+    var ck = Object.keys(checks).sort().join(",");
+    var nt = Object.keys(notes).map(function (k) { return k + ":" + (notes[k] || "").length; }).sort().join(",");
+    return expenses.length + "|" + ex + "|" + ck + "|" + nt;
+  }
+  function buildSyncDoc() {
+    ensureExpMeta();
+    var c = {}, n = {};
+    Object.keys(checksMeta).forEach(function (id) { c[id] = { v: checks[id] ? 1 : 0, at: checksMeta[id] || 0 }; });
+    Object.keys(checks).forEach(function (id) { if (!c[id]) c[id] = { v: 1, at: 0 }; });
+    Object.keys(notesMeta).forEach(function (id) { n[id] = { v: notes[id] || "", at: notesMeta[id] || 0 }; });
+    Object.keys(notes).forEach(function (id) { if (!n[id]) n[id] = { v: notes[id], at: 0 }; });
+    return { expenses: expenses, checks: c, notes: n };
+  }
+  function applySyncDoc(doc) {
+    if (doc.expenses) { expenses = doc.expenses; saveList(EXP_KEY, expenses); }
+    if (doc.checks) {
+      var nc = {}, ncm = {};
+      Object.keys(doc.checks).forEach(function (id) { var e = doc.checks[id] || {}; ncm[id] = e.at || 0; if (e.v) nc[id] = true; });
+      checks = nc; checksMeta = ncm; saveMap(CHECK_KEY, checks); saveMap(CHECK_META_KEY, checksMeta);
+    }
+    if (doc.notes) {
+      var nn = {}, nnm = {};
+      Object.keys(doc.notes).forEach(function (id) { var e = doc.notes[id] || {}; nnm[id] = e.at || 0; if (e.v) nn[id] = e.v; });
+      notes = nn; notesMeta = nnm; saveMap(NOTE_KEY, notes); saveMap(NOTE_META_KEY, notesMeta);
+    }
+  }
   function paintSyncStatus() {
     var s = document.getElementById("sync-status"); if (!s) return;
     var code = syncCode();
@@ -933,17 +977,19 @@
   function syncNow(opts) {
     opts = opts || {};
     var code = syncCode(); if (!code) return;
-    ensureExpMeta();
     syncing = true; paintSyncStatus();
+    var before = syncHash();
     fetch(SYNC_API, { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code: code, expenses: expenses }) })
+      body: JSON.stringify(extend({ code: code }, buildSyncDoc())) })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }, function () { return { ok: false, j: {} }; }); })
       .then(function (res) {
         syncing = false;
-        if (res.ok && res.j && res.j.expenses) {
-          var before = expHash();
-          expenses = res.j.expenses; saveList(EXP_KEY, expenses); lastSyncAt = Date.now();
-          if (expHash() !== before || opts.force) renderCosts(); else paintSyncStatus();
+        if (res.ok && res.j && res.j.expenses !== undefined) {
+          applySyncDoc(res.j); lastSyncAt = Date.now();
+          var changed = syncHash() !== before;
+          var typing = document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+          if ((changed || opts.force) && !typing) { renderItinerary(); updateProgress(); renderCosts(); }
+          else paintSyncStatus();
           if (opts.toast) toast("Synced ✓");
         } else {
           if (opts.toast) toast((res.j && res.j.error) || "Sync failed");
@@ -952,6 +998,7 @@
       })
       .catch(function () { syncing = false; if (opts.toast) toast("Couldn't reach sync"); paintSyncStatus(); });
   }
+  function extend(a, b) { for (var k in b) if (b.hasOwnProperty(k)) a[k] = b[k]; return a; }
   function setSyncCode(c) {
     c = String(c || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 40);
     if (!c) { toast("Enter a code"); return; }
@@ -1201,7 +1248,7 @@
     var code = syncCode();
     if (!code) {
       box.appendChild(el("p", "muted",
-        "Put the same code on both phones to share expenses live (updates land within a few seconds). Pick anything you'll both type the same."));
+        "Put the same secret code on both phones to share live — expenses, notes, and check-offs all flow both ways (updates land within a few seconds). Pick anything you'll both type the same."));
       var f = el("div", "field");
       f.appendChild(el("label", null, "Shared trip code"));
       var inp = el("input"); inp.type = "text"; inp.placeholder = "e.g. as-mb-maine"; inp.autocapitalize = "none";
