@@ -185,7 +185,7 @@ window.SUP_MAINE_TRIP = {
       category: "coffee", rating: 4.7, ratingSource: "Google ~", price: "$",
       address: "75 Commercial St, Portland, ME 04101", mapsQuery: "Standard Baking Co, 75 Commercial St, Portland ME",
       why: "<b>Best bakery on the waterfront</b> — croissants, morning buns and proper bread.",
-      todo: "Almond croissant + a coffee to walk with along the working waterfront.",
+      todo: "Get the <b>spicy egg danish</b> and the <b>plum & almond tart</b> — plus a coffee for the waterfront walk.",
       facts: ["Below the Fore Street restaurant on Commercial St.", "Gets busy early; pastries are the move.", "Cash-friendly, quick in-and-out."],
       tip: "Grab extras for the Peaks Island ferry."
     },
