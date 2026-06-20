@@ -9,9 +9,16 @@
 
 const { createClient } = require("@vercel/kv");
 
-// Works whether the Vercel/Upstash integration sets KV_* or UPSTASH_* env vars.
-const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+// Find the REST URL/token no matter what the Vercel/Upstash integration named them
+// (KV_*, UPSTASH_*, or a custom prefix like MYKV_REST_API_URL).
+function pickEnv(re) {
+  for (var k in process.env) { if (re.test(k) && process.env[k]) return process.env[k]; }
+  return null;
+}
+const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL ||
+  pickEnv(/REST_API_URL$/) || pickEnv(/REDIS_REST_URL$/);
+const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN ||
+  pickEnv(/REST_API_TOKEN$/) || pickEnv(/REDIS_REST_TOKEN$/);
 const kv = createClient({ url: KV_URL, token: KV_TOKEN });
 
 function cleanCode(c) {
@@ -72,7 +79,13 @@ module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") { res.status(204).end(); return; }
   if (!KV_URL || !KV_TOKEN) {
-    res.status(500).json({ error: "Sync store not connected", hint: "Connect a Vercel KV / Upstash store to this project and redeploy." });
+    // names only (not values) — helps diagnose what the integration created
+    var present = Object.keys(process.env).filter(function (k) { return /KV|REDIS|UPSTASH|STORAGE/i.test(k); });
+    res.status(500).json({
+      error: "Sync store not connected",
+      hint: "Create an Upstash/KV store, connect it to this project, then Redeploy.",
+      sawUrl: !!KV_URL, sawToken: !!KV_TOKEN, envFound: present
+    });
     return;
   }
 
