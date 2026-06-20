@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v2.8";
+  var VERSION = "v2.9";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -896,7 +896,8 @@
   function payerNames() {
     var t = (TRIP.trip || {}).travelers || "";
     var parts = t.split(/\s*(?:&|,|\band\b|\+)\s*/i).map(function (s) { return s.trim(); }).filter(Boolean);
-    if (parts.length >= 2) return [parts[0], parts[1]];
+    // MB handles most payments, so list MB (second-listed traveler) first as the default payer.
+    if (parts.length >= 2) return [parts[1], parts[0]];
     if (parts.length === 1) return [parts[0], "Other"];
     return ["Me", "Other"];
   }
