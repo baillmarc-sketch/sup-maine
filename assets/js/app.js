@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v5.1";
+  var VERSION = "v5.2";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -544,6 +544,8 @@
 
   function placeCard(p) {
     var isSlot = !!(p.options && p.options.length);
+    // a place we're staying at, while no share code is set → hide address/codes
+    var stayLocked = p.category === "stay" && !unlocked();
     var card = el("article", "card" + (checks[p.id] ? " is-done" : ""));
     card.setAttribute("data-id", p.id);
 
@@ -601,7 +603,7 @@
       more.appendChild(el("div", "section-h", "What to do"));
       more.appendChild(el("p", "card__text", esc(p.todo)));
     }
-    if (p.facts && p.facts.length) {
+    if (p.facts && p.facts.length && !stayLocked) {
       more.appendChild(el("div", "section-h", "Quick facts"));
       var ul = el("ul", "facts");
       p.facts.forEach(function (f) { ul.appendChild(el("li", null, factHtml(f))); });
@@ -615,6 +617,9 @@
     if (isSlot) {
       // pick-one slot: search link + dropdown of specific venues
       card.appendChild(renderOptions(p));
+    } else if (stayLocked) {
+      card.appendChild(el("div", "card__locked",
+        '🔒 Address &amp; door codes are private — add your shared trip code (Costs &rarr; Share) to view.'));
     } else if (p.address || p.mapsQuery) {
       // single venue: tappable address (copies) + Navigate (hero) + Waze + Copy
       if (p.address) {
@@ -942,6 +947,9 @@
 
   // ---- shared expense sync (Vercel KV via /api/expenses) ----
   function syncCode() { return loadStr(SYNC_CODE_KEY); }
+  // Sensitive lodging info (addresses + door/wifi codes for stays) is private:
+  // only shown once a shared trip code is set. No code → name/dates only.
+  function unlocked() { return !!syncCode(); }
   function idTime(id) { var m = String(id || "").match(/(\d{10,})/); return m ? parseInt(m[1], 10) : 0; }
   function ensureExpMeta() {
     var ch = false;
@@ -1018,6 +1026,8 @@
     if (!c) { toast("Enter a code"); return; }
     saveStr(SYNC_CODE_KEY, c);
     renderCosts();
+    renderItinerary();        // unlock stay addresses on cards
+    renderPlan();             // unlock Reservations & codes
     syncNow({ force: true, toast: true });
   }
   function startSyncPoll() {
@@ -1279,7 +1289,7 @@
       var now = el("button", "btn-primary", "🔄 Sync now");
       now.addEventListener("click", function () { syncNow({ toast: true, force: true }); });
       var stop = el("button", "btn-ghost btn-danger", "Stop sharing");
-      stop.addEventListener("click", function () { saveStr(SYNC_CODE_KEY, ""); toast("Stopped sharing"); renderCosts(); });
+      stop.addEventListener("click", function () { saveStr(SYNC_CODE_KEY, ""); toast("Stopped sharing"); renderCosts(); renderItinerary(); renderPlan(); });
       box.appendChild(now); box.appendChild(stop);
     }
     return box;
@@ -1326,8 +1336,23 @@
   function buildReservations() {
     var sec = el("section", "panel");
     sec.appendChild(el("h2", null, "🔑 Reservations & codes"));
-    sec.appendChild(el("p", "muted",
-      "Where you're staying now is up top, codes front and center. Tap a code or address to copy; tap a phone to call."));
+
+    var locked = !unlocked();
+    if (locked) {
+      sec.appendChild(el("p", "muted",
+        "Addresses and door codes for where you're staying are private — they only appear on phones sharing your trip code."));
+      var lock = el("div", "resv__lock");
+      lock.appendChild(el("div", "resv__lock-msg",
+        "🔒 Add your shared trip code to unlock stay addresses and door / wifi codes."));
+      var unlockBtn = el("button", "btn-primary", "🔗 Enter share code");
+      unlockBtn.type = "button";
+      unlockBtn.addEventListener("click", function () { go("costs"); });
+      lock.appendChild(unlockBtn);
+      sec.appendChild(lock);
+    } else {
+      sec.appendChild(el("p", "muted",
+        "Where you're staying now is up top, codes front and center. Tap a code or address to copy; tap a phone to call."));
+    }
 
     var stays = (TRIP.places || []).filter(function (p) { return p.category === "stay"; })
       .sort(function (a, b) { return String(a.checkIn || "").localeCompare(String(b.checkIn || "")); });
@@ -1346,13 +1371,17 @@
         card.appendChild(el("div", "resv__dates",
           "🗓️ " + esc(prettyDate(p.checkIn)) + " → " + esc(prettyDate(p.checkOut))));
       }
-      var codes = resvCodes(p);
-      if (codes) card.appendChild(codes);
-      if (p.address) card.appendChild(resvAddrRow(p));
-      if (p.facts && p.facts.length) {
-        var ul = el("ul", "facts");
-        p.facts.forEach(function (f) { ul.appendChild(el("li", null, factHtml(f))); });
-        card.appendChild(ul);
+      if (locked) {
+        card.appendChild(el("div", "resv__hidden", "🔒 Address & codes hidden"));
+      } else {
+        var codes = resvCodes(p);
+        if (codes) card.appendChild(codes);
+        if (p.address) card.appendChild(resvAddrRow(p));
+        if (p.facts && p.facts.length) {
+          var ul = el("ul", "facts");
+          p.facts.forEach(function (f) { ul.appendChild(el("li", null, factHtml(f))); });
+          card.appendChild(ul);
+        }
       }
       sec.appendChild(card);
     });
