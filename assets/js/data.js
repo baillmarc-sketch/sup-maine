@@ -609,13 +609,13 @@ window.SUP_MAINE_TRIP = {
       tip: "Great quick lunch between Mile End and Jean-Talon."
     },
     {
-      id: "p706", day: "d7", time: "7:00p", alt: true, name: "L'Express (French bistro)", emoji: "🍷",
+      id: "p706", day: "d8", time: "12:30p", alt: true, name: "L'Express (French bistro)", emoji: "🍷",
       category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$$",
       address: "3927 Rue Saint-Denis, Montréal, QC H2W 2M4", mapsQuery: "L'Express, 3927 Saint-Denis, Montreal",
-      why: "<b>Quintessential Parisian-style bistro</b> — timeless, buzzy, open late.",
-      todo: "Get the steak frites. Reserve ahead.",
+      why: "<b>Quintessential Parisian-style bistro</b> — timeless, buzzy, open all day.",
+      todo: "Steak frites is the move — great for lunch.",
       facts: ["A Montréal classic since 1980.", "🗣️ Rec from the owner of September (Portland)."],
-      tip: "⚠️ Make a reservation. You've got Limbo booked this night, so use this as a swap or on another Montréal evening."
+      tip: "Good for a steak-frites lunch — or use it for the open last-night dinner (reserve for dinner)."
     },
     {
       id: "p702", day: "d7", time: "10:30a", name: "Mile End — cafés & wander", emoji: "🎨",
