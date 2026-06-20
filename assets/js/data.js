@@ -82,9 +82,21 @@ window.SUP_MAINE_TRIP = {
     {
       id: "p103", day: "d1", time: "3:00p", name: "✅ Stay — Morrill Mansion (Portland)", emoji: "🛏️",
       category: "stay", checkIn: "2026-06-19", checkOut: "2026-06-22", rating: "", ratingSource: "", price: "",
+      address: "249 Vaughan St, Portland, ME 04102", mapsQuery: "249 Vaughan St Portland ME",
       why: "Your <b>base for 3 nights</b> (Jun 19–22) in the West End, walk to the Old Port.",
-      todo: "Self check-in, drop bags, grab your parking spot, then dinner at Ladyfish.",
-      tip: "Address & door codes are private — open them in the 🔑 Info tab once your share code is set."
+      todo: "Self check-in (front door C2490 → Room 2, bedroom code 1592), drop bags, grab your parking spot off Brackett St, then dinner at Ladyfish.",
+      codes: [
+        { label: "Front door", value: "C2490" },
+        { label: "Bedroom · Room 2", value: "1592", sub: "enter, then turn the deadbolt" },
+        { label: "Wi-Fi", value: "Morrill Mansion", sub: "pw: Portland" }
+      ],
+      facts: [
+        "🛏️ Room 2, 2nd floor. Brick building, green trim & gold doors, corner of Brackett & Vaughan.",
+        "🅿️ One off-street spot (compact car) — entrance around on Brackett St, park inside the white lines, unassigned.",
+        "Check-in Fri Jun 19, 3–10 PM · Checkout Mon Jun 22, 10 AM.",
+        "Hosts Katrina & Mark live a block away — message for towels/TP/trash. Host +1 978-270-2354 · Conf HMPN9HPQ2M."
+      ],
+      tip: "Parking spot fits a compact only — stay inside the white lines so other guests can move around."
     },
     {
       id: "p104", day: "d1", time: "7:00p", name: "✅ Dinner — Ladyfish", emoji: "🐟",
@@ -381,9 +393,11 @@ window.SUP_MAINE_TRIP = {
     {
       id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
       category: "stay", checkIn: "2026-06-22", checkOut: "2026-06-24", rating: "", ratingSource: "", price: "",
+      address: "12 Roberts Ave, Bar Harbor, ME 04609",
       why: "The <b>Look Nook Room</b> — your Acadia base for 2 nights (Jun 22–24), walk to the waterfront.",
       todo: "Check in, drop bags, then head up Cadillac for sunset.",
-      tip: "Address & confirmation are private — open them in the 🔑 Info tab once your share code is set."
+      facts: ["Confirmation HM3RM32X8D.", "Stay: Jun 22–24 · Checkout Jun 24, 10 AM.", "Host phone +1 207-266-8310.", "A few blocks from Agamont Park & the town pier."],
+      tip: "Tap Copy address to drop it into Waze."
     },
     {
       id: "p404", day: "d4", time: "Sunset", name: "Cadillac Mountain sunset", emoji: "🌄",
@@ -587,9 +601,11 @@ window.SUP_MAINE_TRIP = {
     {
       id: "p606", day: "d6", time: "5:00p", name: "✅ Stay — Elegant 1BR (Montréal)", emoji: "🛏️",
       category: "stay", checkIn: "2026-06-24", checkOut: "2026-06-27", rating: "", ratingSource: "", price: "",
+      address: "366 Rue Mayor, Montréal, QC H3A 1N8", mapsQuery: "366 Rue Mayor Montreal",
       why: "Your <b>base for 3 nights</b> (Jun 24–27), downtown and walkable to restaurants.",
       todo: "Check in at 5 PM, then head to Verdun for the Beba reservation.",
-      tip: "Address & confirmation are private — open them in the 🔑 Info tab once your share code is set."
+      facts: ["Confirmation HM3RH8M3MS.", "Check-in Jun 24, 5 PM · Checkout Jun 27, 11 AM.", "Walk to restaurants; central near McGill / Quartier des Spectacles.", "Host phone +1 514-600-2644."],
+      tip: "Montréal street-parking signs are strict (and bilingual) — read them twice."
     },
     {
       id: "p607", day: "d6", time: "8:00p", name: "✅ Dinner — Beba", emoji: "🇦🇷",
@@ -713,7 +729,7 @@ window.SUP_MAINE_TRIP = {
     {
       id: "p901", day: "d9", time: "Morning", name: "Drive: Montréal → Hudson Valley", emoji: "🚗",
       category: "drive", rating: "", ratingSource: "", price: "",
-      address: "Schodack Landing, NY", mapsQuery: "Schodack Landing NY",
+      address: "612 River Rd, Schodack Landing, NY 12156", mapsQuery: "Schodack Landing NY",
       why: "<b>Back into the US</b> and down to the Hudson Valley — ~5–5.5 hrs.",
       todo: "Cross the border (passports again!), drive south to your Schodack Landing homestead.",
       facts: ["~5–5.5 hrs.", "🛂 Border crossing back into the US.", "I-87 (the Northway/Thruway) most of the way — tolls.", "Schodack Landing is ~25 min north of Hudson."],
@@ -731,9 +747,11 @@ window.SUP_MAINE_TRIP = {
     {
       id: "p903", day: "d9", time: "5:00p", name: "✅ Stay — Schodack Landing Homestead", emoji: "🛏️",
       category: "stay", checkIn: "2026-06-27", checkOut: "2026-06-28", rating: "", ratingSource: "", price: "",
+      address: "612 River Rd, Schodack Landing, NY 12156",
       why: "Your <b>final night</b> (Jun 27–28) — a historic homestead on the river, ~25 min north of Hudson.",
       todo: "Check in at 5 PM, then drive down to Hudson for dinner at Serre.",
-      tip: "Address & confirmation are private — open them in the 🔑 Info tab once your share code is set; it's rural, so save offline maps."
+      facts: ["Confirmation HMBAAYYX3J.", "Check-in Jun 27, 5 PM · Checkout Jun 28, 11 AM.", "~25 min from Hudson / Warren St.", "Host phone +1 234-241-2179."],
+      tip: "Tap Copy address for Waze; it's a rural road, so download offline maps just in case."
     },
     {
       id: "p904", day: "d9", time: "7:00p", name: "✅ Dinner — Serre (at The Maker)", emoji: "🪴",
