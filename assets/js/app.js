@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v3.3";
+  var VERSION = "v3.4";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -1147,25 +1147,51 @@
     return row;
   }
 
+  function isCurrentStay(p) {
+    if (!p.checkIn || !p.checkOut) return false;
+    var t = todayISO();
+    return p.checkIn <= t && t <= p.checkOut;
+  }
+  function resvCodes(p) {
+    if (!p.codes || !p.codes.length) return null;
+    var wrap = el("div", "resv__codes");
+    p.codes.forEach(function (c) {
+      var chip = el("button", "code"); chip.type = "button";
+      chip.innerHTML = '<span class="code__label">' + esc(c.label) + "</span>" +
+        '<span class="code__value">' + esc(c.value) + "</span>" +
+        (c.sub ? '<span class="code__sub">' + esc(c.sub) + "</span>" : "");
+      chip.setAttribute("aria-label", c.label + " " + c.value + " — tap to copy");
+      chip.addEventListener("click", function () { copyText(c.value, c.label + " copied"); });
+      wrap.appendChild(chip);
+    });
+    return wrap;
+  }
+
   function buildReservations() {
     var sec = el("section", "panel");
     sec.appendChild(el("h2", null, "🔑 Reservations & codes"));
     sec.appendChild(el("p", "muted",
-      "Everything you need at the door — addresses, check-in windows, door codes, confirmations, host phones. Tap an address to copy; tap a phone number to call."));
+      "Where you're staying now is up top, codes front and center. Tap a code or address to copy; tap a phone to call."));
 
     var stays = (TRIP.places || []).filter(function (p) { return p.category === "stay"; })
       .sort(function (a, b) { return String(a.checkIn || "").localeCompare(String(b.checkIn || "")); });
+    // current stay first
+    var nowStays = stays.filter(isCurrentStay), laterStays = stays.filter(function (p) { return !isCurrentStay(p); });
+    stays = nowStays.concat(laterStays);
 
-    if (!stays.length) {
-      sec.appendChild(el("p", "muted", "No stays on file yet."));
-    }
+    if (!stays.length) sec.appendChild(el("p", "muted", "No stays on file yet."));
+
     stays.forEach(function (p) {
-      var card = el("div", "resv");
+      var cur = isCurrentStay(p);
+      var card = el("div", "resv" + (cur ? " resv--now" : ""));
+      if (cur) card.appendChild(el("div", "resv__nowbadge", "📍 You're here now"));
       card.appendChild(el("div", "resv__name", esc(stripLead(p.name))));
       if (p.checkIn && p.checkOut) {
         card.appendChild(el("div", "resv__dates",
           "🗓️ " + esc(prettyDate(p.checkIn)) + " → " + esc(prettyDate(p.checkOut))));
       }
+      var codes = resvCodes(p);
+      if (codes) card.appendChild(codes);
       if (p.address) card.appendChild(resvAddrRow(p));
       if (p.facts && p.facts.length) {
         var ul = el("ul", "facts");
