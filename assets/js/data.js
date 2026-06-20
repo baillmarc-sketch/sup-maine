@@ -146,7 +146,7 @@ window.SUP_MAINE_TRIP = {
       tip: "Windy days, hold your napkins — and your roll."
     },
     {
-      id: "p203b", day: "d2", time: "12:00p", alt: true, name: "🦞 Bite Into Maine (cult food truck)", emoji: "🦞",
+      id: "p203b", day: "d2", time: "12:30p", name: "🦞 Bite Into Maine (lunch!)", emoji: "🦞",
       category: "eat", rating: 4.8, ratingSource: "Google ~", price: "$$",
       address: "1000 Shore Rd, Cape Elizabeth, ME 04107", mapsQuery: "Bite Into Maine food truck Fort Williams Cape Elizabeth",
       why: "<b>The IYKYK lobster roll, zero detour</b> — a food truck parked at Fort Williams, right where you're already seeing Portland Head Light.",
