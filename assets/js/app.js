@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v2.1";
+  var VERSION = "v2.2";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -808,14 +808,118 @@
   }
 
   // =====================================================
-  //  PLAN VIEW (bring-your-own-AI bridge)
+  //  INFO VIEW: reservations & codes + connection + setup
   // =====================================================
+  // a small address row: tappable-to-copy address + Maps + Waze
+  function resvAddrRow(p) {
+    var row = el("div", "resv__actions");
+    var a = el("button", "resv__addr", "📍 " + esc(p.address));
+    a.type = "button";
+    a.setAttribute("aria-label", "Copy address: " + p.address);
+    a.addEventListener("click", function () { copyText(p.address, "Address copied"); });
+    row.appendChild(a);
+    var mp = el("a", "resv__btn", "🗺️"); mp.href = mapsUrl(p); mp.target = "_blank"; mp.rel = "noopener";
+    mp.setAttribute("aria-label", "Open in Maps"); row.appendChild(mp);
+    var wz = el("a", "resv__btn", "Waze"); wz.href = wazeUrl(p); wz.target = "_blank"; wz.rel = "noopener";
+    wz.setAttribute("aria-label", "Open in Waze"); row.appendChild(wz);
+    return row;
+  }
+
+  function buildReservations() {
+    var sec = el("section", "panel");
+    sec.appendChild(el("h2", null, "🔑 Reservations & codes"));
+    sec.appendChild(el("p", "muted",
+      "Everything you need at the door — addresses, check-in windows, door codes, confirmations, host phones. Tap an address to copy; tap a phone number to call."));
+
+    var stays = (TRIP.places || []).filter(function (p) { return p.category === "stay"; })
+      .sort(function (a, b) { return String(a.checkIn || "").localeCompare(String(b.checkIn || "")); });
+
+    if (!stays.length) {
+      sec.appendChild(el("p", "muted", "No stays on file yet."));
+    }
+    stays.forEach(function (p) {
+      var card = el("div", "resv");
+      card.appendChild(el("div", "resv__name", esc(stripLead(p.name))));
+      if (p.checkIn && p.checkOut) {
+        card.appendChild(el("div", "resv__dates",
+          "🗓️ " + esc(prettyDate(p.checkIn)) + " → " + esc(prettyDate(p.checkOut))));
+      }
+      if (p.address) card.appendChild(resvAddrRow(p));
+      if (p.facts && p.facts.length) {
+        var ul = el("ul", "facts");
+        p.facts.forEach(function (f) { ul.appendChild(el("li", null, factHtml(f))); });
+        card.appendChild(ul);
+      }
+      sec.appendChild(card);
+    });
+
+    // booked dinners still to confirm
+    var tent = (TRIP.places || []).filter(function (p) { return p.needsConfirm; });
+    if (tent.length) {
+      sec.appendChild(el("h3", null, "📞 Booked dinners to confirm"));
+      tent.forEach(function (p) {
+        var dy = (TRIP.days || []).filter(function (d) { return d.id === p.day; })[0];
+        var card = el("div", "resv");
+        card.appendChild(el("div", "resv__name",
+          esc(stripLead(p.name).replace(/^Dinner — /, "")) +
+          (checks[p.id] ? ' <span class="resv__ok">✓ confirmed</span>' : "")));
+        card.appendChild(el("div", "resv__dates",
+          "🗓️ " + esc((dy ? dy.date : "") + (p.time ? " · " + p.time : ""))));
+        if (p.address) card.appendChild(resvAddrRow(p));
+        sec.appendChild(card);
+      });
+    }
+    return sec;
+  }
+
+  function buildConnection() {
+    var sec = el("section", "panel");
+    sec.appendChild(el("h2", null, "⚙️ Concierge connection"));
+    sec.appendChild(el("p", "muted",
+      "Ask uses a built-in endpoint by default. Override it only if you host your own proxy — leave blank to use the default."));
+
+    var urlField = el("div", "field");
+    urlField.appendChild(el("label", null, "API endpoint URL"));
+    var urlInput = el("input"); urlInput.type = "url"; urlInput.placeholder = DEFAULT_API;
+    urlInput.value = loadStr(API_URL_KEY) || "";
+    urlField.appendChild(urlInput);
+    sec.appendChild(urlField);
+
+    var tokField = el("div", "field");
+    tokField.appendChild(el("label", null, "Access token (optional)"));
+    var tokInput = el("input"); tokInput.type = "text"; tokInput.placeholder = "only if your proxy requires one";
+    tokInput.value = loadStr(API_TOKEN_KEY) || "";
+    tokField.appendChild(tokInput);
+    sec.appendChild(tokField);
+
+    var save = el("button", "btn-primary", "Save connection");
+    save.addEventListener("click", function () {
+      var u = urlInput.value.trim();
+      if (u && !/^https?:\/\//i.test(u)) { toast("URL must start with http:// or https://"); return; }
+      saveStr(API_URL_KEY, u); saveStr(API_TOKEN_KEY, tokInput.value.trim());
+      toast(u ? "Connection saved" : "Using the built-in endpoint");
+    });
+    sec.appendChild(save);
+
+    var reset = el("button", "btn-ghost", "↩︎ Use built-in endpoint");
+    reset.addEventListener("click", function () {
+      saveStr(API_URL_KEY, ""); saveStr(API_TOKEN_KEY, "");
+      urlInput.value = ""; tokInput.value = ""; toast("Using the built-in endpoint");
+    });
+    sec.appendChild(reset);
+    return sec;
+  }
+
   function renderPlan() {
     var root = $("#view-plan");
     root.innerHTML = "";
 
+    // essentials first — the stuff you actually need mid-trip
+    root.appendChild(buildReservations());
+    root.appendChild(buildConnection());
+
     var intro = el("section", "panel");
-    intro.appendChild(el("h2", null, "✨ Plan a new Maine trip"));
+    intro.appendChild(el("h2", null, "✨ Set up a different trip"));
     intro.appendChild(el("p", "muted",
       "No API yet — for now you bring the AI. Fill in your trip, copy the prompt into Claude/ChatGPT, " +
       "then paste the JSON it returns. (Later this whole step becomes one button powered by the Claude API.)"));
