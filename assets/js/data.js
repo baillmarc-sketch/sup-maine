@@ -84,9 +84,16 @@ window.SUP_MAINE_TRIP = {
       category: "stay", checkIn: "2026-06-19", checkOut: "2026-06-22", rating: "", ratingSource: "", price: "",
       address: "249 Vaughan St, Portland, ME 04102", mapsQuery: "249 Vaughan St Portland ME",
       why: "Your <b>base for 3 nights</b> (Jun 19–22) in the West End, walk to the Old Port.",
-      todo: "Self check-in at 3 PM, drop bags, park, then head out for dinner at Ladyfish.",
-      facts: ["Confirmation HMPN9HPQ2M.", "Check-in Jun 19, 3 PM · Checkout Jun 22, 10 AM.", "Self check-in, on-site parking.", "Host phone +1 978-270-2354."],
-      tip: "Tap Copy address to drop it straight into Waze."
+      todo: "Self check-in (front door C2490 → Room 2, bedroom code 1592), drop bags, grab your parking spot off Brackett St, then dinner at Ladyfish.",
+      facts: [
+        "🚪 Front door: C2490 · Bedroom (Room 2): 1592 — enter the code to engage the deadbolt, then turn it to lock/unlock.",
+        "🛏️ Room 2, 2nd floor. Brick building, green trim & gold doors, corner of Brackett & Vaughan.",
+        "📶 Wifi: Morrill Mansion · Password: Portland",
+        "🅿️ One off-street spot (compact car) — entrance around on Brackett St, park inside the white lines, unassigned.",
+        "Check-in Fri Jun 19, 3–10 PM · Checkout Mon Jun 22, 10 AM.",
+        "Hosts Katrina & Mark live a block away — message for towels/TP/trash. Host +1 978-270-2354 · Conf HMPN9HPQ2M."
+      ],
+      tip: "Parking spot fits a compact only — stay inside the white lines so other guests can move around."
     },
     {
       id: "p104", day: "d1", time: "7:00p", name: "✅ Dinner — Ladyfish", emoji: "🐟",
