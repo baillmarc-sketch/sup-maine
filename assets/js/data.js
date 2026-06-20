@@ -312,6 +312,20 @@ window.SUP_MAINE_TRIP = {
       facts: ["Handmade in Gray, Maine.", "Plates, bowls, mugs in earthy tones."],
       tip: "Check the ✓ once you've ordered."
     },
+    {
+      id: "p315", day: "d2", time: "Afternoon", name: "Onggi", emoji: "🫙",
+      category: "eat", done: true, rating: "", ratingSource: "", price: "$$",
+      address: "131 Washington Ave, Portland, ME 04101", mapsQuery: "Onggi, 131 Washington Ave, Portland ME",
+      why: "<b>Fermentation market & café</b> on Washington Ave — funky ferments, Asian pantry gems, little lunch.",
+      todo: "", facts: ["A James Beard-nominated specialty shop.", "Right next to Root Wild."], tip: "So good. 💛"
+    },
+    {
+      id: "p316", day: "d2", time: "Afternoon", name: "Root Wild Kombucha", emoji: "🍵",
+      category: "activity", done: true, rating: "", ratingSource: "", price: "$$",
+      address: "135 Washington Ave, Portland, ME 04101", mapsQuery: "Root Wild Kombucha, 135 Washington Ave, Portland ME",
+      why: "<b>Kombucha & tea-beer taproom</b> — organic, foraged ingredients, dog-friendly patio energy.",
+      todo: "", facts: ["Licensed brewery doing kombucha + tea-infused beers.", "A few doors from Onggi."], tip: "So good. 💛"
+    },
 
     /* ---------------- DAY 4 — Portland → Acadia ---------------- */
     {
