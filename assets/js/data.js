@@ -408,10 +408,24 @@ window.SUP_MAINE_TRIP = {
       id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
       category: "stay", checkIn: "2026-06-22", checkOut: "2026-06-24", rating: "", ratingSource: "", price: "",
       address: "12 Roberts Ave, Bar Harbor, ME 04609",
-      why: "The <b>Look Nook Room</b> — your Acadia base for 2 nights (Jun 22–24), walk to the waterfront.",
-      todo: "Check in, drop bags, then head up Cadillac for sunset.",
-      facts: ["Confirmation HM3RM32X8D.", "Stay: Jun 22–24 · Checkout Jun 24, 10 AM.", "Host phone +1 207-266-8310.", "A few blocks from Agamont Park & the town pier."],
-      tip: "Tap Copy address to drop it into Waze."
+      why: "The <b>Look Nook (unit #1)</b> — your Acadia base for 2 nights (Jun 22–24), walk to the waterfront.",
+      todo: "Park, enter the Inn (front-door code), shoes off in the entryway, then your room is the first door on the right at the top of the stairs.",
+      codes: [
+        { label: "Front door · Inn", value: "1290" },
+        { label: "Private room", value: "2703", sub: "after the code, turn the knob counter-clockwise to open the deadbolt" },
+        { label: "Wi-Fi", value: "Lafayette Fast Wifi", sub: "pw: livingthedream" }
+      ],
+      facts: [
+        "🛏️ Look Nook, unit #1 — 2nd floor of the light-blue Inn with the yellow door, 5th house on the left. Your room is the first door on the right at the top of the stairs.",
+        "🅿️ Park in any of the 3 spaces in front of the building, right of the front porch. DON'T take the furthest-left spot (reserved for Captains Quarters). Leave room for other guests.",
+        "🅿️ Overflow: 1 Roberts Square, ~100 ft down the street — first & last space on your right, signed 'Reserved Parking for Lafayette Inn.'",
+        "👟 Shoes off in the entryway. 🔥 Living-room fireplace is for show — don't use it.",
+        "💡 Bedside outlets are on the room's main light switch — pull the light-switch cord to kill the lights but keep the outlets powered.",
+        "Check-in 3 PM · Checkout 10 AM. Early check-in / late checkout $35 if available — just ask.",
+        "Confirmation HM3RM32X8D · Host Brian +1 207-266-8310.",
+        "A few blocks from Agamont Park & the town pier."
+      ],
+      tip: "Codes & address only show with your share code set. Need more time? Ask Brian — early/late is $35 if open."
     },
     {
       id: "p404", day: "d4", time: "3:30p", name: "Cadillac Mountain sunset", emoji: "🌄",
