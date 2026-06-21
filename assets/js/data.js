@@ -459,6 +459,15 @@ window.SUP_MAINE_TRIP = {
       ]
     },
     {
+      id: "p506", day: "d5", time: "8:45p", name: "🍫 Ben & Bill's Chocolate Emporium", emoji: "🍫",
+      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$",
+      address: "66 Main St, Bar Harbor, ME 04609", mapsQuery: "Ben & Bill's Chocolate Emporium Bar Harbor",
+      why: "Bar Harbor institution — <b>handmade chocolates + ~50 ice cream flavors</b>, the perfect after-dinner stroll.",
+      todo: "Walk Main St after dinner for a hand-dipped cone or fresh fudge. Yes, the lobster ice cream is real if you're brave.",
+      facts: ["Open since 1990; the smell of roasting nuts hits you at the door.", "Famous for the (genuine) lobster ice cream.", "Open late in summer — good last stop of the night."],
+      tip: "Lobster ice cream is the dare; the chocolate-dipped everything is the safe win."
+    },
+    {
       id: "p507", day: "d5", time: "1:00p", name: "⭐ Bar Harbor Whale Watch", emoji: "🐋",
       category: "activity", rating: 4.7, ratingSource: "Tripadvisor 2600+", price: "$84/adult",
       address: "1 West St, Bar Harbor, ME 04609", mapsQuery: "Bar Harbor Whale Watch Co West St",
