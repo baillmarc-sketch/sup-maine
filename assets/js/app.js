@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v6.3";
+  var VERSION = "v6.4";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -2091,9 +2091,23 @@
   })();
 
   // service worker (offline pocket-guide) — only on http(s)
+  // Auto-apply updates: a new worker calls skipWaiting() on install, so when it
+  // takes control we reload ONCE — no more split old-app/new-data caches.
   if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+    var swReloading = false;
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (swReloading) return;
+      swReloading = true;
+      location.reload();
+    });
     window.addEventListener("load", function () {
-      navigator.serviceWorker.register("sw.js").catch(function () {});
+      navigator.serviceWorker.register("sw.js").then(function (reg) {
+        reg.update(); // check for a new version now…
+        setInterval(function () { reg.update(); }, 60 * 60 * 1000); // …and hourly
+        document.addEventListener("visibilitychange", function () {
+          if (!document.hidden) reg.update(); // …and whenever the app regains focus
+        });
+      }).catch(function () {});
     });
   }
 })();
