@@ -48,7 +48,7 @@ window.SUP_MAINE_TRIP = {
     { id: "d1",  date: "Fri Jun 19", iso: "2026-06-19", lat: 43.6591, lon: -70.2568, label: "NYC → Portland",        subtitle: "The long drive north, Portsmouth pit-stop, settle into the Old Port" },
     { id: "d2",  date: "Sat Jun 20", iso: "2026-06-20", lat: 43.6591, lon: -70.2568, label: "Southern Maine coast",  subtitle: "Cape Elizabeth lighthouses, Kennebunkport, Ogunquit" },
     { id: "d3",  date: "Sun Jun 21", iso: "2026-06-21", lat: 43.6591, lon: -70.2568, label: "Portland flex day",     subtitle: "Peaks Island, a sail, or a brewery crawl — your call" },
-    { id: "d4",  date: "Mon Jun 22", iso: "2026-06-22", lat: 44.3876, lon: -68.2039, label: "Portland → Acadia",     subtitle: "Camden lunch on the way, Cadillac sunset to land it" },
+    { id: "d4",  date: "Mon Jun 22", iso: "2026-06-22", lat: 44.3876, lon: -68.2039, label: "Portland → Acadia",     subtitle: "🦞 Pick ONE lobster stop on the drive (lines eat time!) — don't miss the 3:30 Cadillac entry" },
     { id: "d5",  date: "Tue Jun 23", iso: "2026-06-23", lat: 44.3876, lon: -68.2039, label: "Full Acadia day",       subtitle: "Ocean Path, Jordan Pond popovers, the Beehive if you're brave" },
     { id: "d6",  date: "Wed Jun 24", iso: "2026-06-24", lat: 45.5019, lon: -73.5674, label: "Acadia → Montréal",     subtitle: "Bangor coffee, Burlington lunch, cross into Québec" },
     { id: "d7",  date: "Thu Jun 25", iso: "2026-06-25", lat: 45.5019, lon: -73.5674, label: "Mile End & the Plateau",subtitle: "Bagels, Jean-Talon Market, cafés and bookstores" },
