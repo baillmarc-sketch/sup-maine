@@ -425,6 +425,15 @@ window.SUP_MAINE_TRIP = {
 
     /* ---------------- DAY 5 — Full Acadia day ---------------- */
     {
+      id: "p500", day: "d5", time: "8:30a", name: "⏰ Lulu Lobster Boat Ride", emoji: "🦞",
+      category: "activity", rating: 4.9, ratingSource: "Tripadvisor ~", price: "$97.52 (booked)",
+      address: "55 West St, Bar Harbor, ME 04609", mapsQuery: "Lulu Lobster Boat Ride, 55 West St, Bar Harbor ME",
+      why: "<b>⏰ 8:30 AM SHARP — be at the dock early or you miss the boat (no refunds, no waiting).</b> Two hours on a real Down East lobster boat: trap-hauling demo, seals, ospreys & Egg Rock Light.",
+      todo: "Get to the Harborside Hotel dock by ~8:10 AM to check in. Bring a layer — it's cooler on the water.",
+      facts: ["✅ Booked — departs 8:30 AM from 55 West St (Harborside Hotel & Marina dock).", "~1 hr 45 min on the water aboard the 'Lulu.'", "Captain hauls lobster traps and explains the trade; watch for seals & eagles."],
+      tip: "⚠️ Set an alarm — this is the one hard time today. Park/walk early; West St gets tight in the morning."
+    },
+    {
       id: "p501", day: "d5", time: "8:00a", name: "Ocean Path (Sand Beach → Otter Cliff)", emoji: "🥾",
       category: "activity", rating: 4.9, ratingSource: "Google ~", price: "Park pass",
       address: "Ocean Path Trailhead, Park Loop Rd, Bar Harbor, ME 04609", mapsQuery: "Sand Beach Acadia Ocean Path",
