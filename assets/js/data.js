@@ -277,6 +277,20 @@ window.SUP_MAINE_TRIP = {
       tip: "⚠️ Reservation marked TENTATIVE (Sun 7 PM) — confirm it (hours vary by day). Alt: Scales, 68 Commercial St, on the water."
     },
     {
+      id: "p320", day: "d3", time: "Evening", name: "Blyth & Burroughs", emoji: "🍸",
+      category: "activity", done: true, rating: "", ratingSource: "", price: "$$$",
+      address: "14 Market St, Portland, ME 04101", mapsQuery: "Blyth & Burroughs, 14 Market St, Portland ME",
+      why: "<b>Hidden speakeasy cocktail bar</b> in the Old Port — the secret-door, craft-cocktail spot you hope to stumble into.",
+      todo: "", facts: ["Tucked-away speakeasy vibe.", "Inventive, well-made craft cocktails."], tip: "Amazing — total find. 💛"
+    },
+    {
+      id: "p321", day: "d3", time: "Evening", name: "Mount Desert Ice Cream", emoji: "🍦",
+      category: "eat", done: true, rating: "", ratingSource: "", price: "$",
+      address: "51 Exchange St, Portland, ME 04101", mapsQuery: "Mount Desert Ice Cream, 51 Exchange St, Portland ME",
+      why: "<b>Cult Maine ice cream</b> (born in Bar Harbor) — wildly creative small-batch flavors.",
+      todo: "", facts: ["Known for adventurous, churned-daily flavors.", "Old Port location on Exchange St."], tip: "So good. 💛"
+    },
+    {
       id: "p310", day: "d2", time: "Afternoon", name: "Soleil", emoji: "🎁",
       category: "shop", done: true, rating: "", ratingSource: "", price: "",
       address: "550 Congress St, Portland, ME 04101", mapsQuery: "Soleil, 550 Congress St, Portland ME",
