@@ -448,13 +448,13 @@ window.SUP_MAINE_TRIP = {
       tip: "⚠️ Set an alarm — this is the one hard time today. Park/walk early; West St gets tight in the morning."
     },
     {
-      id: "p501", day: "d5", time: "8:00a", name: "Ocean Path (Sand Beach → Otter Cliff)", emoji: "🥾",
+      id: "p501", day: "d5", time: "10:45a", name: "Ocean Path (Sand Beach → Otter Cliff)", emoji: "🥾",
       category: "activity", rating: 4.9, ratingSource: "Google ~", price: "Park pass",
       address: "Ocean Path Trailhead, Park Loop Rd, Bar Harbor, ME 04609", mapsQuery: "Sand Beach Acadia Ocean Path",
       why: "The <b>greatest-hits coastal walk</b> — Thunder Hole, Otter Cliff, crashing surf.",
       todo: "Walk the flat 2-mi (each way) path from Sand Beach to Otter Cliff; time Thunder Hole near rising tide.",
       facts: ["Mostly flat, follows the Park Loop coastline.", "Thunder Hole booms best ~2 hrs before high tide.", "Park Loop Rd is largely one-way — plan your loop."],
-      tip: "Early start = parking + soft morning light at Sand Beach."
+      tip: "Head here straight off the Lulu dock (~10:15 back). Sand Beach lot fills midday, so go right after the boat."
     },
     {
       id: "p502", day: "d5", time: "11:00a", name: "Beehive Trail (optional, brave)", emoji: "🧗",
