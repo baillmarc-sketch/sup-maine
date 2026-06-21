@@ -396,6 +396,33 @@ window.SUP_MAINE_TRIP = {
       tip: "It's a detour, not on the way — leave Portland a touch earlier and make it an early lunch."
     },
     {
+      id: "p402d", day: "d4", time: "12:00p", alt: true, name: "🦞 Red's Eats (Wiscasset)", emoji: "🦞",
+      category: "eat", rating: 4.5, ratingSource: "Google ~", price: "$$$",
+      address: "41 Water St, Wiscasset, ME 04578", mapsQuery: "Red's Eats Wiscasset ME",
+      why: "<b>Maine's most famous lobster roll</b> — a whole lobster's worth of meat, right on Route 1 in Wiscasset.",
+      todo: "Get the lobster roll (butter or mayo on the side). Brace for the line.",
+      facts: ["Iconic roadside shack, directly on Route 1 — no detour.", "⚠️ Lines run 45–90 min on summer afternoons.", "Seasonal; cash & card."],
+      tip: "⚠️ The wait is the catch. If the line's brutal, Sprague's is right across the street with the same view and a fraction of the wait."
+    },
+    {
+      id: "p402e", day: "d4", time: "12:00p", alt: true, name: "🦞 Sprague's Lobster (Wiscasset)", emoji: "🦞",
+      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$",
+      address: "22 Main St, Wiscasset, ME 04578", mapsQuery: "Sprague's Lobster Wiscasset ME",
+      why: "<b>The savvy Wiscasset pick</b> — same Route 1 spot, on the Sheepscot River, a fraction of Red's line.",
+      todo: "Order at the window, take a picnic table over the water, lobster roll + onion rings.",
+      facts: ["Right by the bridge on Route 1 — waterfront picnic tables.", "Much shorter wait than Red's across the street.", "Seasonal; order-at-window."],
+      tip: "The locals' move when Red's line is out the door — basically on the way, no detour."
+    },
+    {
+      id: "p402f", day: "d4", time: "2:30p", alt: true, name: "🦞 Trenton Bridge Lobster Pound", emoji: "🦞",
+      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$",
+      address: "1237 Bar Harbor Rd, Trenton, ME 04605", mapsQuery: "Trenton Bridge Lobster Pound Trenton ME",
+      why: "<b>Classic boiled-in-seawater pound</b> right on Rte 3 at the gateway to Mount Desert Island — the last stop before Bar Harbor.",
+      todo: "Watch them boil in the wood-fired pots; get a whole lobster on the picnic tables. Easy arrival-day or departure-day stop.",
+      facts: ["Iconic red-and-white striped pound, family-run since 1956.", "Right on Rte 3 — on the way INTO Bar Harbor (Day 4) or OUT toward Bangor (Day 6).", "Seasonal; cash & card."],
+      tip: "Great low-effort dinner the night you arrive, or a send-off lobster on the drive out to Montréal."
+    },
+    {
       id: "p405", day: "d4", time: "3:00p", name: "🥃 Luce Spirits (Rockland)", emoji: "🥃",
       category: "activity", rating: "", ratingSource: "", price: "$$",
       address: "474 Main St, Rockland, ME 04841", mapsQuery: "Luce Spirits, 474 Main St, Rockland ME",
@@ -616,6 +643,15 @@ window.SUP_MAINE_TRIP = {
         { name: "Chimera Coffee", address: "24 Broad St, Bangor, ME 04401", rating: 4.7, price: "$", note: "Local roaster in West Market Square" },
         { name: "Bagel Central", address: "33 Central St, Bangor, ME 04401", rating: 4.5, price: "$", note: "Classic Bangor breakfast + bagels" }
       ]
+    },
+    {
+      id: "p602b", day: "d6", time: "10:30a", alt: true, name: "🦞 Eagles Nest (Brewer) — last Maine lobster", emoji: "🦞",
+      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$",
+      address: "1016 Wilson St, Brewer, ME 04412", mapsQuery: "Eagles Nest Restaurant Brewer ME",
+      why: "<b>A big, well-priced lobster roll</b> just across the river from Bangor — a fitting last-bite of Maine before the long haul to Montréal.",
+      todo: "Grab a lobster roll to-go (or an early lunch) right off Route 1A as you leave Bangor.",
+      facts: ["In Brewer, ~10 min from downtown Bangor — basically on the way out.", "Known for generous lobster rolls at fair prices.", "Roadside spot; quick in-and-out."],
+      tip: "Last easy lobster before you cross into Canada — Québec lobster won't be the same."
     },
     {
       id: "p603", day: "d6", time: "12:30p", name: "Burlington, VT — waterfront + lunch", emoji: "🏞️",
