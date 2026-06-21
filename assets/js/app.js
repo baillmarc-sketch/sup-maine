@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v6.2";
+  var VERSION = "v6.3";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -2039,6 +2039,56 @@
   });
   window.addEventListener("resize", syncTopbarH);
   window.addEventListener("orientationchange", function () { setTimeout(syncTopbarH, 200); });
+
+  // ---- pull-to-refresh (installed PWAs have no native gesture) ----
+  // Pull down from the top to reload — the network-first SW fetches the
+  // latest app files, and init re-syncs the shared trip on load.
+  (function pullToRefresh() {
+    var ind = el("div", "ptr", '<span class="ptr__icon">↻</span>');
+    document.body.appendChild(ind);
+
+    var startY = 0, dist = 0, pulling = false, refreshing = false;
+    var ARM = 64, MAX = 92, RESIST = 0.5;
+
+    function scrollTop() { return window.scrollY || document.documentElement.scrollTop || 0; }
+    function modalOpen() {
+      var m = document.getElementById("ask-modal");
+      return m && !m.classList.contains("is-hidden");
+    }
+    function setY(px) { ind.style.transform = "translateX(-50%) translateY(" + px + "px)"; }
+
+    window.addEventListener("touchstart", function (e) {
+      if (refreshing || e.touches.length !== 1 || scrollTop() > 0 || modalOpen()) { pulling = false; return; }
+      startY = e.touches[0].clientY; dist = 0; pulling = true;
+      ind.classList.add("ptr--drag");
+    }, { passive: true });
+
+    window.addEventListener("touchmove", function (e) {
+      if (!pulling || refreshing) return;
+      dist = e.touches[0].clientY - startY;
+      if (dist <= 0 || scrollTop() > 0) { pulling = false; ind.style.transform = ""; ind.classList.remove("ptr--drag", "is-armed"); return; }
+      e.preventDefault(); // hold the page still while pulling
+      var pull = Math.min(dist * RESIST, MAX);
+      setY(pull - 46);
+      ind.classList.toggle("is-armed", pull >= ARM);
+    }, { passive: false });
+
+    function endPull() {
+      if (!pulling || refreshing) return;
+      pulling = false;
+      ind.classList.remove("ptr--drag");
+      if (Math.min(dist * RESIST, MAX) >= ARM) {
+        refreshing = true;
+        ind.classList.add("is-refreshing"); ind.classList.remove("is-armed");
+        setY(ARM - 46);
+        setTimeout(function () { location.reload(); }, 350);
+      } else {
+        ind.style.transform = ""; ind.classList.remove("is-armed");
+      }
+    }
+    window.addEventListener("touchend", endPull);
+    window.addEventListener("touchcancel", endPull);
+  })();
 
   // service worker (offline pocket-guide) — only on http(s)
   if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {

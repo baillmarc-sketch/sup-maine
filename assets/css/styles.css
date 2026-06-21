@@ -69,6 +69,21 @@ a { color: var(--navy); }
 .app { max-width: var(--maxw); margin: 0 auto; padding-bottom: calc(70px + var(--safe-b)); }
 .is-hidden { display: none !important; }
 
+/* pull-to-refresh indicator (installed PWA gesture) */
+.ptr {
+  position: fixed; left: 50%; top: calc(var(--safe-t) + 4px);
+  transform: translateX(-50%) translateY(-46px);
+  z-index: 60; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+  box-shadow: var(--shadow); color: var(--lobster); font-size: 18px; line-height: 1;
+  transition: transform .25s ease;
+}
+.ptr--drag { transition: none; }
+.ptr__icon { display: block; transition: transform .2s ease; }
+.ptr.is-armed .ptr__icon { transform: rotate(180deg); }
+.ptr.is-refreshing .ptr__icon { animation: ptr-spin .7s linear infinite; }
+@keyframes ptr-spin { to { transform: rotate(360deg); } }
+
 /* ---------------- Top bar ---------------- */
 .topbar {
   position: sticky; top: 0; z-index: 30;
