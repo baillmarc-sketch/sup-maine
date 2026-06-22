@@ -366,6 +366,13 @@ window.SUP_MAINE_TRIP = {
       tip: "Waze around the Wiscasset backup; it's the worst pinch point on Route 1."
     },
     {
+      id: "p407", day: "d4", time: "8:30a", name: "Smalls", emoji: "☕",
+      category: "coffee", done: true, rating: "", ratingSource: "", price: "$$",
+      address: "28 Brackett St, Portland, ME 04102", mapsQuery: "Smalls, 28 Brackett St, Portland ME",
+      why: "<b>All-day café + market</b> in the West End — grabbed it on the way out of town.",
+      todo: "", facts: ["Cute all-day café & market right in the West End.", "Uses Standard Baking Co pastries & bread."], tip: "So good, so cute. 💛"
+    },
+    {
       id: "p400", day: "d4", time: "9:00a", name: "🛍️ L.L.Bean Flagship (Freeport)", emoji: "🛍️",
       category: "shop", rating: 4.7, ratingSource: "Google ~", price: "$$",
       address: "95 Main St, Freeport, ME 04032", mapsQuery: "L.L.Bean Flagship Store Freeport ME",
