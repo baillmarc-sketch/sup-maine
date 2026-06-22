@@ -48,7 +48,7 @@ window.SUP_MAINE_TRIP = {
     { id: "d1",  date: "Fri Jun 19", iso: "2026-06-19", lat: 43.6591, lon: -70.2568, label: "NYC → Portland",        subtitle: "The long drive north, Portsmouth pit-stop, settle into the Old Port" },
     { id: "d2",  date: "Sat Jun 20", iso: "2026-06-20", lat: 43.6591, lon: -70.2568, label: "Southern Maine coast",  subtitle: "Cape Elizabeth lighthouses, Kennebunkport, Ogunquit" },
     { id: "d3",  date: "Sun Jun 21", iso: "2026-06-21", lat: 43.6591, lon: -70.2568, label: "Portland flex day",     subtitle: "Peaks Island, a sail, or a brewery crawl — your call" },
-    { id: "d4",  date: "Mon Jun 22", iso: "2026-06-22", lat: 44.3876, lon: -68.2039, label: "Portland → Acadia",     subtitle: "🦞 Pick ONE lobster stop on the drive (lines eat time!) — don't miss the 3:30 Cadillac entry" },
+    { id: "d4",  date: "Mon Jun 22", iso: "2026-06-22", lat: 44.3876, lon: -68.2039, label: "Portland → Acadia",     subtitle: "L.L.Bean → Taste of Maine roll → Camden stroll & lunch → check in, then the 3:30 Cadillac entry" },
     { id: "d5",  date: "Tue Jun 23", iso: "2026-06-23", lat: 44.3876, lon: -68.2039, label: "Full Acadia day",       subtitle: "Ocean Path, Jordan Pond popovers, the Beehive if you're brave" },
     { id: "d6",  date: "Wed Jun 24", iso: "2026-06-24", lat: 45.5019, lon: -73.5674, label: "Acadia → Montréal",     subtitle: "Bangor coffee, Burlington lunch, cross into Québec" },
     { id: "d7",  date: "Thu Jun 25", iso: "2026-06-25", lat: 45.5019, lon: -73.5674, label: "Mile End & the Plateau",subtitle: "Bagels, Jean-Talon Market, cafés and bookstores" },
@@ -366,11 +366,29 @@ window.SUP_MAINE_TRIP = {
       tip: "Waze around the Wiscasset backup; it's the worst pinch point on Route 1."
     },
     {
-      id: "p402", day: "d4", time: "12:30p", name: "Lunch stop — Camden", emoji: "🏔️",
+      id: "p400", day: "d4", time: "9:00a", name: "🛍️ L.L.Bean Flagship (Freeport)", emoji: "🛍️",
+      category: "shop", rating: 4.7, ratingSource: "Google ~", price: "$$",
+      address: "95 Main St, Freeport, ME 04032", mapsQuery: "L.L.Bean Flagship Store Freeport ME",
+      why: "The <b>mothership</b> — open 24/7, famously no door locks since 1951. First stop heading north out of Portland.",
+      todo: "Snap the giant Bean Boot, browse the flagship + outlet, gear up for Acadia.",
+      facts: ["~20 min north of Portland, right on Route 1 in Freeport.", "Open 24 hours, 365 days — no locks on the doors.", "Freeport is outlet central if you want more browsing."],
+      tip: "Get here early so shopping doesn't eat into Camden + the 3:30 Cadillac entry."
+    },
+    {
+      id: "p406", day: "d4", time: "11:15a", name: "🦞 Taste of Maine (lobster roll)", emoji: "🦞",
+      category: "eat", rating: 4.4, ratingSource: "Google ~", price: "$$",
+      address: "161 Main St, Woolwich, ME 04579", mapsQuery: "Taste of Maine Restaurant Woolwich ME",
+      why: "<b>Classic Route 1 seafood stop</b> just over the Bath bridge — your lobster roll on the way up.",
+      todo: "Lobster roll (maybe a cup of chowder); easy in-and-out right on the highway.",
+      facts: ["On Route 1 in Woolwich, just past Bath — no detour.", "Big family seafood spot with the lobster tank out front.", "Beat-the-crowd midmorning lobster roll."],
+      tip: "This is your lobster roll for the day — keep Camden lighter (a walk + a snack)."
+    },
+    {
+      id: "p402", day: "d4", time: "1:00p", name: "🏔️ Camden — shop, harbor walk + lunch", emoji: "🏔️",
       category: "eat", slot: true, searchQuery: "lunch Camden Maine harbor",
-      why: "<b>Where the mountains meet the sea</b> — the prettiest stop on the drive. Grab lunch by the harbor.",
-      facts: ["Classic windjammer schooner harbor + walkable downtown.", "Mt. Battie's auto road gives a big view in ~20 min.", "Camden Hills State Park is right here."],
-      tip: "Short on time? Drive up Mt. Battie for the view, then a quick harbor-side bite.",
+      why: "<b>Where the mountains meet the sea</b> — the prettiest stop on the drive. Wander the shops, walk the harbor, grab lunch.",
+      facts: ["Classic windjammer schooner harbor + walkable downtown shops.", "Mt. Battie's auto road gives a big view in ~20 min.", "Camden Hills State Park is right here."],
+      tip: "Since you'll have the Taste of Maine roll, keep this light — a stroll + a snack, or just coffee by the harbor.",
       options: [
         { name: "The Waterfront Restaurant", address: "40 Bayview St, Camden, ME 04843", rating: 4.4, price: "$$$", note: "Harborside seafood + lobster stew" },
         { name: "Peter Ott's on the Water", address: "16 Bay View St, Camden, ME 04843", rating: 4.5, price: "$$", note: "Lobster rolls, harbor views" },
@@ -423,13 +441,13 @@ window.SUP_MAINE_TRIP = {
       tip: "Great low-effort dinner the night you arrive, or a send-off lobster on the drive out to Montréal."
     },
     {
-      id: "p405", day: "d4", time: "3:00p", name: "🥃 Luce Spirits (Rockland)", emoji: "🥃",
+      id: "p405", day: "d4", time: "12:15p", alt: true, name: "🥃 Luce Spirits (Rockland)", emoji: "🥃",
       category: "activity", rating: "", ratingSource: "", price: "$$",
       address: "474 Main St, Rockland, ME 04841", mapsQuery: "Luce Spirits, 474 Main St, Rockland ME",
-      why: "<b>Maine-made spirits tasting room</b> in downtown Rockland — a fun midcoast stop, right on the Acadia drive.",
-      todo: "Pull off in Rockland for a tasting flight, then carry on up Route 1 toward Bar Harbor.",
-      facts: ["Downtown Rockland, on Route 1 (~1h30 from Portland, ~1h45 to Bar Harbor).", "Open Mondays ~3–8 PM (hours vary — worth a quick confirm)."],
-      tip: "Time it ~3 PM so you still make Cadillac sunset. One taster drives. 🥃"
+      why: "<b>Maine-made spirits tasting room</b> in downtown Rockland (right before Camden) — only if the day isn't already full.",
+      todo: "Optional quick tasting flight in Rockland on the way to Camden.",
+      facts: ["Downtown Rockland, on Route 1, ~15 min before Camden.", "Open Mondays ~3–8 PM (hours vary — confirm).", "⚠️ Tight to fit with L.L.Bean + Camden + the 3:30 Cadillac entry."],
+      tip: "Optional — skip if you're running behind. One taster drives. 🥃"
     },
     {
       id: "p403", day: "d4", time: "3:00p", name: "✅ Stay — Lafayette Inn (Bar Harbor)", emoji: "🛏️",
@@ -459,9 +477,9 @@ window.SUP_MAINE_TRIP = {
       category: "sight", rating: 4.8, ratingSource: "Google ~", price: "$$ park + 🔖",
       address: "Cadillac Summit Rd, Bar Harbor, ME 04609",
       why: "Tallest peak on the US Atlantic coast — <b>360° sunset over island and sea</b>.",
-      todo: "Enter at your 3:30 PM reserved slot, walk the summit loop, then stay up top for the sunset light.",
-      facts: ["✅ Vehicle reservation booked — 3:30 PM summit-road entry.", "1,530 ft — highest point on the Eastern Seaboard.", "Inside Acadia NP — park pass needed."],
-      tip: "Your timed entry is 3:30 PM — once you're up, you can linger through sunset."
+      todo: "Enter at your 3:30 PM reserved slot, walk the easy Summit Loop, then stay up top for the sunset light.",
+      facts: ["✅ Vehicle reservation booked — 3:30 PM summit-road entry.", "🥾 Cadillac Summit Loop — paved ~0.4-mi easy loop right at the top, the best 'light hike' with 360° views.", "🥾 Want a bit more? The North Ridge Trail starts near the summit (steeper, do a short out-and-back).", "1,530 ft — highest point on the Eastern Seaboard · park pass needed."],
+      tip: "Do the Summit Loop after you park, then post up for sunset. Bring a warm layer — it's windy and cool up top."
     },
 
     /* ---------------- DAY 5 — Full Acadia day ---------------- */
