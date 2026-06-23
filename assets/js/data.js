@@ -488,6 +488,13 @@ window.SUP_MAINE_TRIP = {
       facts: ["✅ Vehicle reservation booked — 3:30 PM summit-road entry.", "🥾 Cadillac Summit Loop — paved ~0.4-mi easy loop right at the top, the best 'light hike' with 360° views.", "🥾 Want a bit more? The North Ridge Trail starts near the summit (steeper, do a short out-and-back).", "1,530 ft — highest point on the Eastern Seaboard · park pass needed."],
       tip: "Do the Summit Loop after you park, then post up for sunset. Bring a warm layer — it's windy and cool up top."
     },
+    {
+      id: "p409", day: "d4", time: "7:30p", name: "🍽️ Dinner — Brasserie LeBrun", emoji: "🥂",
+      category: "eat", done: true, rating: 4.7, ratingSource: "Google ~", price: "$$$",
+      address: "74 Cottage St, Bar Harbor, ME 04609", mapsQuery: "Brasserie LeBrun, 74 Cottage St, Bar Harbor ME",
+      why: "<b>French brasserie</b> in downtown Bar Harbor — classic bistro dishes, seafood, wine & cocktails.",
+      todo: "", facts: ["Downtown Bar Harbor on Cottage St.", "Brasserie classics + Maine seafood."], tip: "Amazing. 💛"
+    },
 
     /* ---------------- DAY 5 — Full Acadia day ---------------- */
     {
@@ -548,13 +555,13 @@ window.SUP_MAINE_TRIP = {
       ]
     },
     {
-      id: "p506", day: "d5", time: "8:45p", name: "🍫 Ben & Bill's Chocolate Emporium", emoji: "🍫",
-      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$",
+      id: "p506", day: "d4", time: "9:00p", name: "🍫 Ben & Bill's Chocolate Emporium", emoji: "🍫",
+      category: "eat", done: true, rating: 4.6, ratingSource: "Google ~", price: "$",
       address: "66 Main St, Bar Harbor, ME 04609", mapsQuery: "Ben & Bill's Chocolate Emporium Bar Harbor",
       why: "Bar Harbor institution — <b>handmade chocolates + ~50 ice cream flavors</b>, the perfect after-dinner stroll.",
       todo: "Walk Main St after dinner for a hand-dipped cone or fresh fudge. Yes, the lobster ice cream is real if you're brave.",
       facts: ["Open since 1990; the smell of roasting nuts hits you at the door.", "Famous for the (genuine) lobster ice cream.", "Open late in summer — good last stop of the night."],
-      tip: "Lobster ice cream is the dare; the chocolate-dipped everything is the safe win."
+      tip: "Wow, so good. 🍦 Lobster ice cream is the dare; the chocolate-dipped everything is the safe win."
     },
     {
       id: "p507", day: "d5", time: "1:00p", name: "⭐ Bar Harbor Whale Watch", emoji: "🐋",
