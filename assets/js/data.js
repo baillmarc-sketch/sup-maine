@@ -505,15 +505,6 @@ window.SUP_MAINE_TRIP = {
 
     /* ---------------- DAY 5 — Full Acadia day ---------------- */
     {
-      id: "p500", day: "d5", time: "8:30a", alt: true, name: "🌧️ Lulu Lobster Boat Ride — CANCELLED (rain)", emoji: "🦞",
-      category: "activity", rating: 4.9, ratingSource: "Tripadvisor ~", price: "$97.52",
-      address: "55 West St, Bar Harbor, ME 04609", mapsQuery: "Lulu Lobster Boat Ride, 55 West St, Bar Harbor ME",
-      why: "<b>⛈️ Cancelled due to rain.</b> Was a 2-hr Down East lobster boat — trap-hauling, seals & Egg Rock Light. (Worth a rebook on a clear day if you can.)",
-      todo: "Check if they'll refund or rebook the $97.52 — most weather cancellations are refunded.",
-      facts: ["Departs 55 West St (Harborside Hotel & Marina dock).", "~1 hr 45 min aboard the 'Lulu.'", "🌧️ Rained out this morning — you went to Cafe This Way instead."],
-      tip: "Weather cancellations are usually refunded — follow up if the charge stands."
-    },
-    {
       id: "p507c", day: "d5", time: "8:30a", done: true, name: "Cafe This Way", emoji: "☕",
       category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$",
       address: "14 Mt Desert St, Bar Harbor, ME 04609", mapsQuery: "Cafe This Way, 14 Mt Desert St, Bar Harbor ME",
@@ -521,22 +512,13 @@ window.SUP_MAINE_TRIP = {
       todo: "", facts: ["Famous for Kit's breakfast burrito & blueberry pancakes.", "Breakfast daily ~6:30 AM–1 PM."], tip: "A great rainy-day swap. 💛"
     },
     {
-      id: "p501", day: "d5", time: "10:45a", name: "Ocean Path (Sand Beach → Otter Cliff)", emoji: "🥾",
-      category: "activity", rating: 4.9, ratingSource: "Google ~", price: "Park pass",
-      address: "Ocean Path Trailhead, Park Loop Rd, Bar Harbor, ME 04609", mapsQuery: "Sand Beach Acadia Ocean Path",
-      why: "The <b>greatest-hits coastal walk</b> — Thunder Hole, Otter Cliff, crashing surf.",
-      todo: "Walk the flat 2-mi (each way) path from Sand Beach to Otter Cliff; time Thunder Hole near rising tide.",
-      facts: ["Mostly flat, follows the Park Loop coastline.", "Thunder Hole booms best ~2 hrs before high tide.", "Park Loop Rd is largely one-way — plan your loop."],
-      tip: "Head here straight off the Lulu dock (~10:15 back). Sand Beach lot fills midday, so go right after the boat."
-    },
-    {
-      id: "p502", day: "d5", time: "11:00a", name: "Beehive Trail (optional, brave)", emoji: "🧗",
-      category: "activity", rating: 4.8, ratingSource: "Google ~", price: "Park pass",
-      address: "Bowl Trailhead, Park Loop Rd, Bar Harbor, ME 04609", mapsQuery: "Beehive Trail Acadia",
-      why: "Iron-rung <b>cliff scramble</b> with a huge payoff view — Acadia's adrenaline classic.",
-      todo: "Climb the rungs up the Beehive (~1.5 hrs loop). Not for fear-of-heights — take the Bowl trail instead.",
-      facts: ["Exposed iron rungs and ladders; one-way up.", "Skip in rain — rock gets slick.", "Descend via the Bowl for an easier, calmer loop."],
-      tip: "Not into exposure? The Bowl pond loop is a gentle, gorgeous alternative."
+      id: "p501", day: "d5", time: "5:00p", name: "🌊 Thunder Hole", emoji: "🌊",
+      category: "sight", rating: 4.6, ratingSource: "Google ~", price: "Park pass",
+      address: "Thunder Hole, Park Loop Rd, Bar Harbor, ME 04609", mapsQuery: "Thunder Hole Acadia",
+      why: "The <b>booming sea cave</b> on Park Loop Rd — a quick drive-up viewpoint, no hike needed.",
+      todo: "Pull off at Thunder Hole and time it near rising tide for the big spout & boom.",
+      facts: ["Drive-up stop on the one-way Park Loop Rd.", "Booms best ~1–2 hrs before high tide.", "Today's high tide is 6:55 PM → best window ~5:00–6:30 PM."],
+      tip: "Catch it on the rising tide late afternoon for the dramatic spout."
     },
     {
       id: "p503", day: "d5", time: "1:00p", name: "Jordan Pond House (popovers)", emoji: "🫖",
@@ -578,34 +560,6 @@ window.SUP_MAINE_TRIP = {
       tip: "Wow, so good. 🍦 Lobster ice cream is the dare; the chocolate-dipped everything is the safe win."
     },
     {
-      id: "p507", day: "d5", time: "1:00p", name: "⭐ Bar Harbor Whale Watch", emoji: "🐋",
-      category: "activity", rating: 4.7, ratingSource: "Tripadvisor 2600+", price: "$84/adult",
-      address: "1 West St, Bar Harbor, ME 04609", mapsQuery: "Bar Harbor Whale Watch Co West St",
-      why: "The <b>real ocean-wildlife adventure</b> — humpbacks & puffins on a fast catamaran.",
-      todo: "3–3.5 hr run 20–50 mi offshore for whales, porpoises, seals & seabirds. College of the Atlantic naturalists narrate.",
-      facts: ["112-ft jet-powered catamaran (Friendship V) — fast & stable.", "June: usually one departure (~10 AM or 1 PM) — confirm time.", "Galley + Atlantic Brewing Co. beer — CASH only.", "No whales sighted = rebook voucher (good 3 yrs)."],
-      tip: "⚠️ It's 3–3.5 hrs — it'll eat much of your Acadia hiking day; book the earliest, calmest slot. Warm waterproof layers + cash; arrive up to 1 hr early for parking.",
-      photo: "https://images.unsplash.com/photo-1568430462989-44163eb1752f?auto=format&fit=crop&w=1200&q=60"
-    },
-    {
-      id: "p508", day: "d5", time: "6:30p", name: "⭐ Schooner Margaret Todd — Sunset Sail", emoji: "⛵",
-      category: "activity", rating: 4.3, ratingSource: "mixed ~", price: "$58/adult",
-      address: "Bar Harbor Inn Pier, 1 Newport Dr, Bar Harbor, ME 04609", mapsQuery: "Margaret Todd schooner Bar Harbor Inn Pier",
-      why: "Bar Harbor's <b>iconic four red-sail schooner</b> at golden hour, with live folk music.",
-      todo: "90–120 min sail of Frenchman Bay — Egg Rock Light, the Porcupine Islands, seals & eagles. Beer/wine sold aboard.",
-      facts: ["151-ft four-masted schooner with rust-red sails.", "Departs 6:30 PM; sunset's ~8:21 PM so it ends near dusk.", "Beer/wine sold aboard — NOT BYOB for alcohol.", "Wind-dependent — on calm nights it may motor, not sail."],
-      tip: "Board early (45 min before) for a rail seat; breezy evenings are far better. Sells out — book ahead. Pairs with your open dinner night (eat after)."
-    },
-    {
-      id: "p509", day: "d5", time: "4:00p", alt: true, name: "Acadian Boat Tours (nature/lighthouse)", emoji: "🦭",
-      category: "activity", rating: 4.5, ratingSource: "Tripadvisor ~", price: "$42–66",
-      address: "Atlantic Oceanside Hotel, 119 Eden St, Bar Harbor, ME 04609", mapsQuery: "Acadian Boat Tours Atlantic Oceanside Bar Harbor",
-      why: "<b>Flexible, well-narrated nature cruise</b> — the fun substitute now that Diver Ed is closed.",
-      todo: "2-hr nature/sunset cruise (or 3.5-hr puffin/lighthouse trip): Egg Rock Light, Frenchman Bay, seals, eagles, porpoises.",
-      facts: ["⚠️ Diver Ed's Dive-In Theater is CLOSED for 2026 (returns 2027) — don't book it.", "Heated cabin + snack bar; free on-site parking.", "Nature $42–51 · Puffin/Lighthouse $66.", "Top-10% Travelers' Choice."],
-      tip: "If the evening wind is under ~8 kn, this sunset cruise beats Margaret Todd (which may not actually sail). Lower deck if motion-sensitive."
-    },
-    {
       id: "p510", day: "d5", time: "8:00a", alt: true, name: "🍓 Blue Hill / Deer Isle jam-loop detour", emoji: "🫙",
       category: "shop", rating: "", ratingSource: "", price: "",
       address: "598 Sunshine Rd, Deer Isle, ME 04627", mapsQuery: "Nervous Nellies Deer Isle Maine",
@@ -615,7 +569,25 @@ window.SUP_MAINE_TRIP = {
       tip: "Excited about jams? This is the day to do it. Tap the spots in this section for addresses; verify limited-day spots (Tinder Hearth, El El Frijoles) before you rely on them."
     },
     {
-      id: "p511", day: "d5", time: "8:30a", alt: true, name: "Caterpillar Hill Scenic Overlook", emoji: "🏞️",
+      id: "p517", day: "d5", time: "8:00a", name: "☕ Rooster Brother (Ellsworth)", emoji: "☕",
+      category: "coffee", rating: 4.6, ratingSource: "Google ~", price: "$$",
+      address: "29 Main St, Ellsworth, ME 04605", mapsQuery: "Rooster Brother Ellsworth Maine",
+      why: "<b>Gourmet food shop + coffee roaster + serious cookware</b> — the artisan first stop as you leave MDI.",
+      todo: "Grab coffee + beans and browse the cheese/pantry. Easy stop right on the way through Ellsworth.",
+      facts: ["Beloved Ellsworth institution — roasts coffee, sells gourmet foods & cookware.", "Right on Main St as you head toward the Blue Hill peninsula."],
+      tip: "Artisan, not kitschy — exactly your kind of spot."
+    },
+    {
+      id: "p518", day: "d5", time: "8:45a", name: "📚 Blue Hill Books", emoji: "📚",
+      category: "shop", rating: 4.8, ratingSource: "Google ~", price: "$$",
+      address: "26 Pleasant St, Blue Hill, ME 04614", mapsQuery: "Blue Hill Books Blue Hill Maine",
+      why: "<b>A genuinely great indie bookshop</b> — thoughtfully curated, the heart of artsy Blue Hill.",
+      todo: "Browse the shelves; Blue Hill is full of craft + galleries if you want to linger.",
+      facts: ["Independent bookstore in downtown Blue Hill.", "Blue Hill has a deep pottery/craft tradition (note: Rackliffe Pottery has closed; Rowantrees may still operate — call ahead)."],
+      tip: "Blue Hill Co-op nearby has good coffee + baked goods if you want a bite."
+    },
+    {
+      id: "p511", day: "d5", time: "9:15a", name: "Caterpillar Hill Scenic Overlook", emoji: "🏞️",
       category: "sight", rating: 4.8, ratingSource: "Google ~", price: "Free",
       address: "ME-15, Sedgwick, ME 04676", mapsQuery: "Caterpillar Hill Scenic Overlook Sedgwick Maine",
       why: "<b>Jaw-dropping free pullover</b> over Penobscot Bay & the islands on the way down.",
@@ -624,7 +596,7 @@ window.SUP_MAINE_TRIP = {
       tip: "Great quick stretch-your-legs stop en route to the jams."
     },
     {
-      id: "p512", day: "d5", time: "9:30a", alt: true, name: "44 North Coffee (Deer Isle roaster)", emoji: "☕",
+      id: "p512", day: "d5", time: "9:45a", name: "44 North Coffee (Deer Isle roaster)", emoji: "☕",
       category: "coffee", rating: 4.7, ratingSource: "Google ~", price: "$",
       address: "7 Main St, Deer Isle, ME 04627", mapsQuery: "44 North Coffee Deer Isle",
       why: "<b>Among the best coffee in Maine</b> — a real island roaster, minutes from Nellie's.",
@@ -633,7 +605,16 @@ window.SUP_MAINE_TRIP = {
       tip: "Perfect pairing with Nervous Nellie's just up the road."
     },
     {
-      id: "p513", day: "d5", time: "10:30a", alt: true, name: "Nervous Nellie's Jams & Jellies", emoji: "🫙",
+      id: "p519", day: "d5", time: "10:15a", name: "🎨 Haystack Mountain School of Crafts", emoji: "🎨",
+      category: "sight", rating: 4.9, ratingSource: "Google ~", price: "Free",
+      address: "89 Haystack School Dr, Deer Isle, ME 04627", mapsQuery: "Haystack Mountain School of Crafts Deer Isle",
+      why: "<b>World-renowned craft school</b> on a stunning cliffside campus — right next to Nervous Nellie's on Sunshine Rd.",
+      todo: "Peek at the architecture / any public hours or exhibitions. It's a working school, so check for visitor access the day you go.",
+      facts: ["Iconic Edward Larrabee Barnes campus descending to the shore.", "Drop-in access is limited — call ahead or check for public hours/sales.", "Minutes from Nervous Nellie's on Sunshine Rd."],
+      tip: "Even a quick look at the grounds is worth it; pair it with the jam stop next door."
+    },
+    {
+      id: "p513", day: "d5", time: "10:45a", name: "Nervous Nellie's Jams & Jellies", emoji: "🫙",
       category: "shop", rating: 4.7, ratingSource: "Google ~", price: "$",
       address: "598 Sunshine Rd, Deer Isle, ME 04627", mapsQuery: "Nervous Nellies Jams Jellies Deer Isle",
       why: "<b>Whimsical jam farm + folk-art sculpture village</b> — gloriously weird Maine, and the reason for the loop.",
@@ -642,7 +623,7 @@ window.SUP_MAINE_TRIP = {
       tip: "⚠️ Confirm it's open in 2026 (one listing showed temporarily closed). Tuesday is your only open day on this trip."
     },
     {
-      id: "p514", day: "d5", time: "12:00p", alt: true, name: "Stonington harbor", emoji: "🦞",
+      id: "p514", day: "d5", time: "12:00p", name: "Stonington harbor", emoji: "🦞",
       category: "activity", rating: 4.8, ratingSource: "Google ~", price: "Free",
       address: "Main St, Stonington, ME 04681", mapsQuery: "Stonington Maine harbor downtown",
       why: "Maine's most photogenic <b>working lobster harbor</b> — galleries, boats, island views at the tip.",
@@ -730,10 +711,21 @@ window.SUP_MAINE_TRIP = {
       id: "p606", day: "d6", time: "5:00p", name: "✅ Stay — Elegant 1BR (Montréal)", emoji: "🛏️",
       category: "stay", checkIn: "2026-06-24", checkOut: "2026-06-27", rating: "", ratingSource: "", price: "",
       address: "366 Rue Mayor, Montréal, QC H3A 1N8", mapsQuery: "366 Rue Mayor Montreal",
-      why: "Your <b>base for 3 nights</b> (Jun 24–27), downtown and walkable to restaurants.",
-      todo: "Check in at 5 PM, then head to Verdun for the Beba reservation.",
-      facts: ["Confirmation HM3RH8M3MS.", "Check-in Jun 24, 5 PM · Checkout Jun 27, 11 AM.", "Walk to restaurants; central near McGill / Quartier des Spectacles.", "Host phone +1 514-600-2644."],
-      tip: "Montréal street-parking signs are strict (and bilingual) — read them twice."
+      why: "Your <b>base for 3 nights</b> (Jun 24–27) — Apartment 709, 7th floor, downtown and walkable to restaurants.",
+      todo: "At the door, tap 'QR Code' on the home screen and scan with your phone, take the elevator to the 7th floor → Apt 709 (door's unlocked). Keys + garage remote are on the kitchen counter.",
+      codes: [
+        { label: "Entry", value: "QR code", sub: "home screen → 'QR Code' → scan with your phone" },
+        { label: "Apartment", value: "709", sub: "7th floor — door is unlocked; keys & garage remote on the kitchen counter" },
+        { label: "Wi-Fi", value: "SKYLAR LINDA", sub: "pw: Linda123" }
+      ],
+      facts: [
+        "🚗 Parking: garage space #6 — SMALL car only. Use the remote to open the garage (the outside door next to the main entrance).",
+        "📩 Message the host when you arrive.",
+        "Check-in Jun 24, 5 PM · Checkout Jun 27, 11 AM.",
+        "Walk to restaurants; central near McGill / Quartier des Spectacles.",
+        "Confirmation HM3RH8M3MS · Host +1 514-600-2644."
+      ],
+      tip: "📩 Text the host your arrival time + when you get there. Montréal street-parking signs are strict (and bilingual) — read them twice."
     },
     {
       id: "p607", day: "d6", time: "8:00p", name: "✅ Dinner — Beba", emoji: "🇦🇷",
