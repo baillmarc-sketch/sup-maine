@@ -48,7 +48,7 @@ window.SUP_MAINE_TRIP = {
     { id: "d1",  date: "Fri Jun 19", iso: "2026-06-19", lat: 43.6591, lon: -70.2568, label: "NYC → Portland",        subtitle: "The long drive north, Portsmouth pit-stop, settle into the Old Port" },
     { id: "d2",  date: "Sat Jun 20", iso: "2026-06-20", lat: 43.6591, lon: -70.2568, label: "Southern Maine coast",  subtitle: "Cape Elizabeth lighthouses, Kennebunkport, Ogunquit" },
     { id: "d3",  date: "Sun Jun 21", iso: "2026-06-21", lat: 43.6591, lon: -70.2568, label: "Portland flex day",     subtitle: "Peaks Island, a sail, or a brewery crawl — your call" },
-    { id: "d4",  date: "Mon Jun 22", iso: "2026-06-22", lat: 44.3876, lon: -68.2039, label: "Portland → Acadia",     subtitle: "L.L.Bean → Taste of Maine roll → Camden stroll & lunch → check in, then the 3:30 Cadillac entry" },
+    { id: "d4",  date: "Mon Jun 22", iso: "2026-06-22", lat: 44.3876, lon: -68.2039, label: "Portland → Acadia",     subtitle: "L.L.Bean → Taste of Maine roll → Boothbay Harbor → check in, Cadillac sunset, dinner at LeBrun" },
     { id: "d5",  date: "Tue Jun 23", iso: "2026-06-23", lat: 44.3876, lon: -68.2039, label: "Full Acadia day",       subtitle: "Ocean Path, Jordan Pond popovers, the Beehive if you're brave" },
     { id: "d6",  date: "Wed Jun 24", iso: "2026-06-24", lat: 45.5019, lon: -73.5674, label: "Acadia → Montréal",     subtitle: "Bangor coffee, Burlington lunch, cross into Québec" },
     { id: "d7",  date: "Thu Jun 25", iso: "2026-06-25", lat: 45.5019, lon: -73.5674, label: "Mile End & the Plateau",subtitle: "Bagels, Jean-Talon Market, cafés and bookstores" },
@@ -388,14 +388,21 @@ window.SUP_MAINE_TRIP = {
       why: "<b>Classic Route 1 seafood stop</b> just over the Bath bridge — your lobster roll on the way up.",
       todo: "Lobster roll (maybe a cup of chowder); easy in-and-out right on the highway.",
       facts: ["On Route 1 in Woolwich, just past Bath — no detour.", "Big family seafood spot with the lobster tank out front.", "Beat-the-crowd midmorning lobster roll."],
-      tip: "This is your lobster roll for the day — keep Camden lighter (a walk + a snack)."
+      tip: "This is your lobster roll for the day — keep the town stop lighter (a walk + a snack)."
     },
     {
-      id: "p402", day: "d4", time: "1:00p", name: "🏔️ Camden — shop, harbor walk + lunch", emoji: "🏔️",
+      id: "p402g", day: "d4", time: "1:00p", done: true, name: "⛵ Boothbay Harbor", emoji: "⛵",
+      category: "sight", rating: 4.7, ratingSource: "Google ~", price: "",
+      address: "Boothbay Harbor, ME 04538", mapsQuery: "Boothbay Harbor Maine downtown",
+      why: "<b>Postcard-cute harbor town</b> — went here instead of Camden on the drive up.",
+      todo: "", facts: ["Walkable downtown + the long footbridge across the harbor.", "~20 min south off Route 1 near Wiscasset."], tip: "Such a cute town. 💛"
+    },
+    {
+      id: "p402", day: "d4", time: "1:00p", alt: true, name: "🏔️ Camden — shop, harbor walk + lunch", emoji: "🏔️",
       category: "eat", slot: true, searchQuery: "lunch Camden Maine harbor",
-      why: "<b>Where the mountains meet the sea</b> — the prettiest stop on the drive. Wander the shops, walk the harbor, grab lunch.",
+      why: "<b>Where the mountains meet the sea</b> — the classic alt town stop (you did Boothbay Harbor instead).",
       facts: ["Classic windjammer schooner harbor + walkable downtown shops.", "Mt. Battie's auto road gives a big view in ~20 min.", "Camden Hills State Park is right here."],
-      tip: "Since you'll have the Taste of Maine roll, keep this light — a stroll + a snack, or just coffee by the harbor.",
+      tip: "Backup town stop — you went to Boothbay Harbor this trip.",
       options: [
         { name: "The Waterfront Restaurant", address: "40 Bayview St, Camden, ME 04843", rating: 4.4, price: "$$$", note: "Harborside seafood + lobster stew" },
         { name: "Peter Ott's on the Water", address: "16 Bay View St, Camden, ME 04843", rating: 4.5, price: "$$", note: "Lobster rolls, harbor views" },
