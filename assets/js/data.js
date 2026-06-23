@@ -649,6 +649,13 @@ window.SUP_MAINE_TRIP = {
       facts: ["Open since 2007; everything made daily.", "Seasonal + limited days — check before going."],
       tip: "⚠️ Verify open days/hours; it's a great lunch if the timing lines up."
     },
+    {
+      id: "p520", day: "d5", time: "12:30p", done: true, name: "🦞 Bagaduce Lunch", emoji: "🦞",
+      category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$$",
+      address: "145 Franks Flat, Penobscot, ME 04476", mapsQuery: "Bagaduce Lunch Penobscot Maine",
+      why: "<b>James Beard-honored seafood shack</b> on the Bagaduce River's reversing falls — fried clams, haddock sandwich, onion rings.",
+      todo: "", facts: ["Roadside fish shack since 1946; JBF America's Classics (2008).", "Riverfront picnic tables over the reversing falls.", "Seasonal — fresh, locally-sourced fried seafood."], tip: "Such a good peninsula lunch. 💛"
+    },
 
     /* ---------------- DAY 6 — Acadia → Montréal ---------------- */
     {
