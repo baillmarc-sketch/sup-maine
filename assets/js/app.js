@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v7.1";
+  var VERSION = "v7.2";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
