@@ -505,13 +505,20 @@ window.SUP_MAINE_TRIP = {
 
     /* ---------------- DAY 5 — Full Acadia day ---------------- */
     {
-      id: "p500", day: "d5", time: "8:30a", name: "⏰ Lulu Lobster Boat Ride", emoji: "🦞",
-      category: "activity", rating: 4.9, ratingSource: "Tripadvisor ~", price: "$97.52 (booked)",
+      id: "p500", day: "d5", time: "8:30a", alt: true, name: "🌧️ Lulu Lobster Boat Ride — CANCELLED (rain)", emoji: "🦞",
+      category: "activity", rating: 4.9, ratingSource: "Tripadvisor ~", price: "$97.52",
       address: "55 West St, Bar Harbor, ME 04609", mapsQuery: "Lulu Lobster Boat Ride, 55 West St, Bar Harbor ME",
-      why: "<b>⏰ 8:30 AM SHARP — be at the dock early or you miss the boat (no refunds, no waiting).</b> Two hours on a real Down East lobster boat: trap-hauling demo, seals, ospreys & Egg Rock Light.",
-      todo: "Get to the Harborside Hotel dock by ~8:10 AM to check in. Bring a layer — it's cooler on the water.",
-      facts: ["✅ Booked — departs 8:30 AM from 55 West St (Harborside Hotel & Marina dock).", "~1 hr 45 min on the water aboard the 'Lulu.'", "Captain hauls lobster traps and explains the trade; watch for seals & eagles."],
-      tip: "⚠️ Set an alarm — this is the one hard time today. Park/walk early; West St gets tight in the morning."
+      why: "<b>⛈️ Cancelled due to rain.</b> Was a 2-hr Down East lobster boat — trap-hauling, seals & Egg Rock Light. (Worth a rebook on a clear day if you can.)",
+      todo: "Check if they'll refund or rebook the $97.52 — most weather cancellations are refunded.",
+      facts: ["Departs 55 West St (Harborside Hotel & Marina dock).", "~1 hr 45 min aboard the 'Lulu.'", "🌧️ Rained out this morning — you went to Cafe This Way instead."],
+      tip: "Weather cancellations are usually refunded — follow up if the charge stands."
+    },
+    {
+      id: "p507c", day: "d5", time: "8:30a", done: true, name: "Cafe This Way", emoji: "☕",
+      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$",
+      address: "14 Mt Desert St, Bar Harbor, ME 04609", mapsQuery: "Cafe This Way, 14 Mt Desert St, Bar Harbor ME",
+      why: "<b>Cozy, bookshelf-lined Bar Harbor breakfast spot</b> — the rainy-morning plan B after the boat got cancelled.",
+      todo: "", facts: ["Famous for Kit's breakfast burrito & blueberry pancakes.", "Breakfast daily ~6:30 AM–1 PM."], tip: "A great rainy-day swap. 💛"
     },
     {
       id: "p501", day: "d5", time: "10:45a", name: "Ocean Path (Sand Beach → Otter Cliff)", emoji: "🥾",
