@@ -695,6 +695,20 @@ window.SUP_MAINE_TRIP = {
       tip: "Last easy lobster before you cross into Canada — Québec lobster won't be the same."
     },
     {
+      id: "p605a", day: "d6", time: "1:30p", done: true, name: "🍽️ Mill Street Kitchen (Littleton, NH)", emoji: "🍽️",
+      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$",
+      address: "16 Mill St, Littleton, NH 03561", mapsQuery: "Mill Street Kitchen Littleton NH",
+      why: "<b>Riverside lunch in the White Mountains</b> — Schilling Beer Co.'s kitchen on the Ammonoosuc, a stop on the scenic NH route.",
+      todo: "", facts: ["On the Ammonoosuc River in downtown Littleton, NH.", "Wood-fired food + Schilling's European-style beers."], tip: "Great drive-day lunch."
+    },
+    {
+      id: "p605b", day: "d6", time: "2:15p", done: true, name: "🍦 Super Secret Ice Cream Club", emoji: "🍦",
+      category: "eat", rating: 4.9, ratingSource: "Google ~", price: "$",
+      address: "Bethlehem, NH 03574", mapsQuery: "Super Secret Ice Cream Bethlehem NH",
+      why: "<b>Cult small-batch ice cream</b> in an old ski-tuning shed — JBF semifinalist, local-farm flavors, minutes from Littleton.",
+      todo: "", facts: ["In Bethlehem, NH — women-owned, made with Hatchland Dairy cream.", "Seasonal, rotating local-ingredient flavors."], tip: "Worth the secret. 🍦"
+    },
+    {
       id: "p603", day: "d6", time: "12:30p", name: "Burlington, VT — waterfront + lunch", emoji: "🏞️",
       category: "activity", rating: 4.7, ratingSource: "Google ~", price: "$$",
       address: "Church Street Marketplace, Burlington, VT 05401", mapsQuery: "Church Street Marketplace Burlington VT",
