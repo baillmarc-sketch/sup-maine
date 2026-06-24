@@ -656,6 +656,13 @@ window.SUP_MAINE_TRIP = {
       why: "<b>James Beard-honored seafood shack</b> on the Bagaduce River's reversing falls — fried clams, haddock sandwich, onion rings.",
       todo: "", facts: ["Roadside fish shack since 1946; JBF America's Classics (2008).", "Riverfront picnic tables over the reversing falls.", "Seasonal — fresh, locally-sourced fried seafood."], tip: "Such a good peninsula lunch. 💛"
     },
+    {
+      id: "p521", day: "d5", time: "7:00p", done: true, name: "🦞 Union River Lobster Pot", emoji: "🦞",
+      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$$",
+      address: "8 South St, Ellsworth, ME 04605", mapsQuery: "Union River Lobster Pot Ellsworth Maine",
+      why: "<b>Riverside lobster dinner in Ellsworth</b> — caught it on the way back from the loop.",
+      todo: "", facts: ["On the Union River in downtown Ellsworth.", "Seasonal lobster pound — whole lobster, steamers, lobster rolls."], tip: "Loved it — so good. 💛"
+    },
 
     /* ---------------- DAY 6 — Acadia → Montréal ---------------- */
     {
