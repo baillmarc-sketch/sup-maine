@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "v7.4";
+  var VERSION = "v7.5";
 
   // ---- category metadata (label shown on the filter chips) ----
   var CATEGORIES = [
@@ -1376,6 +1376,14 @@
       } else {
         var codes = resvCodes(p);
         if (codes) card.appendChild(codes);
+        if (p.qr) {
+          var qr = el("div", "resv__qr");
+          qr.appendChild(el("div", "resv__qr-label", "📲 Building entry QR — scan/show at the door"));
+          var qimg = el("img", "resv__qr-img");
+          qimg.src = p.qr; qimg.alt = "Building entry QR code"; qimg.loading = "lazy";
+          qr.appendChild(qimg);
+          card.appendChild(qr);
+        }
         if (p.address) card.appendChild(resvAddrRow(p));
         if (p.facts && p.facts.length) {
           var ul = el("ul", "facts");

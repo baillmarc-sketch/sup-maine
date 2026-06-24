@@ -324,6 +324,9 @@ a { color: var(--navy); }
   font-size: 13px; font-weight: 600; color: var(--ink-soft);
   background: var(--paper-2); border: 1px dashed var(--line); border-radius: 10px; padding: 9px 11px; margin-top: 9px;
 }
+.resv__qr { margin: 10px 0 4px; text-align: center; }
+.resv__qr-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--ink-soft); margin-bottom: 6px; }
+.resv__qr-img { width: 220px; max-width: 70%; height: auto; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 8px; box-shadow: var(--shadow-sm); }
 .resv__name { font-weight: 800; font-size: 15.5px; }
 .resv__ok { font-size: 12px; font-weight: 700; color: var(--pine); }
 .resv__dates { font-size: 13px; color: var(--ink-soft); font-weight: 700; margin-top: 3px; }
