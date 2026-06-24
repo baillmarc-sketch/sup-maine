@@ -725,6 +725,7 @@ window.SUP_MAINE_TRIP = {
       id: "p606", day: "d6", time: "5:00p", name: "✅ Stay — Elegant 1BR (Montréal)", emoji: "🛏️",
       category: "stay", checkIn: "2026-06-24", checkOut: "2026-06-27", rating: "", ratingSource: "", price: "",
       address: "366 Rue Mayor, Montréal, QC H3A 1N8", mapsQuery: "366 Rue Mayor Montreal",
+      qr: "assets/img/montreal-entry-qr.png",
       why: "Your <b>base for 3 nights</b> (Jun 24–27) — Apartment 709, 7th floor, downtown and walkable to restaurants.",
       todo: "At the door, tap 'QR Code' on the home screen and scan with your phone, take the elevator to the 7th floor → Apt 709 (door's unlocked). Keys + garage remote are on the kitchen counter.",
       codes: [
