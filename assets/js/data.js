@@ -875,9 +875,9 @@ window.SUP_MAINE_TRIP = {
       category: "activity", rating: 4.7, ratingSource: "Google ~", price: "Booked",
       address: "Old Port of Montréal, 358 Rue de la Commune O, Montréal, QC H2Y 0B5", mapsQuery: "Bota Bota spa Montreal Old Port",
       why: "<b>Floating Nordic spa</b> on a boat in the Old Port — thermal water circuit (hot/cold/relax) with skyline views.",
-      todo: "Arrive ~5:35 PM (25–30 min early) for your 6:00 PM entry. Marc & Anna both on the Water Circuit.",
-      facts: ["✅ Booked — Fri Jun 26, 6:00 PM · Water Circuit (4h) · parking reserved.", "It's a spa on a boat moored in the Old Port — steps from Old Montréal.", "Bring/​rent sandals; quiet zones — phones limited."],
-      tip: "⚠️ Damas is booked 9 PM — you can't do the full 4-hr circuit. Plan to wrap by ~8:30 and head straight over (~15–20 min to Outremont)."
+      todo: "Arrive ~5:35 PM (25–30 min early) for your 6:00 PM entry, then do a relaxed ~2-hr circuit and head out by ~8:15.",
+      facts: ["✅ Booked — Fri Jun 26, 6:00 PM · Water Circuit (4h) · parking reserved.", "Plan: ~2 hrs, not the full 4 — leave by ~8:15 for Damas at 9.", "Spa on a boat in the Old Port; bring/​rent sandals, phones limited in quiet zones."],
+      tip: "Cutting it short to make Damas (9 PM): wrap by ~8:15 → ~15–20 min to Outremont leaves a comfortable buffer."
     },
     {
       id: "p805", day: "d8", time: "9:00p", name: "✅ Dinner — Damas", emoji: "🍽️",
