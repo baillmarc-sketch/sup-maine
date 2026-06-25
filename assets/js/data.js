@@ -51,8 +51,8 @@ window.SUP_MAINE_TRIP = {
     { id: "d4",  date: "Mon Jun 22", iso: "2026-06-22", lat: 44.3876, lon: -68.2039, label: "Portland → Acadia",     subtitle: "L.L.Bean → Taste of Maine roll → Boothbay Harbor → check in, Cadillac sunset, dinner at LeBrun" },
     { id: "d5",  date: "Tue Jun 23", iso: "2026-06-23", lat: 44.3876, lon: -68.2039, label: "Full Acadia day",       subtitle: "Ocean Path, Jordan Pond popovers, the Beehive if you're brave" },
     { id: "d6",  date: "Wed Jun 24", iso: "2026-06-24", lat: 45.5019, lon: -73.5674, label: "Acadia → Montréal",     subtitle: "Bangor coffee, Burlington lunch, cross into Québec" },
-    { id: "d7",  date: "Thu Jun 25", iso: "2026-06-25", lat: 45.5019, lon: -73.5674, label: "Mile End & the Plateau",subtitle: "Bagels, Jean-Talon Market, cafés and bookstores" },
-    { id: "d8",  date: "Fri Jun 26", iso: "2026-06-26", lat: 45.5019, lon: -73.5674, label: "Mount Royal & Old MTL", subtitle: "The mountain, the old city, Atwater Market, cocktails" },
+    { id: "d7",  date: "Thu Jun 25", iso: "2026-06-25", lat: 45.5019, lon: -73.5674, label: "Mile End + Mt Royal hike",subtitle: "Light-roast coffee, bagels, a 2-hr Mt Royal hike, then shop & explore" },
+    { id: "d8",  date: "Fri Jun 26", iso: "2026-06-26", lat: 45.5019, lon: -73.5674, label: "Old MTL & Bota Bota spa", subtitle: "Old Montréal + Atwater by day, Bota Bota spa at 6, Damas at 9" },
     { id: "d9",  date: "Sat Jun 27", iso: "2026-06-27", lat: 42.2528, lon: -73.7907, label: "Montréal → Hudson Valley", subtitle: "Drive south, Hudson antiques on Warren St, dinner at Serre" },
     { id: "d10", date: "Sun Jun 28", iso: "2026-06-28", lat: 42.2528, lon: -73.7907, label: "Hudson Valley → NYC",   subtitle: "Coffee, a slow morning, roll home" }
   ],
@@ -768,6 +768,15 @@ window.SUP_MAINE_TRIP = {
 
     /* ---------------- DAY 7 — Mile End & Plateau ---------------- */
     {
+      id: "p700", day: "d7", time: "8:30a", name: "☕ Pastel Rita (light-roast coffee)", emoji: "☕",
+      category: "coffee", rating: 4.6, ratingSource: "Google ~", price: "$$",
+      address: "5761 Boul. Saint-Laurent, Montréal, QC H2T 1T9", mapsQuery: "Pastel Rita Montreal",
+      why: "<b>The light-roast spot in Mile End</b> — ~2 blocks from St-Viateur. Third-wave ZAB beans + rotating fruity 'Jungle' single-origins; bright, not roasty.",
+      todo: "Grab a pour-over / filter for the brightest cup, then walk over for hot bagels.",
+      facts: ["Closest thing to a true light-roast café near St-Viateur.", "Wes-Anderson-ish room, good food, natural wine too.", "Alt nearby: Café In Gamba (5263 Av. du Parc) — multi-roaster, Scandinavian-bright guest beans."],
+      tip: "Skip Olimpico for the cup (it's dark Italian espresso) — go there only for the people-watching. For beans to take home: Balance Torréfacteur or 94 Celcius are the city's lightest."
+    },
+    {
       id: "p701", day: "d7", time: "9:00a", name: "St-Viateur Bagel", emoji: "🥯",
       category: "eat", rating: 4.7, ratingSource: "Google ~", price: "$",
       address: "263 Rue Saint-Viateur O, Montréal, QC H2V 1Y1",
@@ -835,13 +844,13 @@ window.SUP_MAINE_TRIP = {
 
     /* ---------------- DAY 8 — Mount Royal & Old Montréal ---------------- */
     {
-      id: "p801", day: "d8", time: "9:30a", name: "Mount Royal (Parc du Mont-Royal)", emoji: "⛰️",
+      id: "p801", day: "d7", time: "10:30a", name: "⛰️ Mount Royal — 2-hour hike", emoji: "⛰️",
       category: "activity", rating: 4.8, ratingSource: "Google ~", price: "Free",
       address: "Voie Camillien-Houde, Montréal, QC H3H 1A1", mapsQuery: "Mount Royal Chalet Lookout Montreal",
-      why: "The <b>green mountain in the middle of the city</b> — climb for the classic skyline lookout.",
-      todo: "Walk up to the Kondiaronk Belvedere (the chalet lookout) for the postcard skyline.",
-      facts: ["Designed by Frederick Law Olmsted (of Central Park).", "Belvedere = the iconic downtown view.", "The city's name comes from this 'Mont Réal'."],
-      tip: "Drive or walk to the chalet lookout; weekends have Tam-Tams drum circles at the base."
+      why: "The <b>green mountain in the middle of the city</b> — a ~2-hour hike up to the classic skyline lookout (moved here for the good-weather day).",
+      todo: "Hike up to the Kondiaronk Belvedere (chalet lookout) for the postcard skyline, loop down past Beaver Lake — ~2 hrs round trip.",
+      facts: ["Designed by Frederick Law Olmsted (of Central Park).", "Belvedere = the iconic downtown view; ~2-hr loop with the climb.", "Trailheads off Peel St or Av. du Parc; well-marked paths."],
+      tip: "Wear real shoes — it's a proper climb. Weekends have Tam-Tams drum circles at the Parc base."
     },
     {
       id: "p802", day: "d8", time: "12:00p", name: "Atwater Market", emoji: "🧀",
@@ -860,6 +869,15 @@ window.SUP_MAINE_TRIP = {
       todo: "Wander cobblestone streets, see Notre-Dame Basilica, stroll the Old Port waterfront.",
       facts: ["Notre-Dame Basilica's interior is jaw-dropping (small entry fee).", "Place Jacques-Cartier is the lively heart.", "Touristy but genuinely beautiful."],
       tip: "Book Notre-Dame tickets online to skip the line; evening light on the cobbles is magic."
+    },
+    {
+      id: "p806", day: "d8", time: "5:35p", name: "✅ Bota Bota — spa-sur-l'eau", emoji: "♨️",
+      category: "activity", rating: 4.7, ratingSource: "Google ~", price: "Booked",
+      address: "Old Port of Montréal, 358 Rue de la Commune O, Montréal, QC H2Y 0B5", mapsQuery: "Bota Bota spa Montreal Old Port",
+      why: "<b>Floating Nordic spa</b> on a boat in the Old Port — thermal water circuit (hot/cold/relax) with skyline views.",
+      todo: "Arrive ~5:35 PM (25–30 min early) for your 6:00 PM entry. Marc & Anna both on the Water Circuit.",
+      facts: ["✅ Booked — Fri Jun 26, 6:00 PM · Water Circuit (4h) · parking reserved.", "It's a spa on a boat moored in the Old Port — steps from Old Montréal.", "Bring/​rent sandals; quiet zones — phones limited."],
+      tip: "⚠️ Damas is booked 9 PM — you can't do the full 4-hr circuit. Plan to wrap by ~8:30 and head straight over (~15–20 min to Outremont)."
     },
     {
       id: "p805", day: "d8", time: "9:00p", name: "✅ Dinner — Damas", emoji: "🍽️",
