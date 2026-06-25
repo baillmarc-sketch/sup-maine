@@ -862,15 +862,23 @@ window.SUP_MAINE_TRIP = {
       tip: "Book Notre-Dame tickets online to skip the line; evening light on the cobbles is magic."
     },
     {
-      id: "p804", day: "d8", time: "8:00p", name: "🍽️ Dinner + cocktails — last MTL night (open)", emoji: "🍸",
-      category: "eat", slot: true, searchQuery: "best dinner Plateau Mile End Montreal",
-      why: "Your <b>second open dinner night</b> — make the last Québec night count, then cocktails nearby.",
-      facts: ["No reservation on the calendar yet for tonight.", "Joe Beef books weeks ahead — set an alarm when bookings open.", "Plateau & Mile End are dense with bars; last call runs late."],
-      tip: "Tell me your pick and I'll lock it in as a confirmed dinner.",
+      id: "p805", day: "d8", time: "9:00p", name: "✅ Dinner — Damas", emoji: "🍽️",
+      category: "eat", rating: 4.6, ratingSource: "Google ~", price: "$$$$",
+      address: "1201 Av. Van Horne, Montréal, QC H2V 1K4", mapsQuery: "Damas Montreal Van Horne",
+      why: "<b>Acclaimed upscale Syrian</b> — your booked last-Montréal-night dinner.",
+      todo: "Reservation confirmed: Fri Jun 26, 9:00 PM, party of 2, outdoor seating.",
+      facts: ["✅ Booked — Fri Jun 26, 9 PM · 2 people · outdoor seating.", "Refined Damascene cooking — mezze, jewelled rice, charcoal-grilled meats.", "On Av. Van Horne (Outremont) — ~4.6 mi from your place."],
+      tip: "Outdoor seating booked — bring a layer for a cool Montréal night."
+    },
+    {
+      id: "p804", day: "d8", time: "11:00p", alt: true, name: "🍸 Cocktails after Damas", emoji: "🍸",
+      category: "eat", slot: true, searchQuery: "best cocktail bars Plateau Mile End Montreal",
+      why: "Dinner's booked at <b>Damas (9 PM)</b> — cap the last Québec night with cocktails nearby.",
+      facts: ["Outremont/Mile End & the Plateau are dense with bars; last call runs late.", "Cloakroom & Bar Le Mal Nécessaire are well-loved cocktail spots downtown."],
+      tip: "Optional nightcap after Damas — tap a spot below or wander Mile End.",
       options: [
-        { name: "Joe Beef", address: "2491 Rue Notre-Dame O, Montréal, QC H3J 1N6", rating: 4.6, price: "$$$$", note: "Legendary; books weeks out" },
-        { name: "Vin Mon Lapin", address: "150 Rue Saint-Zotique E, Montréal, QC H2S 1K7", rating: 4.7, price: "$$$", note: "Small plates + natural wine" },
-        { name: "Damas", address: "1201 Av. Van Horne, Montréal, QC H2V 1K4", rating: 4.6, price: "$$$$", note: "Upscale Syrian" }
+        { name: "Joe Beef", address: "2491 Rue Notre-Dame O, Montréal, QC H3J 1N6", rating: 4.6, price: "$$$$", note: "Legendary (if you want a 2nd splurge another night)" },
+        { name: "Vin Mon Lapin", address: "150 Rue Saint-Zotique E, Montréal, QC H2S 1K7", rating: 4.7, price: "$$$", note: "Small plates + natural wine" }
       ]
     },
 
