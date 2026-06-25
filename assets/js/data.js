@@ -853,6 +853,21 @@ window.SUP_MAINE_TRIP = {
       tip: "Wear real shoes — it's a proper climb. Weekends have Tam-Tams drum circles at the Parc base."
     },
     {
+      id: "p807", day: "d8", time: "10:00a", name: "🛍️ Mr & Mrs M — magasin (mmmm)", emoji: "🛍️",
+      category: "shop", slot: true, searchQuery: "shopping Sainte-Catherine Ouest Montreal",
+      address: "Rue Sainte-Catherine O, Montréal, QC", mapsQuery: "Canada Goose 1020 Sainte-Catherine O Montreal",
+      why: "Tomorrow's <b>shopping run</b> — Canadian-made outerwear is the big win (cheaper at home <i>and</i> a strong USD ≈ 1.42). One Sainte-Catherine strip, steps from your place on Rue Mayor.",
+      todo: "Walk the Ste-Catherine strip W→E: Canada Goose (try the −25 °C cold room), Simons for Canadian fashion at better prices, Holt Renfrew Ogilvy for Mackage/Moose Knuckles under one roof. Save maple + aged cheese for Atwater at noon.",
+      facts: ["💱 ~1 USD = 1.42 CAD → roughly 30% off Canadian-priced goods.", "🛂 $800 USD/person duty-free re-entering the US — keep receipts.", "Also a steal: The Ordinary / Deciem skincare (Canadian brand)."],
+      tip: "⚠️ Skip smoked meat / foie gras — meat can't cross the border. Ice cider from an SAQ is fine (1 L/person duty-free).",
+      options: [
+        { name: "Canada Goose (flagship)", address: "1020 Rue Sainte-Catherine O, Montréal, QC", rating: 4.4, price: "$$$$", note: "8,000 sq ft; −25 °C cold room to test parkas" },
+        { name: "La Maison Simons", address: "977 Rue Sainte-Catherine O, Montréal, QC H3B 4W3", rating: 4.4, price: "$$", note: "Québec dept. store — Canadian fashion, better prices" },
+        { name: "Holt Renfrew Ogilvy", address: "1307 Rue Sainte-Catherine O, Montréal, QC H3G 1P7", rating: 4.4, price: "$$$$", note: "Mackage / Moose Knuckles / Canada Goose under one roof" },
+        { name: "Kanuk (Plateau detour)", address: "485 Rue Rachel E, Montréal, QC H2J 2H1", rating: 4.5, price: "$$$", note: "Montréal-made parkas + in-store cold chamber" }
+      ]
+    },
+    {
       id: "p802", day: "d8", time: "12:00p", name: "Atwater Market", emoji: "🧀",
       category: "activity", rating: 4.7, ratingSource: "Google ~", price: "$$",
       address: "138 Av. Atwater, Montréal, QC H4C 2G3",
