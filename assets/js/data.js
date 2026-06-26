@@ -895,13 +895,13 @@ window.SUP_MAINE_TRIP = {
       tip: "Cutting it short to make Damas (9 PM): wrap by ~8:15 → ~15–20 min to Outremont leaves a comfortable buffer."
     },
     {
-      id: "p808", day: "d8", time: "7:30p", name: "🐝 The Spelling Bee of the Century", emoji: "🐝",
+      id: "p808", day: "d8", time: "7:30p", alt: true, name: "🐝 The Spelling Bee of the Century", emoji: "🐝",
       category: "activity", rating: "", ratingSource: "", price: "$21 adv / $27 door",
       address: "La Sala Rossa, 4848 Boul. Saint-Laurent, Montréal, QC H2T 1R5", mapsQuery: "La Sala Rossa Montreal",
       why: "<b>Absurdist live-broadcast comedy spelling bee</b> + experimental music — iWant2BeOnTV × Suoni Per Il Popolo. 7 spellers face choreography, musical interruptions &amp; physical obstacles.",
       todo: "Show at 7:30 PM. Grab $21 advance tickets online (or $27 at the door). Acts: Fraud Perry, Bastard Idol, Culvert Corpse, Laughing.",
       facts: ["Part of the Suoni Per Il Popolo festival (26th edition).", "La Sala Rossa: 250-cap hall above a Spanish resto, Mile End/Plateau.", "Livestreamed via CUTV / broadcast on N10.AS."],
-      tip: "⚠️ HARD CONFLICT: 7:30 PM clashes with Bota Bota (6 PM) and Damas (9 PM) the same night — you can't do all three. Pick the show OR Damas; spa can flex to fit either."
+      tip: "Skipped — you chose Damas at 9 for the last Montréal night. Kept here as a backup in case dinner plans change."
     },
     {
       id: "p805", day: "d8", time: "9:00p", name: "✅ Dinner — Damas", emoji: "🍽️",
